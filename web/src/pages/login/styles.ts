@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import Form from '../../components/Form/Form';
@@ -26,7 +27,7 @@ export const StyledForm = styled(Form)`
     margin-top: 68px;
   }
 
-  span {
+  > span {
     margin-top: 2px;
 
     font-size: 1.2rem;
@@ -76,5 +77,26 @@ export const LoginButton = styled.button`
   &:hover,
   &:focus {
     filter: brightness(85%);
+  }
+`;
+
+export const CreateAccount = styled.a`
+  margin-top: 20px;
+
+  font-size: 1.5rem;
+  font-weight: 500;
+
+  text-align: center;
+  color: ${(props) => props.theme.colors.white};
+
+  cursor: pointer;
+
+  > span {
+    color: ${(props) => props.theme.colors.green};
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
   }
 `;
