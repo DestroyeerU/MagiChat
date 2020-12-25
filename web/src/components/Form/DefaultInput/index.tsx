@@ -1,40 +1,22 @@
-import React, { useEffect, forwardRef } from 'react';
+import React, { useEffect, forwardRef, useMemo } from 'react';
 
 import { useField } from '@unform/core';
 
-import { Container, ContainerProps, Error, Label, InnerContainer } from './styles';
-import { useSafeRef } from '../../../hooks/native';
+import { useSafeRef } from '@hooks/native';
+
+import { DefaultStyledInput, DefaultStyledError } from './styles';
 
 type InputAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'value' | 'width'>;
 
 interface OwnProps {
   name: string;
-  label?: string;
-  input: any;
-  icon?: any;
-  onIconClick?: () => void;
+  as?: typeof DefaultStyledInput;
 }
 
-type DefaultInputProps = OwnProps & ContainerProps & InputAttributes;
-export type InputProps = Omit<DefaultInputProps, 'icon'>;
+export type InputProps = OwnProps & InputAttributes;
 export type InputRef = React.Ref<HTMLInputElement>;
 
-const DefaultInput = (
-  {
-    name,
-    input: InputComponent,
-    label,
-    type,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight,
-    icon: Icon,
-    onIconClick,
-    ...rest
-  }: DefaultInputProps,
-  ref: InputRef
-) => {
+const DefaultInput = ({ name, as: StyledInput, type, ...rest }: InputProps, ref: InputRef) => {
   const inputRef = useSafeRef(ref);
   const { fieldName, registerField, defaultValue, error } = useField(name);
 
@@ -46,35 +28,13 @@ const DefaultInput = (
     });
   }, [fieldName, inputRef, registerField, type]);
 
+  const InputComponent = useMemo(() => StyledInput || DefaultStyledInput, [StyledInput]);
+
   return (
-    <Container marginTop={marginTop} marginBottom={marginBottom} marginLeft={marginLeft} marginRight={marginRight}>
-      {label ? <Label invalid={error ? 1 : 0}>{label}</Label> : null}
-
-      {Icon !== undefined ? (
-        <InnerContainer>
-          <InputComponent
-            ref={inputRef}
-            defaultValue={defaultValue}
-            defaultChecked={defaultValue}
-            gone
-            type={type}
-            {...rest}
-          />
-
-          <Icon onClick={onIconClick} />
-        </InnerContainer>
-      ) : (
-        <InputComponent
-          ref={inputRef}
-          defaultValue={defaultValue}
-          defaultChecked={defaultValue}
-          type={type}
-          {...rest}
-        />
-      )}
-
-      {error && <Error>{error}</Error>}
-    </Container>
+    <>
+      <InputComponent ref={inputRef} defaultValue={defaultValue} defaultChecked={defaultValue} type={type} {...rest} />
+      {error && <DefaultStyledError>{error}</DefaultStyledError>}
+    </>
   );
 };
 

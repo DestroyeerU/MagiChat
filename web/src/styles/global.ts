@@ -5,10 +5,23 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    outline: none;
   }
 
-  body {
-    font-size: 16px;
+  html {
+    font-size: 10px;
+  }
+
+  #__next {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
     color: ${(props) => props.theme.colors.text};
     background: ${(props) => props.theme.colors.background};
   }

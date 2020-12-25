@@ -28,6 +28,7 @@
     "prettier",
     "jsx-a11y",
     "import",
+    "import-helpers",
     "@typescript-eslint"
   ],
   "rules": {
@@ -71,6 +72,25 @@
       "error",
       {
         "extensions": [".jsx", ".tsx"]
+      }
+    ],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always", // new line between groups
+        "groups": [
+          "/^react/",
+          "module",
+          "/^@types/",
+          "/^@pages/",
+          "/^@services/",
+          "/^@components/",
+          "/^@hooks/",
+          "/^@utils/",
+          "/^@styles/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
       }
     ]
   },
