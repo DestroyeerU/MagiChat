@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styled from 'styled-components';
 
 import Form from '../../components/Form/Form';
@@ -35,7 +34,7 @@ export const StyledForm = styled(Form)`
   }
 `;
 
-export const Title = styled.h1`
+export const FormTitle = styled.h1`
   margin-bottom: 35px;
 
   text-align: center;
@@ -56,27 +55,6 @@ export const ForgotPassword = styled.p`
 
   &:hover {
     text-decoration: underline;
-  }
-`;
-
-export const LoginButton = styled.button`
-  height: 50px;
-
-  border-radius: 4px;
-
-  font-size: 1.8rem;
-  font-weight: 700;
-
-  color: ${(props) => props.theme.colors.white};
-  background: ${(props) => props.theme.colors.primary};
-
-  transition: filter 0.1s;
-
-  outline: none;
-
-  &:hover,
-  &:focus {
-    filter: brightness(85%);
   }
 `;
 

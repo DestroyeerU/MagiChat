@@ -13,8 +13,9 @@ interface OwnProps {
   as?: typeof DefaultStyledInput;
 }
 
+export type InputHandles = HTMLInputElement;
 export type InputProps = OwnProps & InputAttributes;
-export type InputRef = React.Ref<HTMLInputElement>;
+export type InputRef = React.Ref<InputHandles>;
 
 const DefaultInput = ({ name, as: StyledInput, type, ...rest }: InputProps, ref: InputRef) => {
   const inputRef = useSafeRef(ref);
