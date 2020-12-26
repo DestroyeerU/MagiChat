@@ -10,7 +10,7 @@ import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
 
-import ArrowLeft from './assets/arrow-left.svg';
+import ArrowLeftIcon from './assets/arrow-left.svg';
 import { Container, LeftSide, StyledForm, FormTitle, Title, Description, BackToLogin } from './styles';
 
 interface FormSubmitData {
@@ -72,7 +72,7 @@ const CreateAccount: React.FC = () => {
 
         <Link href="/login">
           <BackToLogin>
-            <ArrowLeft />
+            <ArrowLeftIcon />
             Voltar para o login
           </BackToLogin>
         </Link>

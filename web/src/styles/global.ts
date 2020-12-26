@@ -1,4 +1,21 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
+
+export const ScrollCSS = css`
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #282d2f;
+    border: 1px solid ${(props) => props.theme.colors.stroke};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #101219;
+  }
+`;
 
 export default createGlobalStyle`
   * {
