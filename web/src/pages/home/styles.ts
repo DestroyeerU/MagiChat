@@ -51,10 +51,6 @@ export const SearchInput = styled.input`
   &::placeholder {
     color: ${(props) => props.theme.colors.textSecondary};
   }
-  /*
-  &:focus {
-    border: 2px solid ${(props) => props.theme.colors.primary};
-  } */
 `;
 
 export const Divider = styled.hr`
@@ -135,11 +131,96 @@ export const LastMessage = styled.p`
   font-size: 1.4rem;
 `;
 
+// Right Side
+
 export const RightSide = styled.div`
   display: flex;
   flex-direction: column;
 
   width: 100%;
 
+  /* padding: 0 20px 27px; */
+
+  padding-bottom: 27px;
+
   background-color: ${(props) => props.theme.colors.backgroundContrast};
+`;
+
+export const MessageInput = styled.input`
+  width: auto;
+
+  margin: 0 20px;
+  padding: 14px 20px;
+
+  border-radius: 8px;
+
+  font-size: 1.6rem;
+  font-weight: 400;
+
+  border: 2px solid ${(props) => props.theme.colors.stroke};
+
+  color: ${(props) => props.theme.colors.text};
+  background-color: #282d2f;
+
+  &::placeholder {
+    color: ${(props) => props.theme.colors.textSecondary};
+  }
+`;
+
+export const MessagesContainer = styled.ul`
+  display: flex;
+  flex-direction: column-reverse;
+
+  height: 100%;
+
+  padding-bottom: 30px;
+
+  overflow-y: auto;
+
+  ${ScrollCSS};
+`;
+
+export const Message = styled.li`
+  display: flex;
+
+  width: auto;
+
+  margin: 20px 20px 0;
+
+  &:last-child {
+    margin-top: 0;
+  }
+`;
+
+export const MessageInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  margin-left: 15px;
+`;
+
+export const MessageUsername = styled.span`
+  font-size: 1.6rem;
+  font-weight: 700;
+`;
+
+export const MessageText = styled.textarea.attrs({
+  readOnly: true,
+})`
+  width: 100%;
+
+  margin-top: 10px;
+  padding: 4px 12px;
+
+  border: 1px solid ${(props) => props.theme.colors.stroke};
+  border-radius: 4px;
+
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+
+  color: ${(props) => props.theme.colors.text};
+  background-color: #262a2c;
+
+  resize: none;
 `;

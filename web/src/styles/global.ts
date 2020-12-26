@@ -9,6 +9,9 @@ export const ScrollCSS = css`
     border-radius: 10px;
     background-color: #282d2f;
     border: 1px solid ${(props) => props.theme.colors.stroke};
+
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   ::-webkit-scrollbar-thumb {

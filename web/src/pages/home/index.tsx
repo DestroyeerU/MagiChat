@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Image from 'next/image';
-
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
 import {
@@ -12,6 +10,12 @@ import {
   Header,
   LastMessage,
   LeftSide,
+  Message,
+  MessageInfo,
+  MessageInput,
+  MessagesContainer,
+  MessageText,
+  MessageUsername,
   RightSide,
   Row,
   SearchInput,
@@ -20,6 +24,8 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+  const text = 'asdsad\nasdasd';
+
   return (
     <Container>
       <LeftSide>
@@ -43,9 +49,243 @@ const Home: React.FC = () => {
 
             <Divider />
           </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
+          <Chat>
+            <Row>
+              <UserIcon />
+              <UserInfo>
+                <Username>Destroyeer</Username>
+                <LastMessage>Ae se liga passar a visão</LastMessage>
+              </UserInfo>
+            </Row>
+
+            <Divider />
+          </Chat>
         </Chats>
       </LeftSide>
-      <RightSide />
+
+      <RightSide>
+        <MessagesContainer>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+          <Message>
+            <UserIcon />
+            <MessageInfo>
+              <MessageUsername>Destroyeer</MessageUsername>
+              <MessageText>{text}</MessageText>
+            </MessageInfo>
+          </Message>
+        </MessagesContainer>
+
+        <MessageInput placeholder="Escreva sua mensagem" />
+      </RightSide>
     </Container>
   );
 };
