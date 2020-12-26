@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
+import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import * as Yup from 'yup';
 
@@ -22,14 +23,20 @@ const schema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
+  const router = useRouter();
+
   const formRef = useRef<FormHandles>(null);
   const emailInputRef = useRef<InputHandles>(null);
   const passwordInputRef = useRef<InputHandles>(null);
 
-  const handleFormSubmit = useCallback((data: FormSubmitData) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
-  }, []);
+  const handleFormSubmit = useCallback(
+    (data: FormSubmitData) => {
+      // eslint-disable-next-line no-console
+      console.log(data);
+      router.push('/home');
+    },
+    [router]
+  );
 
   useEffect(() => {
     emailInputRef.current.focus();

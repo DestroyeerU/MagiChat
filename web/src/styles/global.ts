@@ -31,6 +31,8 @@ export default createGlobalStyle`
 
   html {
     font-size: 10px;
+
+    background: ${(props) => props.theme.colors.background};
   }
 
   #__next {
