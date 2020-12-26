@@ -16,7 +16,7 @@ export const LeftSide = styled.div`
   width: 100%;
   max-width: 350px;
 
-  background-color: #171a1b;
+  background-color: ${(props) => props.theme.colors.home.background};
 `;
 
 export const Header = styled.div`
@@ -26,7 +26,7 @@ export const Header = styled.div`
 
   padding: 12px 14px;
 
-  background-color: #141617;
+  background-color: ${(props) => props.theme.colors.home.header};
 
   border-bottom: 2px solid ${(props) => props.theme.colors.stroke};
 `;
@@ -46,7 +46,7 @@ export const SearchInput = styled.input`
   border: 1px solid ${(props) => props.theme.colors.stroke};
 
   color: ${(props) => props.theme.colors.text};
-  background-color: #1f2324;
+  background-color: ${(props) => props.theme.colors.home.searchInput};
 
   &::placeholder {
     color: ${(props) => props.theme.colors.textSecondary};
@@ -122,7 +122,7 @@ export const UserInfo = styled.div`
 
 export const Username = styled.span`
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 500;
 `;
 
 export const LastMessage = styled.p`
@@ -139,11 +139,9 @@ export const RightSide = styled.div`
 
   width: 100%;
 
-  /* padding: 0 20px 27px; */
-
   padding-bottom: 27px;
 
-  background-color: ${(props) => props.theme.colors.backgroundContrast};
+  background-color: ${(props) => props.theme.colors.home.chat.background};
 `;
 
 export const MessageInput = styled.input`
@@ -157,10 +155,10 @@ export const MessageInput = styled.input`
   font-size: 1.6rem;
   font-weight: 400;
 
-  border: 2px solid ${(props) => props.theme.colors.stroke};
+  border: 1px solid ${(props) => props.theme.colors.stroke};
 
   color: ${(props) => props.theme.colors.text};
-  background-color: #282d2f;
+  background-color: ${(props) => props.theme.colors.home.chat.messageInput};
 
   &::placeholder {
     color: ${(props) => props.theme.colors.textSecondary};
@@ -183,9 +181,9 @@ export const MessagesContainer = styled.ul`
 export const Message = styled.li`
   display: flex;
 
-  width: auto;
+  width: 90%;
 
-  margin: 20px 20px 0;
+  margin: 25px 20px 0;
 
   &:last-child {
     margin-top: 0;
@@ -202,7 +200,7 @@ export const MessageInfo = styled.div`
 
 export const MessageUsername = styled.span`
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 500;
 `;
 
 export const MessageText = styled.textarea.attrs({
@@ -210,7 +208,7 @@ export const MessageText = styled.textarea.attrs({
 })`
   width: 100%;
 
-  margin-top: 10px;
+  margin-top: 7px;
   padding: 4px 12px;
 
   border: 1px solid ${(props) => props.theme.colors.stroke};
@@ -220,7 +218,7 @@ export const MessageText = styled.textarea.attrs({
   line-height: 2.2rem;
 
   color: ${(props) => props.theme.colors.text};
-  background-color: #262a2c;
+  background-color: ${(props) => props.theme.colors.home.chat.message};
 
   resize: none;
 `;

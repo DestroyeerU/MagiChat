@@ -6,7 +6,7 @@ export const LoginButton = styled.button`
   border-radius: 4px;
 
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: 500;
 
   color: ${(props) => props.theme.colors.white};
   background: ${(props) => props.theme.colors.primary};

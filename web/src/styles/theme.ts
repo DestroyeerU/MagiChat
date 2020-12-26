@@ -12,6 +12,18 @@ const theme = {
 
     red: '#e63946',
     stroke: '#000',
+
+    home: {
+      header: '#1E2123',
+      searchInput: '#292E2F',
+      background: '#212527',
+
+      chat: {
+        messageInput: '#31373A',
+        message: '#2F3437',
+        background: '#24282A',
+      },
+    },
   },
 };
 
