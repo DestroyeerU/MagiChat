@@ -12,22 +12,22 @@
     "removeComments": true,
     "strict": true,
 
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
-      "@types/*": ["src/types/*"],
-      "@services/*": ["src/services/*"],
-      "@controllers/*": ["src/app/controllers/*"],
-      "@middlewares/*": ["src/app/middlewares/*"],
-      "@schemas/*": ["src/app/schemas/*"],
-      "@validations/*": ["src/app/validations/*"],
-      "@utils/*": ["src/app/utils/*"],
-      "@config/*": ["src/config/*"],
-      "@/*": ["src/*"]
+      "@types/*": ["types/*"],
+      "@services/*": ["services/*"],
+      "@controllers/*": ["app/controllers/*"],
+      "@middlewares/*": ["app/middlewares/*"],
+      "@schemas/*": ["app/schemas/*"],
+      "@validations/*": ["app/validations/*"],
+      "@utils/*": ["app/utils/*"],
+      "@config/*": ["config/*"],
+      "@/*": ["*"]
     },
 
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
+      "./src/typess"
     ],
 
     "esModuleInterop": true,
