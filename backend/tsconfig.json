@@ -14,12 +14,10 @@
 
     "baseUrl": "src",
     "paths": {
-      "@types/*": ["types/*"],
+      "@mytypes/*": ["types/*"],
       "@services/*": ["services/*"],
       "@controllers/*": ["app/controllers/*"],
       "@middlewares/*": ["app/middlewares/*"],
-      "@schemas/*": ["app/schemas/*"],
-      "@validations/*": ["app/validations/*"],
       "@utils/*": ["app/utils/*"],
       "@config/*": ["config/*"],
       "@/*": ["*"]
@@ -27,7 +25,7 @@
 
     "typeRoots": [
       "./node_modules/@types",
-      "./src/typess"
+      "./src/types"
     ],
 
     "esModuleInterop": true,

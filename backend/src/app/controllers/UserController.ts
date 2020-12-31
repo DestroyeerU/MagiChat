@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 
-import { RequestBody } from '@typess/requesta';
+import { RequestBody } from '@mytypes/request';
 
 import { User } from '../entity/user';
 

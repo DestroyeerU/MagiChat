@@ -12,7 +12,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  plugins: ['@typescript-eslint', 'import-helpers', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -53,27 +53,6 @@ module.exports = {
       {
         ts: 'never',
         js: 'never',
-      },
-    ],
-    'import-helpers/order-imports': [
-      'warn',
-      {
-        newlinesBetween: 'always', // new line between groups
-        groups: [
-          // '/^express/',
-          'module',
-          '/^@types/',
-          '/^@services/',
-          '/^@controllers/',
-          '/^@middlewares/',
-          '/^@schemas/',
-          '/^@validations/',
-          '/^@utils/',
-          '/^@config/',
-          '/^@/',
-          ['parent', 'sibling', 'index'],
-        ],
-        alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
   },
