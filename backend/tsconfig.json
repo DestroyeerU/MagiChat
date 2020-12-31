@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "lib": ["ES6"],
+
+    "outDir": "./dist",
+    "rootDir": "./",
+
+    "allowJs": true,
+    "removeComments": true,
+    "strict": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@types/*": ["src/types/*"],
+      "@services/*": ["src/services/*"],
+      "@controllers/*": ["src/app/controllers/*"],
+      "@middlewares/*": ["src/app/middlewares/*"],
+      "@schemas/*": ["src/app/schemas/*"],
+      "@validations/*": ["src/app/validations/*"],
+      "@utils/*": ["src/app/utils/*"],
+      "@config/*": ["src/config/*"],
+      "@/*": ["src/*"]
+    },
+
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
