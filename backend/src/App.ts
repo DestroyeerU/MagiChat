@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import { createConnection } from 'typeorm';
 
 import routes from './routes';
+import authRoutes from './authRoutes';
 
 class App {
   server: Express;
@@ -31,6 +32,7 @@ class App {
 
   routes() {
     this.server.use(routes);
+    // this.server.use(authRoutes);
   }
 
   exceptionHandler() {

@@ -14,10 +14,12 @@
 
     "baseUrl": "src",
     "paths": {
-      "@mytypes/*": ["types/*"],
-      "@services/*": ["services/*"],
       "@controllers/*": ["app/controllers/*"],
       "@middlewares/*": ["app/middlewares/*"],
+      "@entity/*": ["app/entity/*"],
+      "@mytypes/*": ["types/*"],
+
+      "@services/*": ["services/*"],
       "@utils/*": ["app/utils/*"],
       "@config/*": ["config/*"],
       "@/*": ["*"]
