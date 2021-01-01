@@ -1,7 +1,9 @@
 {
-  "type": "sqlite",
-  "database": "mydb.sql",
-  "entities": ["src/app/entity/**/*.ts"],
+  "type": "mongodb",
+  "url": "mongodb+srv://user:mongo@cluster0.ohu4o.mongodb.net/test?retryWrites=true&w=majority",
+  "useNewUrlParser": true,
+  "useUnifiedTopology": true,
   "logging": true,
-  "synchronize": true
+  "synchronize": true,
+  "entities": ["src/app/entity/**/*.ts"]
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
 
 import { User } from '@entity/user';
 import { RequestBody } from '@mytypes/request';
@@ -14,7 +14,7 @@ type CreateRequest = RequestBody<Create>;
 
 class UserController {
   async index(req: Request, res: Response) {
-    const users = await getRepository(User).find();
+    const users = await getMongoRepository(User).find();
 
     return res.json(users);
   }
@@ -22,14 +22,14 @@ class UserController {
   async create(req: CreateRequest, res: Response) {
     const { name, email, password } = req.body;
 
-    const userData = getRepository(User).create({
+    const userData = getMongoRepository(User).create({
       name,
       email,
       password,
     });
 
     try {
-      const user = await getRepository(User).save(userData);
+      const user = await getMongoRepository(User).save(userData);
 
       return res.json(user);
     } catch (e) {

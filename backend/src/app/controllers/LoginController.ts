@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
 
 import { encodeToken } from '@utils/auth';
 import { RequestBody } from '@mytypes/request';
@@ -16,7 +16,7 @@ class LoginController {
   async create(req: CreateRequest, res: Response) {
     const { email, password } = req.body;
 
-    const user = await getRepository(User).findOne({
+    const user = await getMongoRepository(User).findOne({
       where: {
         email,
       },
