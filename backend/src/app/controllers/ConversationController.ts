@@ -1,7 +1,8 @@
 import { Response } from 'express';
-import { ObjectID } from 'typeorm';
+import { getMongoRepository, ObjectID } from 'typeorm';
 
 import { RequestAuthBody } from '@mytypes/requestAuth';
+import { Conversation, User } from '@entity/user';
 
 interface Create {
   toUserEmail: string;
@@ -14,8 +15,15 @@ class ConversationController {
     const { toUserEmail } = req.body;
     const userId = req.userId as ObjectID;
 
+    const toUser = await getMongoRepository(User).findOne({
+      email: toUserEmail,
+    });
+
+    // const conversation = new Conversation();
+
     return res.json({
       userId,
+      toUser,
     });
   }
 }

@@ -8,7 +8,8 @@
   "scripts": {
     "build": "babel src --extensions .js,.ts --out-dir dist --copy-files --no-copy-ignored",
     "start": "node ./dist/server.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --no-notify --ignore-watch node_modules src/server.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --no-notify --ignore-watch node_modules src/server.ts",
+    "seed": "ts-node src/app/database/seed.ts"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
