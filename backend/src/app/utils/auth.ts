@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 
 interface TokenObject {
-  id: number;
+  id: string;
 }
 
 export function encodeToken(objectToEncode: TokenObject) {

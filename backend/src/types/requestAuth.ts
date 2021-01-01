@@ -1,25 +1,26 @@
 import { Request as DefaultRequest } from 'express';
+import { ObjectID } from 'typeorm';
 
 import { ParamsDictionary, Query } from './request';
 
 export interface RequestAuthBody<B> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
   body: B;
 }
 
 export interface RequestAuthParams<P extends ParamsDictionary> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
   params: P;
 }
 
 export interface RequestAuthQuery<Q extends Query> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
   query: Q;
 }
 
 export interface RequestAuth<B = never, Q extends Query = never, P extends ParamsDictionary = never>
   extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
 
   body: B;
   params: P;
@@ -27,7 +28,7 @@ export interface RequestAuth<B = never, Q extends Query = never, P extends Param
 }
 
 export interface RequestAuthBodyQueryParamsId<B, Q extends Query> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
 
   body: B;
   query: Q;
@@ -38,7 +39,7 @@ export interface RequestAuthBodyQueryParamsId<B, Q extends Query> extends Defaul
 }
 
 export interface RequestAuthBodyParamsId<B> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
   body: B;
 
   params: {
@@ -47,7 +48,7 @@ export interface RequestAuthBodyParamsId<B> extends DefaultRequest {
 }
 
 export interface RequestAuthQueryParamsId<Q extends Query> extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
   query: Q;
 
   params: {
@@ -56,7 +57,7 @@ export interface RequestAuthQueryParamsId<Q extends Query> extends DefaultReques
 }
 
 export interface RequestAuthParamsId extends DefaultRequest {
-  userId?: number;
+  userId?: ObjectID;
 
   params: {
     id: string;

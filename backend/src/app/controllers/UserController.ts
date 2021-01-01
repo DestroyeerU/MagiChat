@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getMongoRepository } from 'typeorm';
+import { getMongoManager, getMongoRepository } from 'typeorm';
 
 import { User } from '@entity/user';
 import { RequestBody } from '@mytypes/request';
@@ -26,10 +26,12 @@ class UserController {
       name,
       email,
       password,
+      conversations: [],
     });
 
     try {
-      const user = await getMongoRepository(User).save(userData);
+      const manager = getMongoManager();
+      const user = await manager.save(userData);
 
       return res.json(user);
     } catch (e) {

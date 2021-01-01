@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { getRepository } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 
 import { User } from '@entity/user';
 import { decodeToken } from '@utils/auth';
 
 interface AuthRequest extends Request {
-  userId?: number;
+  userId?: ObjectID;
 }
 
 const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -21,18 +22,13 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
   if (!tokenDecoded) {
     return res.status(400).json({ error: 'Token Invalid' });
   }
-
-  const user = await getRepository(User).findOne({
-    where: {
-      id: tokenDecoded.id,
-    },
-  });
+  const user = await getMongoRepository(User).findOne(tokenDecoded.id);
 
   if (!user) {
     return res.status(400).json({ error: 'User not found' });
   }
 
-  req.userId = tokenDecoded.id;
+  req.userId = user.id;
   return next();
 };
 

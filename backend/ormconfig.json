@@ -1,6 +1,6 @@
 {
   "type": "mongodb",
-  "url": "mongodb+srv://user:mongo@cluster0.ohu4o.mongodb.net/test?retryWrites=true&w=majority",
+  "url": "mongodb+srv://user:mongo@cluster0.ohu4o.mongodb.net/test4?retryWrites=true&w=majority",
   "useNewUrlParser": true,
   "useUnifiedTopology": true,
   "logging": true,
