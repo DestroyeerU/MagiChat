@@ -2,7 +2,7 @@ import './bootstrap';
 import express, { Express } from 'express';
 
 import routes from './routes';
-// import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/authRoutes';
 
 import './database';
 
@@ -23,7 +23,7 @@ class App {
 
   routes() {
     this.server.use(routes);
-    // this.server.use(authRoutes);
+    this.server.use(authRoutes);
   }
 
   exceptionHandler() {

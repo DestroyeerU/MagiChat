@@ -32,7 +32,7 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
     return res.status(400).json({ error: 'User not found' });
   }
 
-  req.userId = tokenDecoded.id;
+  req.userId = user.id;
   return next();
 };
 
