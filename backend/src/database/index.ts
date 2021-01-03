@@ -18,10 +18,7 @@ class Database {
   }
 
   relationalTypeorm() {
-    createConnection().then((connection) => {
-      // eslint-disable-next-line no-console
-      // console.log('Connection started with database');
-    });
+    createConnection();
   }
 }
 
