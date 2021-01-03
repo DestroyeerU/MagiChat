@@ -17,13 +17,14 @@ module.exports = {
         alias: {
           '@controllers': './src/app/controllers',
           '@middlewares': './src/app/middlewares',
-          '@entity': './src/entity',
-          '@schemas': './src/schemas',
-          '@errors': './src/errors',
-          '@mytypes': './src/types',
-
-          '@services': './src/services',
+          '@errors': './src/app/errors',
           '@utils': './src/app/utils',
+
+          '@entity': './src/database/entity',
+          '@schemas': './src/database/schemas',
+
+          '@mytypes': './src/types',
+          '@services': './src/services',
           '@config': './src/config',
           '@': './src',
         },

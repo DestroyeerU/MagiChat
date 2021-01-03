@@ -16,13 +16,14 @@
     "paths": {
       "@controllers/*": ["app/controllers/*"],
       "@middlewares/*": ["app/middlewares/*"],
-      "@entity/*": ["app/entity/*"],
-      "@schemas/*": ["app/schemas/*"],
       "@errors/*": ["app/errors/*"],
-      "@mytypes/*": ["types/*"],
-
-      "@services/*": ["services/*"],
       "@utils/*": ["app/utils/*"],
+
+      "@entity/*": ["database/entity/*"],
+      "@schemas/*": ["database/schemas/*"],
+
+      "@mytypes/*": ["types/*"],
+      "@services/*": ["services/*"],
       "@config/*": ["config/*"],
       "@/*": ["*"]
     },
