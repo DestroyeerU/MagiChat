@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { Response } from 'express';
 
-import { RequestAuth, RequestAuthBody, RequestAuthParams } from '@mytypes/requestAuth';
+import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
 import Conversation from '@schemas/Conversation';
 
 import { RequestError } from '@errors/request';

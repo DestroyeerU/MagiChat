@@ -1,17 +1,11 @@
 import { Router } from 'express';
 
-import UserController from '@controllers/UserController';
-import LoginController from '@controllers/LoginController';
+import authRoutes from './authRoutes';
+import userRoutes from './userRoutes';
 
 const routes = Router();
 
-routes.get('/', async (req, res) => {
-  return res.json({ message: 'Hey there!' });
-});
-
-routes.post('/login', LoginController.create);
-
-routes.get('/users', UserController.index);
-routes.post('/users', UserController.create);
+routes.use(userRoutes);
+routes.use(authRoutes);
 
 export default routes;
