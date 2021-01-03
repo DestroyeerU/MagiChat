@@ -1,8 +1,8 @@
 {
-  "name": "node-typescript-advanced-template",
-  "version": "1.1.1",
+  "name": "magi-chat-backend",
+  "version": "0.0.1",
   "main": "src/server.ts",
-  "repository": "https://github.com/DestroyeerU/node-typescript-advanced-template.git",
+  "repository": "https://github.com/DestroyeerU/MagiChat.git",
   "author": "DestroyeerU <destroyeeru18@gmail.com>",
   "license": "MIT",
   "scripts": {
