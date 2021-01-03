@@ -22,16 +22,17 @@ class MessageController {
   async index(req: IndexRequest, res: Response) {
     const { conversationId } = req.params;
 
-    const conversationMessages = await Conversation.findById(conversationId).populate('messages');
+    const conversationMessages = await Conversation.findById(conversationId).select('_id toUserId').populate({
+      path: 'messages',
+      select: '_id text date',
+    });
 
-    return res.json(conversationMessages);
+    return res.json(conversationMessages?.messages);
   }
 
   async create(req: CreateRequest, res: Response) {
     const { conversationId } = req.params;
     const { text } = req.body;
-
-    const date = new Date();
 
     try {
       await assertConversationExists({ _id: conversationId });
@@ -42,7 +43,7 @@ class MessageController {
 
     const message = await Message.create({
       text,
-      date,
+      date: new Date(),
     });
 
     await Conversation.updateOne(

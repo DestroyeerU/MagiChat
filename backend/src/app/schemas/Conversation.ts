@@ -1,7 +1,9 @@
 import { Document, model, Schema } from 'mongoose';
+import { MessageInterface } from './Message';
 
 export interface ConversationInterface {
   toUserId: number;
+  messages: string[] | MessageInterface[];
 }
 
 export type ConversationDocument = Document & ConversationInterface;
