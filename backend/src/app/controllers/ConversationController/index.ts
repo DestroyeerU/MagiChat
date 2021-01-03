@@ -3,6 +3,8 @@ import { Response } from 'express';
 import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
 import Conversation from '@schemas/Conversation';
 
+import { RequestError } from '@errors/request';
+import { assertUserExists } from '@controllers/UserController/assertions';
 import { assertConversationWithUserNotExists } from './assertions';
 
 interface Create {
@@ -23,9 +25,10 @@ class ConversationController {
     const { toUserId } = req.body;
 
     try {
+      await assertUserExists({ id: toUserId });
       await assertConversationWithUserNotExists(toUserId);
     } catch (e) {
-      const { message, statusCode } = e;
+      const { message, statusCode } = e as RequestError;
       return res.status(statusCode).json({ message });
     }
 

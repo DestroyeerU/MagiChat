@@ -1,7 +1,11 @@
-import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
 import { Response } from 'express';
-import Conversation from '../schemas/Conversation';
-import Message from '../schemas/Message';
+
+import { assertConversationWithUserExists } from '@controllers/ConversationController/assertions';
+import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
+import { RequestError } from '@errors/request';
+
+import Conversation from '@schemas/Conversation';
+import Message from '@schemas/Message';
 
 interface Create {
   toUserId: number;
@@ -21,6 +25,13 @@ class MessageController {
   async create(req: CreateRequest, res: Response) {
     const { toUserId, text } = req.body;
     const date = new Date();
+
+    try {
+      await assertConversationWithUserExists(toUserId);
+    } catch (e) {
+      const { message, statusCode } = e as RequestError;
+      return res.status(statusCode).json({ message });
+    }
 
     const message = await Message.create({
       text,
