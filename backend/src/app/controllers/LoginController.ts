@@ -34,3 +34,15 @@ class LoginController {
 }
 
 export default new LoginController();
+
+// [
+//   userId: [
+//     toUserId: [
+//       {
+//         id,
+//         message,
+//         date,
+//       }
+//     ]
+//   ]
+// ]

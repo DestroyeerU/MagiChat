@@ -1,9 +1,10 @@
 import './bootstrap';
 import express, { Express } from 'express';
-import { createConnection } from 'typeorm';
 
 import routes from './routes';
-import authRoutes from './authRoutes';
+// import authRoutes from './routes/authRoutes';
+
+import './database';
 
 class App {
   server: Express;
@@ -11,19 +12,9 @@ class App {
   constructor() {
     this.server = express();
 
-    this.database();
     this.middlewares();
     this.routes();
     this.exceptionHandler();
-  }
-
-  database() {
-    createConnection().then((_connection) => {
-      // const userRepository = connection.getRepository(User);
-
-      // eslint-disable-next-line no-console
-      console.log('Connection started with database');
-    });
   }
 
   middlewares() {
