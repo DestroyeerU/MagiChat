@@ -23,7 +23,7 @@ class LoginController {
     });
 
     if (!user || user.password !== password) {
-      return res.status(400).json({ error: 'email and/or password invalid(s)' });
+      return res.status(400).json({ message: 'email and/or password invalid(s)' });
     }
 
     return res.json({

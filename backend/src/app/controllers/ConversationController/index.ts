@@ -1,6 +1,9 @@
-import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
 import { Response } from 'express';
-import Conversation from '../schemas/Conversation';
+
+import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
+import Conversation from '@schemas/Conversation';
+
+import { assertConversationWithUserNotExists } from './assertions';
 
 interface Create {
   toUserId: number;
@@ -18,6 +21,13 @@ class ConversationController {
 
   async create(req: CreateRequest, res: Response) {
     const { toUserId } = req.body;
+
+    try {
+      await assertConversationWithUserNotExists(toUserId);
+    } catch (e) {
+      const { message, statusCode } = e;
+      return res.status(statusCode).json({ message });
+    }
 
     const conversation = await Conversation.create({
       toUserId,

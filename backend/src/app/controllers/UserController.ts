@@ -33,7 +33,7 @@ class UserController {
 
       return res.json(user);
     } catch (e) {
-      return res.status(400).json({ error: 'Error creating user' });
+      return res.status(400).json({ message: 'Error creating user' });
     }
   }
 }
