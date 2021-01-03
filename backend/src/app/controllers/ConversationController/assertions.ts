@@ -1,13 +1,19 @@
 import { RequestError } from '@errors/request';
 import Conversation from '@schemas/Conversation';
 
-export async function assertConversationWithUserExists(toUserId: number) {
+interface ConversationExistsParams {
+  _id: string;
+}
+
+export async function assertConversationExists(params: ConversationExistsParams) {
+  const { _id } = params;
+
   const conversation = await Conversation.findOne({
-    toUserId,
+    _id,
   });
 
   if (!conversation) {
-    throw new RequestError('You already do not have a conversation with this user', 400);
+    throw new RequestError('Conversation not found', 400);
   }
 }
 

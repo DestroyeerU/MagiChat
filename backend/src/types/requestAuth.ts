@@ -17,7 +17,7 @@ export interface RequestAuthQuery<Q extends Query> extends DefaultRequest {
   query: Q;
 }
 
-export interface RequestAuth<B = never, Q extends Query = never, P extends ParamsDictionary = never>
+export interface RequestAuth<B = never, P extends ParamsDictionary = never, Q extends Query = never>
   extends DefaultRequest {
   userId?: number;
 

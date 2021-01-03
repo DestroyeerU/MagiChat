@@ -1,33 +1,40 @@
 import { Response } from 'express';
 
-import { assertConversationWithUserExists } from '@controllers/ConversationController/assertions';
-import { RequestAuth, RequestAuthBody } from '@mytypes/requestAuth';
+import { assertConversationExists } from '@controllers/ConversationController/assertions';
+import { RequestAuth, RequestAuthParams } from '@mytypes/requestAuth';
 import { RequestError } from '@errors/request';
 
 import Conversation from '@schemas/Conversation';
 import Message from '@schemas/Message';
 
+type Index = {
+  conversationId: string;
+};
+
 interface Create {
-  toUserId: number;
   text: string;
 }
 
-type IndexRequest = RequestAuth;
-type CreateRequest = RequestAuthBody<Create>;
+type IndexRequest = RequestAuthParams<Index>;
+type CreateRequest = RequestAuth<Create, Index>;
 
 class MessageController {
   async index(req: IndexRequest, res: Response) {
-    const messages = await Message.find();
+    const { conversationId } = req.params;
 
-    return res.json(messages);
+    const conversationMessages = await Conversation.findById(conversationId).populate('messages');
+
+    return res.json(conversationMessages);
   }
 
   async create(req: CreateRequest, res: Response) {
-    const { toUserId, text } = req.body;
+    const { conversationId } = req.params;
+    const { text } = req.body;
+
     const date = new Date();
 
     try {
-      await assertConversationWithUserExists(toUserId);
+      await assertConversationExists({ _id: conversationId });
     } catch (e) {
       const { message, statusCode } = e as RequestError;
       return res.status(statusCode).json({ message });
@@ -40,7 +47,7 @@ class MessageController {
 
     await Conversation.updateOne(
       {
-        toUserId,
+        _id: conversationId,
       },
       {
         $push: { messages: message._id },

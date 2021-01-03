@@ -15,7 +15,7 @@ authRoutes.get('/testAuth', async (req, res) => {
 authRoutes.get('/conversations', ConversationController.index);
 authRoutes.post('/conversations', ConversationController.create);
 
-authRoutes.get('/messages', MessageController.index);
-authRoutes.post('/messages', MessageController.create);
+authRoutes.get('/conversations/:conversationId/messages', MessageController.index);
+authRoutes.post('/conversations/:conversationId/messages', MessageController.create);
 
 export default authRoutes;
