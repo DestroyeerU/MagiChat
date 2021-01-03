@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { assertConversationExists } from '@controllers/ConversationController/assertions';
+import { assertConversationExists, assertUserOnConversation } from '@controllers/ConversationController/assertions';
 import { RequestAuth, RequestAuthParams } from '@mytypes/requestAuth';
 import { RequestError } from '@errors/request';
 
@@ -20,7 +20,16 @@ type CreateRequest = RequestAuth<Create, Index>;
 
 class MessageController {
   async index(req: IndexRequest, res: Response) {
+    const userId = req.userId as number;
     const { conversationId } = req.params;
+
+    try {
+      const conversation = await assertConversationExists({ _id: conversationId });
+      assertUserOnConversation(conversation, userId);
+    } catch (e) {
+      const { message, statusCode } = e as RequestError;
+      return res.status(statusCode).json({ message });
+    }
 
     const conversationMessages = await Conversation.findById(conversationId).select('_id toUserId').populate({
       path: 'messages',

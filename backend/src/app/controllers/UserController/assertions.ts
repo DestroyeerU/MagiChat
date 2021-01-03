@@ -8,12 +8,7 @@ interface UserExistsParams {
 }
 
 export async function assertUserExists(params: UserExistsParams) {
-  const { id, email } = params;
-
-  const user = await getRepository(User).findOne({
-    id,
-    email,
-  });
+  const user = await getRepository(User).findOne(params);
 
   if (!user) {
     throw new RequestError('User not found');
