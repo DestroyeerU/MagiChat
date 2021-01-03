@@ -4,13 +4,15 @@ import { getRepository } from 'typeorm';
 
 interface UserExistsParams {
   id?: number;
+  email?: string;
 }
 
 export async function assertUserExists(params: UserExistsParams) {
-  const { id } = params;
+  const { id, email } = params;
 
   const user = await getRepository(User).findOne({
     id,
+    email,
   });
 
   if (!user) {

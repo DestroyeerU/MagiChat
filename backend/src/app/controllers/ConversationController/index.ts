@@ -11,7 +11,7 @@ import { User } from '@entity/user';
 import { assertConversationWithUserNotExists } from './assertions';
 
 interface Create {
-  toUserId: number;
+  toUserEmail: string;
 }
 
 type IndexRequest = RequestAuth;
@@ -45,10 +45,14 @@ class ConversationController {
   }
 
   async create(req: CreateRequest, res: Response) {
-    const { toUserId } = req.body;
+    const { toUserEmail } = req.body;
+
+    let toUserId: number;
 
     try {
-      await assertUserExists({ id: toUserId });
+      const user = await assertUserExists({ email: toUserEmail });
+      toUserId = user.id;
+
       await assertConversationWithUserNotExists(toUserId);
     } catch (e) {
       const { message, statusCode } = e as RequestError;
