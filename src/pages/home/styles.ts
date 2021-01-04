@@ -22,13 +22,21 @@ export const LeftSide = styled.div`
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
   padding: 12px 14px;
 
   background-color: ${(props) => props.theme.colors.home.header};
 
   border-bottom: 2px solid ${(props) => props.theme.colors.stroke};
+
+  svg {
+    cursor: pointer;
+
+    &:nth-child(2) {
+      margin-left: auto;
+      margin-right: 16px;
+    }
+  }
 `;
 
 export const SearchInput = styled.input`

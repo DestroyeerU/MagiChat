@@ -1,5 +1,6 @@
 import React from 'react';
 
+import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
 import {
@@ -31,6 +32,7 @@ const Home: React.FC = () => {
       <LeftSide>
         <Header>
           <UserIcon />
+          <CreateChatIcon />
           <LogOutIcon />
         </Header>
 
