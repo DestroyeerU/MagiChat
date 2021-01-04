@@ -51,6 +51,10 @@ export const SearchInput = styled.input`
   &::placeholder {
     color: ${(props) => props.theme.colors.textSecondary};
   }
+
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.primary};
+  }
 `;
 
 export const Divider = styled.hr`
@@ -155,13 +159,17 @@ export const MessageInput = styled.input`
   font-size: 1.6rem;
   font-weight: 400;
 
-  border: 1px solid ${(props) => props.theme.colors.stroke};
+  border: 2px solid ${(props) => props.theme.colors.stroke};
 
   color: ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.home.chat.messageInput};
 
   &::placeholder {
     color: ${(props) => props.theme.colors.textSecondary};
+  }
+
+  &:focus {
+    border: 2px solid ${(props) => props.theme.colors.primary};
   }
 `;
 
@@ -221,4 +229,8 @@ export const MessageText = styled.textarea.attrs({
   background-color: ${(props) => props.theme.colors.home.chat.message};
 
   resize: none;
+
+  &:focus {
+    border: 1px solid ${(props) => props.theme.colors.white};
+  }
 `;
