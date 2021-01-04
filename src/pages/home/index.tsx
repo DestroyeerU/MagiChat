@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useRouter } from 'next/dist/client/router';
+import { useAuth } from 'src/contexts/auth';
+
 import { ModalHandles } from '@components/Modal';
 
 import CreateChatIcon from './assets/chat.svg';
@@ -30,12 +33,20 @@ import {
 // const Test: React.FC = () => <CreateChatIcon />;
 
 const Home: React.FC = () => {
+  const router = useRouter();
+  const authContext = useAuth();
+
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
 
   const handleCreateChat = useCallback(() => {
     modalRef.current.handleOpen();
   }, []);
+
+  const handleLogOutClick = useCallback(() => {
+    authContext.signOut();
+    router.push('/login');
+  }, [authContext, router]);
 
   return (
     <>
@@ -46,7 +57,7 @@ const Home: React.FC = () => {
           <Header>
             <UserIcon />
             <CreateChatIcon onClick={handleCreateChat} />
-            <LogOutIcon />
+            <LogOutIcon onClick={handleLogOutClick} />
           </Header>
 
           <SearchInput placeholder="Pesquise por uma conversa" />

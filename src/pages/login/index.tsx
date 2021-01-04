@@ -39,10 +39,16 @@ const Login: React.FC = () => {
       const { error } = await authContext.signIn({ email, password });
 
       if (error) {
-        alert(error);
+        alert(error.message);
+        return;
       }
 
-      router.push('/home');
+      if (authContext.signed) {
+        router.push('/home');
+        return;
+      }
+
+      alert('Error logging, please refresh the page');
     },
     [authContext, router]
   );
