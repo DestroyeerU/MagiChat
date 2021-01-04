@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { ModalHandles } from '@components/Modal';
 
@@ -27,11 +27,13 @@ import {
   Username,
 } from './styles';
 
+// const Test: React.FC = () => <CreateChatIcon />;
+
 const Home: React.FC = () => {
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
 
-  useEffect(() => {
+  const handleCreateChat = useCallback(() => {
     modalRef.current.handleOpen();
   }, []);
 
@@ -43,7 +45,7 @@ const Home: React.FC = () => {
         <LeftSide>
           <Header>
             <UserIcon />
-            <CreateChatIcon />
+            <CreateChatIcon onClick={handleCreateChat} />
             <LogOutIcon />
           </Header>
 

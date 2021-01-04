@@ -54,9 +54,9 @@ export const Container = styled.div`
   &.no-active {
     display: block;
 
-    animation: ${FadeOut} 0.3s;
-    -moz-animation: ${FadeOut} 0.3s; /* Firefox */
-    -webkit-animation: ${FadeOut} 0.3s; /* Safari and Chrome */
-    -o-animation: ${FadeOut} 0.3s; /* Opera */
+    animation: ${FadeOut} 0.2s;
+    -moz-animation: ${FadeOut} 0.2s; /* Firefox */
+    -webkit-animation: ${FadeOut} 0.2s; /* Safari and Chrome */
+    -o-animation: ${FadeOut} 0.2s; /* Opera */
   }
 `;

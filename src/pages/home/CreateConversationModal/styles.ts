@@ -4,9 +4,6 @@ import { DefaultButton } from '@components/Buttons';
 import { StyledInput } from '@components/Input/styles';
 
 export const Container = styled.div`
-  /* width: 100px; */
-  /* height: 100px; */
-
   border-radius: 4px;
   background-color: ${(props) => props.theme.colors.home.background};
   box-shadow: 0 4px 20px 4px ${(props) => props.theme.colors.shadow};
@@ -37,6 +34,19 @@ export const BodyMessage = styled.p`
 export const BodyInput = styled(StyledInput)`
   margin-top: 23px;
   padding: 12px 20px;
+`;
+
+interface BodyInputErrorProps {
+  visibilityVisible: boolean;
+}
+
+export const BodyInputError = styled.span<BodyInputErrorProps>`
+  margin-top: 2px;
+
+  font-size: 1.2rem;
+  color: ${(props) => props.theme.colors.red};
+
+  visibility: ${(props) => (props.visibilityVisible ? 'visible' : 'hidden')};
 `;
 
 export const Footer = styled.footer`
