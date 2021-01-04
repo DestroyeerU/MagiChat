@@ -50,13 +50,13 @@ const CreateAccount: React.FC = () => {
         password,
       });
 
-      if (status === 200 || status === 302) {
-        router.push('/login');
+      if (error) {
+        alert(error.message);
         return;
       }
 
-      if (error) {
-        alert(error.message);
+      if (status === 200) {
+        router.push('/login');
       }
     },
     [router]

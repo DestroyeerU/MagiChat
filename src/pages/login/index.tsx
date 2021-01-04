@@ -1,5 +1,7 @@
+/* eslint-disable no-alert */
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { User } from '@mytypes/user';
 import { FormHandles } from '@unform/core';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
@@ -9,6 +11,8 @@ import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
+
+import { postRequest } from '@utils/request';
 
 import { StyledForm, FormTitle, ForgotPassword, CreateAccount } from './styles';
 
@@ -22,6 +26,11 @@ const schema = Yup.object().shape({
   password: Yup.string().required('Este campo é obrigatório'),
 });
 
+interface LoginResponse {
+  user: User;
+  token: string;
+}
+
 const Login: React.FC = () => {
   const router = useRouter();
 
@@ -30,10 +39,26 @@ const Login: React.FC = () => {
   const passwordInputRef = useRef<InputHandles>(null);
 
   const handleFormSubmit = useCallback(
-    (data: FormSubmitData) => {
-      // eslint-disable-next-line no-console
+    async (formData: FormSubmitData) => {
+      const { email, password } = formData;
+
+      const { data, error, status } = await postRequest<LoginResponse>('/login', {
+        email,
+        password,
+      });
+
       console.log(data);
-      router.push('/home');
+      console.log(status);
+
+      if (error) {
+        alert(error.message);
+      }
+
+      if (status === 200) {
+        // auth context
+      }
+
+      // router.push('/home');
     },
     [router]
   );
