@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+
+import Modal, { ModalHandles } from '@components/Modal';
 
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
@@ -25,49 +27,58 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+  const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
 
+  useEffect(() => {
+    modalRef.current.handleOpen();
+  }, []);
+
   return (
-    <Container>
-      <LeftSide>
-        <Header>
-          <UserIcon />
-          <CreateChatIcon />
-          <LogOutIcon />
-        </Header>
+    <>
+      <Modal ref={modalRef} />
 
-        <SearchInput placeholder="Pesquise por uma conversa" />
-        <Divider />
-
-        <Chats>
-          <Chat>
-            <Row>
-              <UserIcon />
-              <UserInfo>
-                <Username>Destroyeer</Username>
-                <LastMessage>Ae se liga passar a visão</LastMessage>
-              </UserInfo>
-            </Row>
-
-            <Divider />
-          </Chat>
-        </Chats>
-      </LeftSide>
-
-      <RightSide>
-        <MessagesContainer>
-          <Message>
+      <Container onClick={() => modalRef.current.handleClose()}>
+        <LeftSide>
+          <Header>
             <UserIcon />
-            <MessageInfo>
-              <MessageUsername>Destroyeer</MessageUsername>
-              <MessageText value={text} />
-            </MessageInfo>
-          </Message>
-        </MessagesContainer>
+            <CreateChatIcon />
+            <LogOutIcon />
+          </Header>
 
-        <MessageInput placeholder="Escreva sua mensagem" />
-      </RightSide>
-    </Container>
+          <SearchInput placeholder="Pesquise por uma conversa" />
+          <Divider />
+
+          <Chats>
+            <Chat>
+              <Row>
+                <UserIcon />
+                <UserInfo>
+                  <Username>Destroyeer</Username>
+                  <LastMessage>Ae se liga passar a visão</LastMessage>
+                </UserInfo>
+              </Row>
+
+              <Divider />
+            </Chat>
+          </Chats>
+        </LeftSide>
+
+        <RightSide>
+          <MessagesContainer>
+            <Message>
+              <UserIcon />
+              <MessageInfo>
+                <MessageUsername>Destroyeer</MessageUsername>
+                <MessageText value={text} />
+              </MessageInfo>
+            </Message>
+          </MessagesContainer>
+
+          <MessageInput placeholder="Escreva sua mensagem" />
+        </RightSide>
+      </Container>
+    </>
   );
 };
 
