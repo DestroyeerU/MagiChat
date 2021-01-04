@@ -20,7 +20,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@types/*": ["src/types/*"],
+      "@mytypes/*": ["src/types/*"],
       "@pages/*": ["src/pages/*"],
       "@services/*": ["src/services/*"],
       "@components/*": ["src/components/*"],

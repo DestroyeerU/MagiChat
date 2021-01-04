@@ -1,6 +1,8 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { User } from '@mytypes/user';
 import { FormHandles } from '@unform/core';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
@@ -10,6 +12,8 @@ import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
+
+import { postRequest } from '@utils/request';
 
 import ArrowLeftIcon from './assets/arrow-left.svg';
 import { Container, LeftSide, StyledForm, FormTitle, Title, Description, BackToLogin } from './styles';
@@ -38,10 +42,22 @@ const CreateAccount: React.FC = () => {
   const passwordConfirmationInputRef = useRef<InputHandles>(null);
 
   const handleFormSubmit = useCallback(
-    (data: FormSubmitData) => {
-      // eslint-disable-next-line no-console
-      console.log(data);
-      router.push('/home');
+    async (formData: FormSubmitData) => {
+      const { name, email, password } = formData;
+      const { error, status } = await postRequest<User>('/users', {
+        name,
+        email,
+        password,
+      });
+
+      if (status === 200 || status === 302) {
+        router.push('/login');
+        return;
+      }
+
+      if (error) {
+        alert(error.message);
+      }
     },
     [router]
   );
