@@ -12,6 +12,9 @@ const theme = {
 
     red: '#e63946',
     stroke: '#000',
+    shadow: 'rgba(0, 0, 0, 0.5)',
+
+    darkWhiten: '#313537',
 
     home: {
       header: '#1E2123',

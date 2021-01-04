@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const LoginButton = styled.button`
+export const DefaultButton = styled.button`
   height: 50px;
 
   border-radius: 4px;

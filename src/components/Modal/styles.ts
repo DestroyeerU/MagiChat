@@ -34,11 +34,11 @@ export const Container = styled.div`
   left: 50%;
 
   transform: translate(-50%, -50%);
-
+  /*
   width: 400px;
   height: 300px;
 
-  background-color: #444;
+  background-color: #444; */
 
   display: none;
 

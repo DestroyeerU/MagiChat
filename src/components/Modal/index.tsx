@@ -7,7 +7,11 @@ export interface ModalHandles {
   handleClose: () => void;
 }
 
-const Modal = (_props, ref: React.Ref<ModalHandles>) => {
+interface ModalProps {
+  children?: React.ReactNode;
+}
+
+const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children }, ref) => {
   const containerRef = useRef<HTMLDivElement>();
   const [visible, setVisible] = useState(false);
   const [lastAnimationName, setLastAnimationName] = useState('');
@@ -58,11 +62,7 @@ const Modal = (_props, ref: React.Ref<ModalHandles>) => {
     handleClose,
   }));
 
-  // if (!visible) {
-  //   return null;
-  // }
-
-  return <Container ref={containerRef} />;
+  return <Container ref={containerRef}>{children}</Container>;
 };
 
 export default forwardRef(Modal);

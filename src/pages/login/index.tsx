@@ -5,7 +5,7 @@ import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import * as Yup from 'yup';
 
-import { LoginButton } from '@components/Buttons';
+import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
 
       <ForgotPassword>Esqueci minha senha</ForgotPassword>
 
-      <LoginButton type="submit">ENTRAR</LoginButton>
+      <DefaultButton type="submit">ENTRAR</DefaultButton>
 
       {/* <CreateAccount href="/#">Não tem conta?</CreateAccount> */}
 

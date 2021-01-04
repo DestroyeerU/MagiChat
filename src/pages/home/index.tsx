@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import Modal, { ModalHandles } from '@components/Modal';
+import { ModalHandles } from '@components/Modal';
 
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
+import CreateConversationModal from './CreateConversationModal';
 import {
   Chat,
   Chats,
@@ -36,7 +37,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Modal ref={modalRef} />
+      <CreateConversationModal ref={modalRef} />
 
       <Container onClick={() => modalRef.current.handleClose()}>
         <LeftSide>
