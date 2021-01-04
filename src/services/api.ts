@@ -5,4 +5,8 @@ const api = axios.create({
   // baseURL: 'https://magi-chat-backend.herokuapp.com',
 });
 
+export function saveApiDefaultAuthorization(token: string) {
+  api.defaults.headers = { authorization: `Bearer ${token}` };
+}
+
 export default api;
