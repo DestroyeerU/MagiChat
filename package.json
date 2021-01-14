@@ -16,6 +16,7 @@
     "next-images": "^1.6.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "socket.io-client": "^3.0.5",
     "styled-components": "^5.2.1",
     "swr": "^0.3.11",
     "yup": "^0.32.8"
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^14.14.14",
     "@types/react": "^17.0.0",
+    "@types/socket.io-client": "^1.4.35",
     "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",

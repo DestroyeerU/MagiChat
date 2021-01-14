@@ -5,6 +5,8 @@ import { User } from '@mytypes/user';
 
 import { saveApiDefaultAuthorization } from '@services/api';
 
+import { setSocketToken } from '@hooks/socket';
+
 import { postRequest } from '@utils/request';
 
 import { authStorageHelper } from './utils';
@@ -54,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     if (status === 200) {
       authStorageHelper.saveUserAndToken(data.user, data.token);
       saveApiDefaultAuthorization(data.token);
+      setSocketToken(data.token);
 
       setUser(data.user);
       setSigned(true);
@@ -76,6 +79,7 @@ export const AuthProvider = ({ children }) => {
 
     if (userStoraged && token) {
       saveApiDefaultAuthorization(token);
+      setSocketToken(token);
 
       setUser(userStoraged);
       setSigned(true);

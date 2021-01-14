@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 
 import { ModalHandles } from '@components/Modal';
+
+import { useSocket } from '@hooks/socket';
 
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
@@ -35,6 +37,8 @@ import {
 const Home: React.FC = () => {
   const router = useRouter();
   const authContext = useAuth();
+
+  const socket = useSocket();
 
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
