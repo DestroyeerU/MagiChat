@@ -1,26 +1,26 @@
 import { useMemo } from 'react';
 
 import socketClient from 'socket.io-client';
+import { authStorageHelper } from 'src/contexts/auth/utils';
 
 const endPoint = 'http://localhost:3333';
 
-let token = '';
-
-export function setSocketToken(tokenToSet: string) {
-  token = tokenToSet;
-}
-
 export function useSocket() {
-  const query = `token=Bearer ${token}`;
-
   const socket = useMemo(() => {
+    if (!process.browser) {
+      return undefined;
+    }
+
+    const { token } = authStorageHelper.loadUserAndToken();
+    const query = `token=Bearer ${token}`;
+
     const clientSocket = socketClient(endPoint, {
-      transports: ['wensocket'],
+      transports: ['websocket'],
       query,
     });
 
     return clientSocket;
-  }, [query]);
+  }, []);
 
   return socket;
 }

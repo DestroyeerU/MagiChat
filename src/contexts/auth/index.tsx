@@ -2,10 +2,9 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 
 import { DefaultRequestError } from '@mytypes/request';
 import { User } from '@mytypes/user';
+import { useRouter } from 'next/dist/client/router';
 
 import { saveApiDefaultAuthorization } from '@services/api';
-
-import { setSocketToken } from '@hooks/socket';
 
 import { postRequest } from '@utils/request';
 
@@ -39,6 +38,8 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }) => {
+  const router = useRouter();
+
   const [user, setUser] = useState({} as User);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
   const [signed, setSigned] = useState(false);
@@ -56,7 +57,6 @@ export const AuthProvider = ({ children }) => {
     if (status === 200) {
       authStorageHelper.saveUserAndToken(data.user, data.token);
       saveApiDefaultAuthorization(data.token);
-      setSocketToken(data.token);
 
       setUser(data.user);
       setSigned(true);
@@ -79,11 +79,13 @@ export const AuthProvider = ({ children }) => {
 
     if (userStoraged && token) {
       saveApiDefaultAuthorization(token);
-      setSocketToken(token);
 
       setUser(userStoraged);
       setSigned(true);
+      router.push('/home', undefined, { shallow: false });
     }
+    // next bug, always re-rendering the page
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contextValue = useMemo<AuthContextData>(() => {
