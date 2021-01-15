@@ -12,7 +12,8 @@ export function useSocket() {
     }
 
     const { token } = authStorageHelper.loadUserAndToken();
-    const query = `token=Bearer ${token}`;
+    const query = `token=Bearer ${token}a`;
+    // const query = `token=Bearer ${token}`;
 
     const clientSocket = socketClient(endPoint, {
       transports: ['websocket'],

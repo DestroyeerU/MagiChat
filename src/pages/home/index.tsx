@@ -1,5 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
+import { DefaultRequestError } from '@mytypes/request';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 
@@ -51,6 +52,16 @@ const Home: React.FC = () => {
     authContext.signOut();
     router.push('/login');
   }, [authContext, router]);
+
+  useEffect(() => {
+    socket.on('error-validation', (data: DefaultRequestError) => {
+      alert(data.message);
+    });
+
+    // socket.on('test', (a) => {
+    //   console.log(a);
+    // });
+  }, [socket]);
 
   return (
     <>
