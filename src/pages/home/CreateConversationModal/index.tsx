@@ -50,14 +50,18 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
     const errorMessage = await conversationContext.createConversation({ toUserEmail: email });
 
     if (errorMessage) {
-      alert(errorMessage);
+      setError(errorMessage);
       return;
     }
 
+    setError('');
+    setEmail('');
     modalRef.current.handleClose();
   }, [conversationContext, email, modalRef]);
 
   const handleCancelClick = useCallback(() => {
+    setError('');
+    setEmail('');
     modalRef.current.handleClose();
   }, [modalRef]);
 
