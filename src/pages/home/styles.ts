@@ -7,6 +7,8 @@ export const Container = styled.div`
 
   width: 100%;
   height: 100vh;
+
+  background-color: ${(props) => props.theme.colors.home.chat.background};
 `;
 
 export const LeftSide = styled.div`
@@ -17,6 +19,7 @@ export const LeftSide = styled.div`
   max-width: 350px;
 
   background-color: ${(props) => props.theme.colors.home.background};
+  border-right: 1px solid ${(props) => props.theme.colors.stroke};
 `;
 
 export const Header = styled.div`
@@ -147,14 +150,18 @@ export const LastMessage = styled.p`
 
 // Right Side
 
-export const RightSide = styled.div`
+interface RightSideProps {
+  visible?: boolean;
+}
+
+export const RightSide = styled.div<RightSideProps>`
   display: flex;
   flex-direction: column;
 
   width: 100%;
   padding-bottom: 27px;
 
-  background-color: ${(props) => props.theme.colors.home.chat.background};
+  display: ${(props) => !props?.visible && 'none'};
 `;
 
 export const MessageInput = styled.input`
@@ -187,11 +194,9 @@ export const MessagesContainer = styled.ul`
   flex-direction: column-reverse;
 
   height: 100%;
-
   padding-bottom: 30px;
 
   overflow-y: auto;
-
   ${ScrollCSS};
 `;
 
@@ -239,7 +244,7 @@ export const MessageText = styled.textarea.attrs({
 
   resize: none;
 
-  &:focus {
+  /* &:focus {
     border: 1px solid ${(props) => props.theme.colors.white};
-  }
+  } */
 `;
