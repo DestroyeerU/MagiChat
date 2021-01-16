@@ -81,8 +81,9 @@ export const Chats = styled.ul`
 
   width: 100%;
 
-  margin-top: 15px;
-  padding-left: 13px;
+  margin-top: 3px;
+  padding-left: 10px;
+  padding-bottom: 15px;
 
   overflow-y: auto;
   ${ScrollCSS};
@@ -92,21 +93,22 @@ export const Chat = styled.li`
   display: flex;
   flex-direction: column;
 
-  width: 100%;
+  width: calc(100% - 10px);
+  padding-top: 5px;
 
-  margin-top: 12px;
+  cursor: pointer;
+
+  &:hover > div {
+    background-color: ${(props) => props.theme.colors.home.backgroundLighten};
+  }
 
   hr {
-    margin: 0;
+    margin-top: 5px;
   }
 
   svg,
   img {
     width: 50px;
-  }
-
-  &:first-child {
-    margin-top: 0;
   }
 
   &:last-child {
@@ -120,7 +122,8 @@ export const Row = styled.div`
   display: flex;
   align-items: center;
 
-  padding-bottom: 10px;
+  padding: 6px 0 6px 6px;
+  border-radius: 4px;
 `;
 
 export const UserInfo = styled.div`
@@ -128,7 +131,6 @@ export const UserInfo = styled.div`
   flex-direction: column;
 
   width: 100%;
-
   margin-left: 15px;
 `;
 
@@ -150,7 +152,6 @@ export const RightSide = styled.div`
   flex-direction: column;
 
   width: 100%;
-
   padding-bottom: 27px;
 
   background-color: ${(props) => props.theme.colors.home.chat.background};

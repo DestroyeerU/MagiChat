@@ -12,7 +12,7 @@ export const Container = styled.div`
 export const Header = styled.header`
   padding: 20px;
 
-  border-bottom: 1px solid ${(props) => props.theme.colors.darkWhiten};
+  border-bottom: 1px solid ${(props) => props.theme.colors.darkLighten};
 `;
 
 export const HeaderTitle = styled.h4`

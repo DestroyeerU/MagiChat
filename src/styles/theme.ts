@@ -14,12 +14,13 @@ const theme = {
     stroke: '#000',
     shadow: 'rgba(0, 0, 0, 0.5)',
 
-    darkWhiten: '#313537',
+    darkLighten: '#313537',
 
     home: {
       header: '#1E2123',
       searchInput: '#292E2F',
       background: '#212527',
+      backgroundLighten: '#2F3437',
 
       chat: {
         messageInput: '#31373A',

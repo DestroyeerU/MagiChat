@@ -92,7 +92,7 @@ const Home: React.FC = () => {
                   <UserIcon />
                   <UserInfo>
                     <Username>{conversation.user.name}</Username>
-                    {conversation.lastMessage && <LastMessage>{conversation.lastMessage}</LastMessage>}
+                    {conversation.lastMessage && <LastMessage>{conversation.lastMessage?.text}</LastMessage>}
                   </UserInfo>
                 </Row>
 
