@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-alert */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { ConversationIndex } from '@mytypes/conversation';
 import { DefaultRequestError } from '@mytypes/request';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
@@ -52,6 +54,8 @@ const Home: React.FC = () => {
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
 
+  const [conversations, setConversations] = useState([] as ConversationIndex[]);
+
   const handleCreateChat = useCallback(() => {
     modalRef.current.handleOpen();
   }, []);
@@ -61,8 +65,8 @@ const Home: React.FC = () => {
     router.push('/login');
   }, [authContext, router]);
 
-  const handleLoadConversations = useCallback((data) => {
-    console.log('data:', data);
+  const handleLoadConversations = useCallback((data: ConversationIndex[]) => {
+    setConversations(data);
   }, []);
 
   useEffect(() => {
@@ -97,17 +101,19 @@ const Home: React.FC = () => {
           <Divider />
 
           <Chats>
-            <Chat>
-              <Row>
-                <UserIcon />
-                <UserInfo>
-                  <Username>Destroyeer</Username>
-                  <LastMessage>Ae se liga passar a visão</LastMessage>
-                </UserInfo>
-              </Row>
+            {conversations.map((conversation) => (
+              <Chat key={conversation._id}>
+                <Row>
+                  <UserIcon />
+                  <UserInfo>
+                    <Username>{conversation.user.name}</Username>
+                    {conversation.lastMessage && <LastMessage>{conversation.lastMessage}</LastMessage>}
+                  </UserInfo>
+                </Row>
 
-              <Divider />
-            </Chat>
+                <Divider />
+              </Chat>
+            ))}
           </Chats>
         </LeftSide>
 
