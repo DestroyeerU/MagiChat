@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import { DefaultRequestError } from '@mytypes/request';
@@ -34,12 +35,19 @@ import {
 } from './styles';
 
 // const Test: React.FC = () => <CreateChatIcon />;
+function handleOrAlertError(func: any, ...arr: any[]) {
+  try {
+    func(...arr);
+  } catch (e) {
+    console.log(e.message);
+  }
+}
 
 const Home: React.FC = () => {
   const router = useRouter();
   const authContext = useAuth();
 
-  const socket = useSocket();
+  const socketConnection = useSocket();
 
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
@@ -54,14 +62,14 @@ const Home: React.FC = () => {
   }, [authContext, router]);
 
   useEffect(() => {
-    socket.on('error-validation', (data: DefaultRequestError) => {
-      alert(data.message);
-    });
+    async function startSocketConnection() {
+      const connected = await socketConnection.startConnection();
+      console.log('connected', connected);
+    }
 
-    // socket.on('test', (a) => {
-    //   console.log(a);
-    // });
-  }, [socket]);
+    startSocketConnection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
