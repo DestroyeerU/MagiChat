@@ -9,10 +9,11 @@ const theme = {
     white: '#F8F8F8',
     primary: '#8357E5',
     green: '#5AD4A4',
-
     red: '#e63946',
+
     stroke: '#000',
     shadow: 'rgba(0, 0, 0, 0.5)',
+    divider: '#333',
 
     darkLighten: '#313537',
 

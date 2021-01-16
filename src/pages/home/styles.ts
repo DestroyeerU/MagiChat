@@ -19,17 +19,18 @@ export const LeftSide = styled.div`
   max-width: 350px;
 
   background-color: ${(props) => props.theme.colors.home.background};
-  border-right: 1px solid ${(props) => props.theme.colors.stroke};
 `;
 
-export const Header = styled.div`
+export const LeftSideHeader = styled.header`
   display: flex;
   align-items: center;
 
-  padding: 12px 14px;
+  min-height: 63px;
+  max-height: 63px;
+
+  padding: 0 14px;
 
   background-color: ${(props) => props.theme.colors.home.header};
-
   border-bottom: 2px solid ${(props) => props.theme.colors.stroke};
 
   svg {
@@ -40,6 +41,15 @@ export const Header = styled.div`
       margin-right: 16px;
     }
   }
+`;
+
+export const LeftSideContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 100%;
+  border-right: 1px solid ${(props) => props.theme.colors.stroke};
 `;
 
 export const SearchInput = styled.input`
@@ -73,9 +83,7 @@ export const Divider = styled.hr`
   max-width: 320px;
 
   height: 1px;
-  margin: 0 auto;
-
-  background-color: #333;
+  background-color: ${(props) => props.theme.colors.divider};
 `;
 
 export const Chats = styled.ul`
@@ -99,12 +107,6 @@ export const Chat = styled.li`
   width: calc(100% - 10px);
   padding-top: 5px;
 
-  cursor: pointer;
-
-  &:hover > div {
-    background-color: ${(props) => props.theme.colors.home.backgroundLighten};
-  }
-
   hr {
     margin-top: 5px;
   }
@@ -127,6 +129,12 @@ export const Row = styled.div`
 
   padding: 6px 0 6px 6px;
   border-radius: 4px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.home.backgroundLighten};
+  }
 `;
 
 export const UserInfo = styled.div`
@@ -162,6 +170,31 @@ export const RightSide = styled.div<RightSideProps>`
   padding-bottom: 27px;
 
   display: ${(props) => !props?.visible && 'none'};
+`;
+
+export const RightSideHeader = styled.header`
+  display: flex;
+  align-items: center;
+
+  min-height: 63px;
+  max-height: 63px;
+
+  background-color: ${(props) => props.theme.colors.home.header};
+  border-bottom: 2px solid ${(props) => props.theme.colors.stroke};
+`;
+
+export const RightSideHeaderUsername = styled.p`
+  margin-left: 13px;
+
+  font-size: 1.6rem;
+  font-weight: 500;
+`;
+
+export const RightSideHeaderDivider = styled.hr`
+  width: 1px;
+  height: 36px;
+
+  background-color: ${(props) => props.theme.colors.divider};
 `;
 
 export const MessageInput = styled.input`

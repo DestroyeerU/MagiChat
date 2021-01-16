@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-alert */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Conversation } from '@mytypes/conversation';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 import { useConversation } from 'src/contexts/conversation';
@@ -19,9 +20,10 @@ import {
   Chats,
   Container,
   Divider,
-  Header,
   LastMessage,
   LeftSide,
+  LeftSideContent,
+  LeftSideHeader,
   Message,
   MessageInfo,
   MessageInput,
@@ -29,6 +31,9 @@ import {
   MessageText,
   MessageUsername,
   RightSide,
+  RightSideHeader,
+  RightSideHeaderDivider,
+  RightSideHeaderUsername,
   Row,
   SearchInput,
   UserInfo,
@@ -37,12 +42,15 @@ import {
 
 const Home: React.FC = () => {
   const router = useRouter();
+  const socketConnection = useSocket();
+
   const authContext = useAuth();
   const { conversations, handleLoadConversations } = useConversation();
 
-  const socketConnection = useSocket();
-
   const modalRef = useRef<ModalHandles>(null);
+
+  const [selectedConversation, setSelectedConversation] = useState<Conversation>();
+
   const text = 'this is a text\nand this is other text';
 
   const handleCreateChat = useCallback(() => {
@@ -53,6 +61,10 @@ const Home: React.FC = () => {
     authContext.signOut();
     router.push('/login');
   }, [authContext, router]);
+
+  const handleConversationClick = useCallback((conversation: Conversation) => {
+    setSelectedConversation(conversation);
+  }, []);
 
   useEffect(() => {
     async function startSocketConnection() {
@@ -76,33 +88,40 @@ const Home: React.FC = () => {
 
       <Container onClick={() => modalRef.current.handleClose()}>
         <LeftSide>
-          <Header>
+          <LeftSideHeader>
             <UserIcon />
             <CreateChatIcon onClick={handleCreateChat} />
             <LogOutIcon onClick={handleLogOutClick} />
-          </Header>
+          </LeftSideHeader>
 
-          <SearchInput placeholder="Pesquise por uma conversa" />
-          <Divider />
+          <LeftSideContent>
+            <SearchInput placeholder="Pesquise por uma conversa" />
+            <Divider />
 
-          <Chats>
-            {conversations.map((conversation) => (
-              <Chat key={conversation._id}>
-                <Row>
-                  <UserIcon />
-                  <UserInfo>
-                    <Username>{conversation.user.name}</Username>
-                    {conversation.lastMessage && <LastMessage>{conversation.lastMessage?.text}</LastMessage>}
-                  </UserInfo>
-                </Row>
+            <Chats>
+              {conversations.map((conversation) => (
+                <Chat key={conversation._id}>
+                  <Row onClick={() => handleConversationClick(conversation)}>
+                    <UserIcon />
+                    <UserInfo>
+                      <Username>{conversation.user.name}</Username>
+                      {conversation.lastMessage && <LastMessage>{conversation.lastMessage?.text}</LastMessage>}
+                    </UserInfo>
+                  </Row>
 
-                <Divider />
-              </Chat>
-            ))}
-          </Chats>
+                  <Divider />
+                </Chat>
+              ))}
+            </Chats>
+          </LeftSideContent>
         </LeftSide>
 
-        <RightSide>
+        <RightSide visible={selectedConversation !== undefined}>
+          <RightSideHeader>
+            <RightSideHeaderDivider />
+            <RightSideHeaderUsername>Destroyeer</RightSideHeaderUsername>
+          </RightSideHeader>
+
           <MessagesContainer>
             <Message>
               <UserIcon />
