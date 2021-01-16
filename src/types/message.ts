@@ -10,6 +10,7 @@ export interface Message {
   _id: string;
   text: string;
   date: string;
+  senderUserId: number;
 }
 
 export interface Chat {

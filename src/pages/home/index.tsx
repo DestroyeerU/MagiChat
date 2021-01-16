@@ -17,6 +17,7 @@ import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
 import CreateConversationModal from './CreateConversationModal';
+import MessagesList from './MessagesList';
 import {
   Chat,
   Chats,
@@ -26,12 +27,12 @@ import {
   LeftSide,
   LeftSideContent,
   LeftSideHeader,
-  Message,
-  MessageInfo,
+  // Message,
+  // MessageInfo,
   MessageInput,
-  MessagesContainer,
-  MessageText,
-  MessageUsername,
+  // MessagesContainer,
+  // MessageText,
+  // MessageUsername,
   RightSide,
   RightSideHeader,
   RightSideHeaderDivider,
@@ -54,8 +55,6 @@ const Home: React.FC = () => {
 
   const [selectedConversation, setSelectedConversation] = useState<Conversation>();
   const [selectedChat, setSelectedChat] = useState<ChatInterface>();
-
-  const text = 'this is a text\nand this is other text';
 
   const handleCreateChatIconClick = useCallback(() => {
     modalRef.current.handleOpen();
@@ -89,7 +88,7 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation?._id]);
 
   useEffect(() => {
-    // error-chaneels
+    // error-channels
 
     async function startSocketConnection() {
       socketConnection.socket.on('load-conversations', handleLoadConversations);
@@ -147,17 +146,7 @@ const Home: React.FC = () => {
             <RightSideHeaderUsername>{selectedConversation?.user?.name}</RightSideHeaderUsername>
           </RightSideHeader>
 
-          <MessagesContainer visible={selectedChat !== undefined}>
-            {selectedChat?.messages.map((message) => (
-              <Message key={message._id}>
-                <UserIcon />
-                <MessageInfo>
-                  <MessageUsername>Destroyeer</MessageUsername>
-                  <MessageText value={text} />
-                </MessageInfo>
-              </Message>
-            ))}
-          </MessagesContainer>
+          <MessagesList chat={selectedChat} />
 
           <MessageInput placeholder="Escreva sua mensagem" />
         </RightSide>
