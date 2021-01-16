@@ -222,7 +222,7 @@ export const MessageInput = styled.input`
   }
 `;
 
-export const MessagesContainer = styled.ul`
+export const MessagesContainer = styled.ul<RightSideProps>`
   display: flex;
   flex-direction: column-reverse;
 
@@ -231,6 +231,8 @@ export const MessagesContainer = styled.ul`
 
   overflow-y: auto;
   ${ScrollCSS};
+
+  visibility: ${(props) => !props?.visible && 'hidden'};
 `;
 
 export const Message = styled.li`

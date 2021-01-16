@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Conversation } from '@mytypes/conversation';
+import { Chat as ChatInterface } from '@mytypes/message';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 import { useChat } from 'src/contexts/chat';
@@ -47,15 +48,16 @@ const Home: React.FC = () => {
 
   const authContext = useAuth();
   const { conversations, handleLoadConversations } = useConversation();
-  const { handleLoadChat } = useChat();
+  const { chats, handleLoadChat } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
   const [selectedConversation, setSelectedConversation] = useState<Conversation>();
+  const [selectedChat, setSelectedChat] = useState<ChatInterface>();
 
   const text = 'this is a text\nand this is other text';
 
-  const handleCreateChat = useCallback(() => {
+  const handleCreateChatIconClick = useCallback(() => {
     modalRef.current.handleOpen();
   }, []);
 
@@ -64,11 +66,31 @@ const Home: React.FC = () => {
     router.push('/login');
   }, [authContext, router]);
 
-  const handleConversationClick = useCallback((conversation: Conversation) => {
-    setSelectedConversation(conversation);
-  }, []);
+  const handleConversationClick = useCallback(
+    (conversation: Conversation) => {
+      setSelectedConversation(conversation);
+      const chatExists = chats.find((chat) => chat.conversation._id === conversation._id);
+
+      if (chatExists) {
+        return;
+      }
+
+      socketConnection.socket.emit('load-chat-request', {
+        conversationId: conversation._id,
+      });
+    },
+    [chats, socketConnection.socket]
+  );
 
   useEffect(() => {
+    const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
+
+    setSelectedChat(chat);
+  }, [chats, selectedConversation?._id]);
+
+  useEffect(() => {
+    // error-chaneels
+
     async function startSocketConnection() {
       socketConnection.socket.on('load-conversations', handleLoadConversations);
       socketConnection.socket.on('load-chat', handleLoadChat);
@@ -93,7 +115,7 @@ const Home: React.FC = () => {
         <LeftSide>
           <LeftSideHeader>
             <UserIcon />
-            <CreateChatIcon onClick={handleCreateChat} />
+            <CreateChatIcon onClick={handleCreateChatIconClick} />
             <LogOutIcon onClick={handleLogOutClick} />
           </LeftSideHeader>
 
@@ -122,17 +144,19 @@ const Home: React.FC = () => {
         <RightSide visible={selectedConversation !== undefined}>
           <RightSideHeader>
             <RightSideHeaderDivider />
-            <RightSideHeaderUsername>{selectedConversation.user.name}</RightSideHeaderUsername>
+            <RightSideHeaderUsername>{selectedConversation?.user?.name}</RightSideHeaderUsername>
           </RightSideHeader>
 
-          <MessagesContainer>
-            <Message>
-              <UserIcon />
-              <MessageInfo>
-                <MessageUsername>Destroyeer</MessageUsername>
-                <MessageText value={text} />
-              </MessageInfo>
-            </Message>
+          <MessagesContainer visible={selectedChat !== undefined}>
+            {selectedChat?.messages.map((message) => (
+              <Message key={message._id}>
+                <UserIcon />
+                <MessageInfo>
+                  <MessageUsername>Destroyeer</MessageUsername>
+                  <MessageText value={text} />
+                </MessageInfo>
+              </Message>
+            ))}
           </MessagesContainer>
 
           <MessageInput placeholder="Escreva sua mensagem" />
