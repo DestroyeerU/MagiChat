@@ -1,13 +1,8 @@
 import { User } from './user';
 
-export interface ConversationIndex {
+export interface Conversation {
   _id: string;
   user: User;
 
   lastMessage?: string;
-}
-
-export interface ConversationCreate {
-  _id: string;
-  toUserId?: number;
 }

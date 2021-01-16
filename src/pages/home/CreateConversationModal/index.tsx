@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 import React, { forwardRef, useCallback, useState } from 'react';
 
-import { ConversationCreate } from '@mytypes/conversation';
+import { useConversation } from 'src/contexts/conversation';
 import * as Yup from 'yup';
 
 import Modal, { ModalHandles } from '@components/Modal';
@@ -9,7 +9,6 @@ import Modal, { ModalHandles } from '@components/Modal';
 import { useSafeRef } from '@hooks/native';
 
 import { validateSchema } from '@utils/form';
-import { postRequest } from '@utils/request';
 
 import {
   Body,
@@ -30,6 +29,9 @@ const schema = Yup.object().shape({
 
 const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_props, ref) => {
   const modalRef = useSafeRef(ref);
+
+  const conversationContext = useConversation();
+
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -45,18 +47,15 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
       return;
     }
 
-    const { error: requestError } = await postRequest<ConversationCreate>('/conversations', {
-      toUserEmail: email,
-    });
+    const errorMessage = await conversationContext.createConversation({ toUserEmail: email });
 
-    if (requestError) {
-      alert(requestError.message);
+    if (errorMessage) {
+      alert(errorMessage);
       return;
     }
 
-    alert('Conversa criada');
     modalRef.current.handleClose();
-  }, [email, modalRef]);
+  }, [conversationContext, email, modalRef]);
 
   const handleCancelClick = useCallback(() => {
     modalRef.current.handleClose();

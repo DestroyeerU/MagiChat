@@ -1,11 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-alert */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
-import { ConversationIndex } from '@mytypes/conversation';
-import { DefaultRequestError } from '@mytypes/request';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
+import { useConversation } from 'src/contexts/conversation';
 
 import { ModalHandles } from '@components/Modal';
 
@@ -36,25 +35,15 @@ import {
   Username,
 } from './styles';
 
-// const Test: React.FC = () => <CreateChatIcon />;
-function handleOrAlertError(func: any, ...arr: any[]) {
-  try {
-    func(...arr);
-  } catch (e) {
-    console.log(e.message);
-  }
-}
-
 const Home: React.FC = () => {
   const router = useRouter();
   const authContext = useAuth();
+  const { conversations, handleLoadConversations } = useConversation();
 
   const socketConnection = useSocket();
 
   const modalRef = useRef<ModalHandles>(null);
   const text = 'this is a text\nand this is other text';
-
-  const [conversations, setConversations] = useState([] as ConversationIndex[]);
 
   const handleCreateChat = useCallback(() => {
     modalRef.current.handleOpen();
@@ -64,10 +53,6 @@ const Home: React.FC = () => {
     authContext.signOut();
     router.push('/login');
   }, [authContext, router]);
-
-  const handleLoadConversations = useCallback((data: ConversationIndex[]) => {
-    setConversations(data);
-  }, []);
 
   useEffect(() => {
     async function startSocketConnection() {

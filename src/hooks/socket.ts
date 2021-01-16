@@ -38,8 +38,9 @@ export function useSocket() {
 
     if (!connectionStarted.current) {
       connectionStarted.current = true;
-      return true;
     }
+
+    return true;
   }, [socket?.connected]);
 
   // const closeConnection = useCallback(() => {
