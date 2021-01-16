@@ -27,7 +27,7 @@ export function useSocket() {
     return clientSocket;
   }, []);
 
-  const startConnection = useCallback(async () => {
+  const checkConnection = useCallback(async () => {
     if (!socket?.connected) {
       await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -42,20 +42,24 @@ export function useSocket() {
     }
   }, [socket?.connected]);
 
-  const closeConnection = useCallback(() => {
-    //
-  }, []);
+  // const closeConnection = useCallback(() => {
+  //   //
+  // }, []);
 
-  const sendMessage = useCallback(
-    (channel: string, data: any) => {
-      if (!socket?.connected) {
-        return 'No connetction';
-      }
+  // const sendMessage = useCallback(
+  //   (channel: string, data: any) => {
+  //     if (!socket?.connected) {
+  //       return 'No connetction';
+  //     }
 
-      socket.emit(channel, data);
-    },
-    [socket]
-  );
+  //     socket.emit(channel, data);
+  //   },
+  //   [socket]
+  // );
 
-  return { startConnection, connectionStarted: connectionStarted.current };
+  return {
+    socket,
+    connectionStarted: connectionStarted.current,
+    checkConnection,
+  };
 }

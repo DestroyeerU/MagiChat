@@ -61,10 +61,20 @@ const Home: React.FC = () => {
     router.push('/login');
   }, [authContext, router]);
 
+  const handleLoadConversations = useCallback((data) => {
+    console.log('data:', data);
+  }, []);
+
   useEffect(() => {
     async function startSocketConnection() {
-      const connected = await socketConnection.startConnection();
-      console.log('connected', connected);
+      socketConnection.socket.on('load-conversations', handleLoadConversations);
+
+      // const connected = await socketConnection.checkConnection();
+      // console.log('connected', connected);
+
+      // if (!connected) {
+      //   // [to-do] if is not connected, try to reconnect
+      // }
     }
 
     startSocketConnection();
