@@ -17,6 +17,7 @@ import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
 import CreateConversationModal from './CreateConversationModal';
+import MessageInput from './MessageInput';
 import MessagesList from './MessagesList';
 import {
   Chat,
@@ -29,7 +30,7 @@ import {
   LeftSideHeader,
   // Message,
   // MessageInfo,
-  MessageInput,
+  // MessageInput,
   // MessagesContainer,
   // MessageText,
   // MessageUsername,
@@ -103,6 +104,10 @@ const Home: React.FC = () => {
     }
 
     startSocketConnection();
+
+    // [to-do] remove
+    setSelectedConversation(conversations[0]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,7 +153,12 @@ const Home: React.FC = () => {
 
           <MessagesList chat={selectedChat} />
 
-          <MessageInput placeholder="Escreva sua mensagem" />
+          <MessageInput
+            placeholder="Escreva sua mensagem"
+            handleSubmit={(value) => {
+              console.log(value);
+            }}
+          />
         </RightSide>
       </Container>
     </>
