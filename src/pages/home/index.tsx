@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Conversation } from '@mytypes/conversation';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
+import { useChat } from 'src/contexts/chat';
 import { useConversation } from 'src/contexts/conversation';
 
 import { ModalHandles } from '@components/Modal';
@@ -46,6 +47,7 @@ const Home: React.FC = () => {
 
   const authContext = useAuth();
   const { conversations, handleLoadConversations } = useConversation();
+  const { handleLoadChat } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
@@ -69,6 +71,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     async function startSocketConnection() {
       socketConnection.socket.on('load-conversations', handleLoadConversations);
+      socketConnection.socket.on('load-chat', handleLoadChat);
 
       // const connected = await socketConnection.checkConnection();
       // console.log('connected', connected);
@@ -119,7 +122,7 @@ const Home: React.FC = () => {
         <RightSide visible={selectedConversation !== undefined}>
           <RightSideHeader>
             <RightSideHeaderDivider />
-            <RightSideHeaderUsername>Destroyeer</RightSideHeaderUsername>
+            <RightSideHeaderUsername>{selectedConversation.user.name}</RightSideHeaderUsername>
           </RightSideHeader>
 
           <MessagesContainer>
