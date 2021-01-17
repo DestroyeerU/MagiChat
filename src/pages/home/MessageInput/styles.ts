@@ -16,16 +16,18 @@ const BreakLineCSS = css`
   hyphens: auto;
 `;
 
-export const StyledMessageInput = styled.span`
-  width: auto;
-  height: auto;
-  max-height: 300px;
-
-  overflow-y: auto;
-
+export const Container = styled.div`
+  display: flex;
   margin: 0 20px;
-  padding: 14px 20px;
 
+  width: auto;
+  max-height: 300px;
+`;
+
+export const StyledMessageInput = styled.span`
+  width: 100%;
+
+  padding: 14px 20px;
   border-radius: 8px;
 
   font-size: 1.6rem;
@@ -36,6 +38,8 @@ export const StyledMessageInput = styled.span`
 
   color: ${(props) => props.theme.colors.text};
   background-color: ${(props) => props.theme.colors.home.chat.messageInput};
+
+  overflow-y: auto;
 
   &:empty::before {
     content: attr(data-placeholder);

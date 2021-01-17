@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 
-import { StyledMessageInput } from './styles';
+import { Container, StyledMessageInput } from './styles';
 
 type KeyDownEvent = React.KeyboardEvent<HTMLInputElement>;
 
@@ -78,14 +78,16 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
   );
 
   return (
-    <StyledMessageInput
-      ref={inputRef}
-      onKeyDown={handleKeyDown}
-      contentEditable
-      suppressContentEditableWarning
-      data-placeholder={placeholder}
-      {...rest}
-    />
+    <Container>
+      <StyledMessageInput
+        ref={inputRef}
+        onKeyDown={handleKeyDown}
+        contentEditable
+        suppressContentEditableWarning
+        data-placeholder={placeholder}
+        {...rest}
+      />
+    </Container>
   );
 };
 
