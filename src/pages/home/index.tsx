@@ -28,12 +28,6 @@ import {
   LeftSide,
   LeftSideContent,
   LeftSideHeader,
-  // Message,
-  // MessageInfo,
-  // MessageInput,
-  // MessagesContainer,
-  // MessageText,
-  // MessageUsername,
   RightSide,
   RightSideHeader,
   RightSideHeaderDivider,
@@ -50,7 +44,7 @@ const Home: React.FC = () => {
 
   const authContext = useAuth();
   const { conversations, handleLoadConversations } = useConversation();
-  const { chats, handleLoadChat } = useChat();
+  const { chats, handleLoadChat, handleLoadChatMessage } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
@@ -82,31 +76,49 @@ const Home: React.FC = () => {
     [chats, socketConnection.socket]
   );
 
+  const handleMessageInputSubmit = useCallback(
+    (text: string) => {
+      if (!selectedConversation) {
+        console.error('No conversation selected');
+
+        return;
+      }
+
+      socketConnection.socket.emit('create-chat-message', {
+        text,
+        userId: authContext.user.id,
+        conversationId: selectedConversation._id,
+      });
+    },
+    [authContext.user.id, selectedConversation, socketConnection.socket]
+  );
+
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
 
     setSelectedChat(chat);
-  }, [chats, selectedConversation?._id]);
+  }, [chats, selectedConversation]);
 
   useEffect(() => {
     // error-channels
+    // async function startSocketConnection() {
+    // const connected = await socketConnection.checkConnection();
+    // console.log('connected', connected);
+    // if (!connected) {
+    //   // [to-do] if is not connected, try to reconnect
+    // }
+    // }
+    // startSocketConnection();
 
-    async function startSocketConnection() {
-      socketConnection.socket.on('load-conversations', handleLoadConversations);
-      socketConnection.socket.on('load-chat', handleLoadChat);
+    socketConnection.socket.on('load-conversations', handleLoadConversations);
+    socketConnection.socket.on('load-chat', handleLoadChat);
+    socketConnection.socket.on('load-chat-message', handleLoadChatMessage);
 
-      // const connected = await socketConnection.checkConnection();
-      // console.log('connected', connected);
-
-      // if (!connected) {
-      //   // [to-do] if is not connected, try to reconnect
-      // }
-    }
-
-    startSocketConnection();
-
-    // [to-do] remove
-    setSelectedConversation(conversations[0]);
+    return () => {
+      socketConnection.socket.off('load-conversations', handleLoadConversations);
+      socketConnection.socket.off('load-chat', handleLoadChat);
+      socketConnection.socket.off('load-chat-message', handleLoadChatMessage);
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -153,12 +165,7 @@ const Home: React.FC = () => {
 
           <MessagesList chat={selectedChat} />
 
-          <MessageInput
-            placeholder="Escreva sua mensagem"
-            handleSubmit={(value) => {
-              console.log(value);
-            }}
-          />
+          <MessageInput placeholder="Escreva sua mensagem" handleSubmit={handleMessageInputSubmit} />
         </RightSide>
       </Container>
     </>

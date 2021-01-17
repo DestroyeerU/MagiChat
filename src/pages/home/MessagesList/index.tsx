@@ -29,6 +29,9 @@ const MessagesList: React.FC<Props> = ({ chat }) => {
     [chat?.conversation]
   );
 
+  console.log('aki');
+  console.log(chat);
+
   return (
     <MessagesContainer visible={chat !== undefined}>
       {chat?.messages.map((message) => (
@@ -37,7 +40,7 @@ const MessagesList: React.FC<Props> = ({ chat }) => {
           <MessageInfo>
             <MessageUsername>{getSenderUserMessage(message).name}</MessageUsername>
 
-            <MessageText>{'message.text\naaaaaa'}</MessageText>
+            <MessageText>{message.text}</MessageText>
           </MessageInfo>
         </MessageContainer>
       ))}
