@@ -32,6 +32,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
 
       if (handleSubmit) {
         handleSubmit(inputRef.current.textContent);
+        inputRef.current.textContent = '';
       }
     }
 
