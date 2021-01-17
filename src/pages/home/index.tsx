@@ -100,7 +100,10 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
-    // error-channels
+    // [to-do] when someone send a message to you, must appear on conversations
+    // [to-do] when someone send a message to you, must appear in the same time
+    // [to-do] error-channels
+
     // async function startSocketConnection() {
     // const connected = await socketConnection.checkConnection();
     // console.log('connected', connected);
