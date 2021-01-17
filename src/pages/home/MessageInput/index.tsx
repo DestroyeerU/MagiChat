@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-
-import theme from '@styles/theme';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import { StyledMessageInput } from './styles';
+
+type KeyDownEvent = React.KeyboardEvent<HTMLInputElement>;
 
 interface LastKeyDownState {
   key: string;
@@ -23,11 +23,13 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
   const lastKeyDown = useRef({} as LastKeyDownState);
 
   const actions = useMemo(() => {
-    function Enter() {
+    function Enter(_event: KeyDownEvent) {
       //
     }
 
-    function ShiftEnter() {
+    function ShiftEnter(event: KeyDownEvent) {
+      event.preventDefault();
+
       if (handleSubmit) {
         handleSubmit(inputRef.current.textContent);
       }
@@ -40,7 +42,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
   }, [handleSubmit]);
 
   const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
+    (event: KeyDownEvent) => {
       // [to-do] key press
 
       const keyDownTime = new Date().getTime();
@@ -57,7 +59,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
 
       function callKeyFunctionIfExists(key: string) {
         if (key in actions) {
-          actions[key]();
+          actions[key](event);
         }
       }
 
@@ -69,7 +71,6 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
       }
 
       const key = getKeyCompleteName();
-
       callKeyFunctionIfExists(key);
       updateLastKeyDown(key);
     },
