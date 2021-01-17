@@ -49,19 +49,16 @@ export const ChatProvider: React.FC = ({ children }) => {
         return oldChats;
       }
 
-      const chatConversationUpdated = {
-        ...chatConversation,
-        messages: [...chatConversation.messages, message],
-      };
-
       const chatsWithoutTargetConversation = oldChats.filter(
         (chat) => chat.conversation._id !== message.conversationId
       );
-      const chatsUpdated = [...chatsWithoutTargetConversation, chatConversationUpdated];
 
-      console.log('chatsUpdated', chatsUpdated);
+      const chatConversationUpdated = {
+        ...chatConversation,
+        messages: [message, ...chatConversation.messages],
+      };
 
-      return chatsUpdated;
+      return [...chatsWithoutTargetConversation, chatConversationUpdated];
     }
 
     setChats(getUpdatedChats);

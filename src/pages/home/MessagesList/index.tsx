@@ -29,9 +29,6 @@ const MessagesList: React.FC<Props> = ({ chat }) => {
     [chat?.conversation]
   );
 
-  console.log('aki');
-  console.log(chat);
-
   return (
     <MessagesContainer visible={chat !== undefined}>
       {chat?.messages.map((message) => (
