@@ -18,20 +18,18 @@ type Props = OwnProps & InputAttributes;
 
 const keyDownDeltaTime = 200;
 
-const MessageInput: React.FC<Props> = ({ handleSubmit, ...rest }) => {
+const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>();
   const lastKeyDown = useRef({} as LastKeyDownState);
 
   const actions = useMemo(() => {
     function Enter() {
-      // if (handleSubmit) {
-      //   handleSubmit(inputRef.current.value);
-      // }
+      //
     }
 
     function ShiftEnter() {
       if (handleSubmit) {
-        handleSubmit(inputRef.current.value);
+        handleSubmit(inputRef.current.textContent);
       }
     }
 
@@ -84,10 +82,9 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, ...rest }) => {
       onKeyDown={handleKeyDown}
       contentEditable
       suppressContentEditableWarning
+      data-placeholder={placeholder}
       {...rest}
-    >
-      a
-    </StyledMessageInput>
+    />
   );
 };
 

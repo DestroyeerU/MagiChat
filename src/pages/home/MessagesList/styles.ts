@@ -10,7 +10,7 @@ export const MessagesContainer = styled.ul<RightSideProps>`
   display: flex;
   flex-direction: column-reverse;
 
-  height: 100%;
+  margin-top: auto;
   padding-bottom: 30px;
 
   overflow-y: auto;
