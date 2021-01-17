@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import { Container, StyledMessageInput } from './styles';
+import { convertInnerHtmlToText } from './utils';
 
 type KeyDownEvent = React.KeyboardEvent<HTMLInputElement>;
 
@@ -16,7 +17,7 @@ interface OwnProps {
 type InputAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'value' | 'width'>;
 type Props = OwnProps & InputAttributes;
 
-const keyDownDeltaTime = 200;
+const keyDownDeltaTime = 300;
 
 const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>();
@@ -31,7 +32,10 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
       event.preventDefault();
 
       if (handleSubmit) {
-        handleSubmit(inputRef.current.textContent);
+        // [to-do] copy, past, cut
+        const text = convertInnerHtmlToText(inputRef.current.innerHTML);
+
+        handleSubmit(text);
         inputRef.current.textContent = '';
       }
     }
