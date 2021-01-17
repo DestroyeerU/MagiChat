@@ -30,11 +30,9 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, ...rest }) => {
     }
 
     function ShiftEnter() {
-      console.log(inputRef.current.value);
-
-      inputRef.current.value = `${inputRef.current.value}\n`;
-
-      console.log(inputRef.current.value);
+      if (handleSubmit) {
+        handleSubmit(inputRef.current.value);
+      }
     }
 
     return {
@@ -80,7 +78,17 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, ...rest }) => {
     [actions]
   );
 
-  return <StyledMessageInput value={'aa\n'} ref={inputRef} onKeyDown={handleKeyDown} {...rest} />;
+  return (
+    <StyledMessageInput
+      ref={inputRef}
+      onKeyDown={handleKeyDown}
+      contentEditable
+      suppressContentEditableWarning
+      {...rest}
+    >
+      a
+    </StyledMessageInput>
+  );
 };
 
 export default MessageInput;
