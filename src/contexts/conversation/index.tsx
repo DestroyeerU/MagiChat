@@ -2,17 +2,15 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 
 import { Conversation } from '@mytypes/conversation';
 
-import { postRequest } from '@utils/request';
-
-interface CreateConversationParams {
-  toUserEmail: string;
-}
+// interface CreateConversationParams {
+//   toUserEmail: string;
+// }
 
 interface ConversationContextData {
   conversations: Conversation[];
   handleLoadConversations: (data: Conversation[]) => void;
   handleAddConversation: (data: Conversation) => void;
-  createConversation: (data: CreateConversationParams) => Promise<string | undefined>;
+  // createConversation: (data: CreateConversationParams) => Promise<string | undefined>;
 }
 
 const ConversationContext = createContext<ConversationContextData>({} as ConversationContextData);
@@ -28,33 +26,33 @@ export const ConversationProvider: React.FC = ({ children }) => {
     setConversations((oldConversation) => [...oldConversation, data]);
   }, []);
 
-  const createConversation = useCallback(
-    async (data: CreateConversationParams) => {
-      const { toUserEmail } = data;
+  // const createConversation = useCallback(
+  //   async (data: CreateConversationParams) => {
+  //     const { toUserEmail } = data;
 
-      const { data: requestData, error: requestError } = await postRequest<Conversation>('/conversations', {
-        toUserEmail,
-      });
+  //     const { data: requestData, error: requestError } = await postRequest<Conversation>('/conversations', {
+  //       toUserEmail,
+  //     });
 
-      if (requestError) {
-        return requestError.message;
-      }
+  //     if (requestError) {
+  //       return requestError.message;
+  //     }
 
-      setConversations([...conversations, requestData]);
+  //     setConversations([...conversations, requestData]);
 
-      return undefined;
-    },
-    [conversations]
-  );
+  //     return undefined;
+  //   },
+  //   [conversations]
+  // );
 
   const contextValue = useMemo<ConversationContextData>(() => {
     return {
       conversations,
-      createConversation,
+      // createConversation,
       handleAddConversation,
       handleLoadConversations,
     };
-  }, [conversations, createConversation, handleAddConversation, handleLoadConversations]);
+  }, [conversations, handleAddConversation, handleLoadConversations]);
 
   return <ConversationContext.Provider value={contextValue}>{children}</ConversationContext.Provider>;
 };

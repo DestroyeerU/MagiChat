@@ -54,17 +54,6 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
     socket.emit('create-conversation-request', {
       toUserEmail: email,
     });
-
-    // const errorMessage = await conversationContext.createConversation({ toUserEmail: email });
-
-    // if (errorMessage) {
-    //   setError(errorMessage);
-    //   return;
-    // }
-
-    // setError('');
-    // setEmail('');
-    // modalRef.current.handleClose();
   }, [email, socket]);
 
   const handleCancelClick = useCallback(() => {
