@@ -15,15 +15,13 @@ import { ModalHandles } from '@components/Modal';
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
+import ChatList from './ChatList';
 import CreateConversationModal from './CreateConversationModal';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 import {
-  Chat,
-  Chats,
   Container,
   Divider,
-  LastMessage,
   LeftSide,
   LeftSideContent,
   LeftSideHeader,
@@ -31,10 +29,7 @@ import {
   RightSideHeader,
   RightSideHeaderDivider,
   RightSideHeaderUsername,
-  Row,
   SearchInput,
-  UserInfo,
-  Username,
 } from './styles';
 
 const Home: React.FC = () => {
@@ -42,7 +37,7 @@ const Home: React.FC = () => {
   const socketConnection = useSocket();
 
   const authContext = useAuth();
-  const { conversations, handleLoadConversations } = useConversation();
+  const { handleLoadConversations } = useConversation();
   const { chats, handleLoadChat, handleLoadChatMessage } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
@@ -91,27 +86,6 @@ const Home: React.FC = () => {
       });
     },
     [authContext.user?.id, selectedConversation, socketConnection.socket]
-  );
-
-  const getConversationUsername = useCallback(
-    (conversation: Conversation) => {
-      if (!authContext.signed) {
-        return '';
-      }
-
-      if (authContext.user.id === conversation.user.id) {
-        return conversation.toUser.name;
-      }
-
-      if (authContext.user.id === conversation.toUser.id) {
-        return conversation.user.name;
-      }
-
-      // eslint-disable-next-line no-console
-      console.error('Error getting conversation username');
-      return '';
-    },
-    [authContext.signed, authContext.user.id]
   );
 
   const handleConversationConvertionWithYou = useCallback((conversation: Conversation) => {
@@ -174,21 +148,7 @@ const Home: React.FC = () => {
             <SearchInput placeholder="Pesquise por uma conversa" />
             <Divider />
 
-            <Chats>
-              {conversations.map((conversation) => (
-                <Chat key={conversation._id}>
-                  <Row onClick={() => handleConversationClick(conversation)}>
-                    <UserIcon />
-                    <UserInfo>
-                      <Username>{getConversationUsername(conversation)}</Username>
-                      {conversation.lastMessage && <LastMessage>{conversation.lastMessage?.text}</LastMessage>}
-                    </UserInfo>
-                  </Row>
-
-                  <Divider />
-                </Chat>
-              ))}
-            </Chats>
+            <ChatList handleConversationClick={handleConversationClick} />
           </LeftSideContent>
         </LeftSide>
 
