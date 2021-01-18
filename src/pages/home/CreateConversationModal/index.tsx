@@ -33,7 +33,7 @@ const schema = Yup.object().shape({
 const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_props, ref) => {
   const modalRef = useSafeRef(ref);
 
-  const { socket } = useSocket();
+  const socketConnection = useSocket();
   const conversationContext = useConversation();
 
   const [email, setEmail] = useState('');
@@ -51,10 +51,10 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
       return;
     }
 
-    socket.emit('create-conversation-request', {
+    socketConnection.socket.emit('create-conversation-request', {
       toUserEmail: email,
     });
-  }, [email, socket]);
+  }, [email, socketConnection.socket]);
 
   const handleCancelClick = useCallback(() => {
     setError('');
@@ -76,16 +76,27 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
   }, []);
 
   useEffect(() => {
-    socket.on('create-conversation-response', handleConversationResponse);
-    socket.on('create-conversation-error', handleConversationError);
-    socket.on('create-conversation-response', conversationContext.handleAddConversation);
+    if (!socketConnection.connectionStarted) {
+      return () => {
+        //
+      };
+    }
+
+    socketConnection.socket.on('create-conversation-response', handleConversationResponse);
+    socketConnection.socket.on('create-conversation-error', handleConversationError);
+    socketConnection.socket.on('create-conversation-response', conversationContext.handleAddConversation);
 
     return () => {
-      socket.off('create-conversation-response', handleConversationResponse);
-      socket.off('create-conversation-error', handleConversationError);
-      socket.off('create-conversation-response', conversationContext.handleAddConversation);
+      socketConnection.socket.off('create-conversation-response', handleConversationResponse);
+      socketConnection.socket.off('create-conversation-error', handleConversationError);
+      socketConnection.socket.off('create-conversation-response', conversationContext.handleAddConversation);
     };
-  }, [conversationContext.handleAddConversation, handleConversationError, handleConversationResponse, socket]);
+  }, [
+    conversationContext.handleAddConversation,
+    handleConversationError,
+    handleConversationResponse,
+    socketConnection,
+  ]);
 
   return (
     <Modal ref={modalRef}>

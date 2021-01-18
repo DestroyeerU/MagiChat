@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import socketClient from 'socket.io-client';
 
@@ -6,6 +6,8 @@ import { authStorageHelper } from '../auth/utils';
 
 interface SocketContextData {
   socket: SocketIOClient.Socket;
+  connectionStarted: boolean;
+  connect: () => boolean;
 }
 
 const endPoint = 'http://localhost:3333';
@@ -13,11 +15,16 @@ const endPoint = 'http://localhost:3333';
 const SocketContext = createContext<SocketContextData>({} as SocketContextData);
 
 export const SocketProvider: React.FC = ({ children }) => {
-  // const connectionStarted = useRef(false);
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const connectionStarted = useRef(false);
 
-  const socket = useMemo(() => {
+  const connect = useCallback(() => {
     if (!process.browser) {
-      return undefined;
+      return false;
+    }
+
+    if (connectionStarted.current) {
+      return true;
     }
 
     const { token } = authStorageHelper.loadUserAndToken();
@@ -29,8 +36,30 @@ export const SocketProvider: React.FC = ({ children }) => {
       query,
     });
 
-    return clientSocket;
+    setSocket(clientSocket);
+    connectionStarted.current = true;
+
+    return true;
   }, []);
+
+  // const socket = useMemo(() => {
+  //   if (!process.browser) {
+  //     return undefined;
+  //   }
+
+  //   console.log('vai');
+
+  //   const { token } = authStorageHelper.loadUserAndToken();
+  //   // const query = `token=Bearer ${token}a`;
+  //   const query = `token=Bearer ${token}`;
+
+  //   const clientSocket = socketClient(endPoint, {
+  //     transports: ['websocket'],
+  //     query,
+  //   });
+
+  //   return clientSocket;
+  // }, []);
 
   // const checkConnection = useCallback(async () => {
   //   if (!socket?.connected) {
@@ -51,8 +80,10 @@ export const SocketProvider: React.FC = ({ children }) => {
   const contextValue = useMemo<SocketContextData>(() => {
     return {
       socket,
+      connectionStarted: connectionStarted.current,
+      connect,
     };
-  }, [socket]);
+  }, [connect, socket]);
 
   return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
 };

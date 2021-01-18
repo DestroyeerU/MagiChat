@@ -92,6 +92,10 @@ const Home: React.FC = () => {
     [authContext.user.id, selectedConversation, socketConnection.socket]
   );
 
+  const handleConversationCreatedWithYou = useCallback((conversation: Conversation) => {
+    console.log('conversation11', conversation);
+  }, []);
+
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
 
@@ -99,6 +103,8 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
+    // console.log('aaa');
+
     // [to-do] when someone send a message to you, must appear on conversations
     // [to-do] when someone send a message to you, must appear in the same time
     // [to-do] error-channels
@@ -112,18 +118,36 @@ const Home: React.FC = () => {
     // }
     // startSocketConnection();
 
+    socketConnection.connect();
+
+    if (!socketConnection.connectionStarted) {
+      return () => {
+        //
+      };
+    }
+
+    console.log('connected');
+
+    socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
+
     socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
     socketConnection.socket.on('load-chat-message', handleLoadChatMessage);
 
     return () => {
+      socketConnection.socket.off('create-conversation-response', handleConversationCreatedWithYou);
+
       socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
       socketConnection.socket.off('load-chat-message', handleLoadChatMessage);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    handleConversationCreatedWithYou,
+    handleLoadChat,
+    handleLoadChatMessage,
+    handleLoadConversations,
+    socketConnection,
+  ]);
 
   return (
     <>
