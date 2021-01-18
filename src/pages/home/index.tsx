@@ -8,10 +8,9 @@ import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 import { useChat } from 'src/contexts/chat';
 import { useConversation } from 'src/contexts/conversation';
+import { useSocket } from 'src/contexts/socket';
 
 import { ModalHandles } from '@components/Modal';
-
-import { useSocket } from '@hooks/socket';
 
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
