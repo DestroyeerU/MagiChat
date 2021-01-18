@@ -92,6 +92,24 @@ const Home: React.FC = () => {
     [authContext.user.id, selectedConversation, socketConnection.socket]
   );
 
+  const getConversationUsername = useCallback(
+    (conversation: Conversation) => {
+      if (authContext.user.id === conversation.user.id) {
+        return conversation.toUser.name;
+      }
+
+      if (authContext.user.id === conversation.toUser.id) {
+        return conversation.user.name;
+      }
+
+      console.error('Error getting conversation username');
+
+      // error, must never occur
+      return conversation.user.name;
+    },
+    [authContext.user]
+  );
+
   const handleConversationCreatedWithYou = useCallback((conversation: Conversation) => {
     console.log('conversation11', conversation);
   }, []);
@@ -125,8 +143,6 @@ const Home: React.FC = () => {
         //
       };
     }
-
-    console.log('connected');
 
     socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
 
@@ -171,7 +187,7 @@ const Home: React.FC = () => {
                   <Row onClick={() => handleConversationClick(conversation)}>
                     <UserIcon />
                     <UserInfo>
-                      <Username>{conversation.user.name}</Username>
+                      <Username>{getConversationUsername(conversation)}</Username>
                       {conversation.lastMessage && <LastMessage>{conversation.lastMessage?.text}</LastMessage>}
                     </UserInfo>
                   </Row>
