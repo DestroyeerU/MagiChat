@@ -17,7 +17,7 @@ import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
 import CreateConversationModal from './CreateConversationModal';
 import MessageInput from './MessageInput';
-import MessagesList from './MessagesList';
+import MessageList from './MessageList';
 import {
   Chat,
   Chats,
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
     [authContext.signed, authContext.user.id]
   );
 
-  const handleConversationCreatedWithYou = useCallback((conversation: Conversation) => {
+  const handleConversationConvertionWithYou = useCallback((conversation: Conversation) => {
     console.log('conversation11', conversation);
   }, []);
 
@@ -125,20 +125,9 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
-    // console.log('aaa');
-
     // [to-do] when someone send a message to you, must appear on conversations
     // [to-do] when someone send a message to you, must appear in the same time
     // [to-do] error-channels
-
-    // async function startSocketConnection() {
-    // const connected = await socketConnection.checkConnection();
-    // console.log('connected', connected);
-    // if (!connected) {
-    //   // [to-do] if is not connected, try to reconnect
-    // }
-    // }
-    // startSocketConnection();
 
     socketConnection.connect();
 
@@ -148,21 +137,21 @@ const Home: React.FC = () => {
       };
     }
 
-    socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
+    socketConnection.socket.on('create-conversation-response', handleConversationConvertionWithYou);
 
     socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
     socketConnection.socket.on('load-chat-message', handleLoadChatMessage);
 
     return () => {
-      socketConnection.socket.off('create-conversation-response', handleConversationCreatedWithYou);
+      socketConnection.socket.off('create-conversation-response', handleConversationConvertionWithYou);
 
       socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
       socketConnection.socket.off('load-chat-message', handleLoadChatMessage);
     };
   }, [
-    handleConversationCreatedWithYou,
+    handleConversationConvertionWithYou,
     handleLoadChat,
     handleLoadChatMessage,
     handleLoadConversations,
@@ -209,7 +198,7 @@ const Home: React.FC = () => {
             <RightSideHeaderUsername>{selectedConversation?.user?.name}</RightSideHeaderUsername>
           </RightSideHeader>
 
-          <MessagesList chat={selectedChat} />
+          <MessageList chat={selectedChat} />
 
           <MessageInput placeholder="Escreva sua mensagem" handleSubmit={handleMessageInputSubmit} />
         </RightSide>

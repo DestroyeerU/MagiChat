@@ -12,7 +12,7 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const MessagesList: React.FC<Props> = ({ chat }) => {
+const MessageList: React.FC<Props> = ({ chat }) => {
   const getSenderUserMessage = useCallback(
     (message: MessageInterface) => {
       if (message.senderUserId === chat.conversation.user.id) {
@@ -45,4 +45,4 @@ const MessagesList: React.FC<Props> = ({ chat }) => {
   );
 };
 
-export default MessagesList;
+export default MessageList;
