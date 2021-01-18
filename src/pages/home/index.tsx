@@ -78,6 +78,7 @@ const Home: React.FC = () => {
   const handleMessageInputSubmit = useCallback(
     (text: string) => {
       if (!selectedConversation) {
+        // eslint-disable-next-line no-console
         console.error('No conversation selected');
 
         return;
@@ -89,11 +90,15 @@ const Home: React.FC = () => {
         conversationId: selectedConversation._id,
       });
     },
-    [authContext.user.id, selectedConversation, socketConnection.socket]
+    [authContext.user?.id, selectedConversation, socketConnection.socket]
   );
 
   const getConversationUsername = useCallback(
     (conversation: Conversation) => {
+      if (!authContext.signed) {
+        return '';
+      }
+
       if (authContext.user.id === conversation.user.id) {
         return conversation.toUser.name;
       }
@@ -102,12 +107,11 @@ const Home: React.FC = () => {
         return conversation.user.name;
       }
 
+      // eslint-disable-next-line no-console
       console.error('Error getting conversation username');
-
-      // error, must never occur
-      return conversation.user.name;
+      return '';
     },
-    [authContext.user]
+    [authContext.signed, authContext.user.id]
   );
 
   const handleConversationCreatedWithYou = useCallback((conversation: Conversation) => {
