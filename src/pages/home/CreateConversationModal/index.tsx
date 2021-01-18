@@ -1,7 +1,10 @@
 /* eslint-disable no-alert */
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 
+import { Conversation } from '@mytypes/conversation';
+import { DefaultRequestError } from '@mytypes/request';
 import { useConversation } from 'src/contexts/conversation';
+import { useSocket } from 'src/contexts/socket';
 import * as Yup from 'yup';
 
 import Modal, { ModalHandles } from '@components/Modal';
@@ -30,6 +33,7 @@ const schema = Yup.object().shape({
 const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_props, ref) => {
   const modalRef = useSafeRef(ref);
 
+  const { socket } = useSocket();
   const conversationContext = useConversation();
 
   const [email, setEmail] = useState('');
@@ -47,23 +51,52 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
       return;
     }
 
-    const errorMessage = await conversationContext.createConversation({ toUserEmail: email });
+    socket.emit('create-conversation-request', {
+      toUserEmail: email,
+    });
 
-    if (errorMessage) {
-      setError(errorMessage);
-      return;
-    }
+    // const errorMessage = await conversationContext.createConversation({ toUserEmail: email });
 
-    setError('');
-    setEmail('');
-    modalRef.current.handleClose();
-  }, [conversationContext, email, modalRef]);
+    // if (errorMessage) {
+    //   setError(errorMessage);
+    //   return;
+    // }
+
+    // setError('');
+    // setEmail('');
+    // modalRef.current.handleClose();
+  }, [email, socket]);
 
   const handleCancelClick = useCallback(() => {
     setError('');
     setEmail('');
     modalRef.current.handleClose();
   }, [modalRef]);
+
+  const handleConversationResponse = useCallback(
+    (_conversation: Conversation) => {
+      setError('');
+      setEmail('');
+      modalRef.current.handleClose();
+    },
+    [modalRef]
+  );
+
+  const handleConversationError = useCallback((socketError: DefaultRequestError) => {
+    setError(socketError.message);
+  }, []);
+
+  useEffect(() => {
+    socket.on('create-conversation-response', handleConversationResponse);
+    socket.on('create-conversation-error', handleConversationError);
+    socket.on('create-conversation-response', conversationContext.handleAddConversation);
+
+    return () => {
+      socket.off('create-conversation-response', handleConversationResponse);
+      socket.off('create-conversation-error', handleConversationError);
+      socket.off('create-conversation-response', conversationContext.handleAddConversation);
+    };
+  }, [conversationContext.handleAddConversation, handleConversationError, handleConversationResponse, socket]);
 
   return (
     <Modal ref={modalRef}>

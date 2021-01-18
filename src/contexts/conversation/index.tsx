@@ -11,6 +11,7 @@ interface CreateConversationParams {
 interface ConversationContextData {
   conversations: Conversation[];
   handleLoadConversations: (data: Conversation[]) => void;
+  handleAddConversation: (data: Conversation) => void;
   createConversation: (data: CreateConversationParams) => Promise<string | undefined>;
 }
 
@@ -21,6 +22,10 @@ export const ConversationProvider: React.FC = ({ children }) => {
 
   const handleLoadConversations = useCallback((data: Conversation[]) => {
     setConversations(data);
+  }, []);
+
+  const handleAddConversation = useCallback((data: Conversation) => {
+    setConversations((oldConversation) => [...oldConversation, data]);
   }, []);
 
   const createConversation = useCallback(
@@ -46,9 +51,10 @@ export const ConversationProvider: React.FC = ({ children }) => {
     return {
       conversations,
       createConversation,
+      handleAddConversation,
       handleLoadConversations,
     };
-  }, [conversations, createConversation, handleLoadConversations]);
+  }, [conversations, createConversation, handleAddConversation, handleLoadConversations]);
 
   return <ConversationContext.Provider value={contextValue}>{children}</ConversationContext.Provider>;
 };
