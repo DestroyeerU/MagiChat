@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { Container, StyledMessageInput } from './styles';
 import { convertInnerHtmlToText } from './utils';
@@ -32,7 +32,6 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
       event.preventDefault();
 
       if (handleSubmit) {
-        // [to-do] copy, past, cut
         const text = convertInnerHtmlToText(inputRef.current.innerHTML);
 
         handleSubmit(text);
@@ -48,8 +47,6 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
 
   const handleKeyDown = useCallback(
     (event: KeyDownEvent) => {
-      // [to-do] key press
-
       const keyDownTime = new Date().getTime();
 
       function getKeyCompleteName() {
@@ -81,6 +78,12 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     },
     [actions]
   );
+
+  useEffect(() => {
+    // [to-do] key press
+    // [to-do] copy, past, cut
+    // [to-do] do not stay in front og MessageList when size is increasead
+  }, []);
 
   return (
     <Container>
