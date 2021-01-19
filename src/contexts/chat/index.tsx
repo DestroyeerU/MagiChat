@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+// [to-do] put the below code on eslintrc
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { Chat, Message } from '@mytypes/message';

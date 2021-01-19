@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-alert */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
