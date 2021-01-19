@@ -1,4 +1,3 @@
-// [to-do] put the below code on eslintrc
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { Chat, Message } from '@mytypes/message';
@@ -72,7 +71,7 @@ export const ChatProvider: React.FC = ({ children }) => {
       const chat = oldChats.find((currentChat) => currentChat.conversation._id === conversationId);
 
       if (!chat) {
-        // [to-do] need to create the chat? Or is a bug
+        // This must not happen
         // eslint-disable-next-line no-console
         console.error('Chat not exists on addMessage');
 

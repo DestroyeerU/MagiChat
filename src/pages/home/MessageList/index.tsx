@@ -22,7 +22,6 @@ const MessageList: React.FC<Props> = ({ chat }) => {
         return chat.conversation.toUser;
       }
 
-      console.log('User is not on conversation');
       return undefined;
     },
     [chat?.conversation]

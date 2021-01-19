@@ -110,7 +110,6 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
-    // [to-do] when someone send a message to you, must appear in the same time
     // [to-do] how last message should work when you are on that conversation?
 
     // [to-do] move listeners to context

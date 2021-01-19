@@ -25,11 +25,20 @@ interface FormSubmitData {
   passwordConfirmation: string;
 }
 
-const schema = Yup.object().shape({
+function testPasswords(password: string, passwordConfirmation: string) {
+  return password === passwordConfirmation;
+}
+
+const createAccountSchema = Yup.object().shape({
   name: Yup.string().required('Este campo é obrigatório'),
   email: Yup.string().email('Email inválido').required('Este campo é obrigatório'),
   password: Yup.string().required('Este campo é obrigatório'),
-  passwordConfirmation: Yup.string().required('Este campo é obrigatório'),
+  passwordConfirmation: Yup.string().when('password', (password: string, schema: any) =>
+    schema.test({
+      test: (passwordConfirmation: string) => testPasswords(password, passwordConfirmation),
+      message: 'As senhas não coincidem',
+    })
+  ),
 });
 
 const CreateAccount: React.FC = () => {
@@ -68,7 +77,7 @@ const CreateAccount: React.FC = () => {
 
   return (
     <Container>
-      <Form ref={formRef} as={StyledForm} onSubmit={handleFormSubmit} schema={schema}>
+      <Form ref={formRef} as={StyledForm} onSubmit={handleFormSubmit} schema={createAccountSchema}>
         <FormTitle>Crie sua conta</FormTitle>
 
         <Input ref={nameInputRef} name="name" placeholder="Digite seu nome" autoFocus />

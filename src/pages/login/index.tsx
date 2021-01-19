@@ -36,8 +36,6 @@ const Login: React.FC = () => {
     async (formData: FormSubmitData) => {
       const { email, password } = formData;
 
-      // [to-do] confirm password
-
       const { error } = await authContext.signIn({ email, password });
 
       if (error) {
