@@ -14,6 +14,7 @@ interface SocketContextData {
 
   on: (event: string, fn: Function) => SocketIOClient.Emitter;
   off: (event: string, fn?: Function) => SocketIOClient.Emitter;
+  emit: (event: string, ...args: any[]) => SocketIOClient.Socket;
 }
 
 const endPoint = 'http://localhost:3333';
@@ -46,7 +47,6 @@ export const SocketProvider: React.FC = ({ children }) => {
 
     setSocket(clientSocket);
     connectionStarted.current = true;
-    console.log('connected');
 
     return true;
   }, []);
@@ -82,6 +82,17 @@ export const SocketProvider: React.FC = ({ children }) => {
     [socket]
   );
 
+  const emit = useCallback(
+    (event: string, ...args: any[]) => {
+      if (!socket) {
+        return undefined;
+      }
+
+      return socket.emit(event, ...args);
+    },
+    [socket]
+  );
+
   const handleSignOut = useCallback(() => {
     disconnect();
   }, [disconnect]);
@@ -90,12 +101,14 @@ export const SocketProvider: React.FC = ({ children }) => {
     return {
       socket,
       connectionStarted: connectionStarted.current,
-      on,
-      off,
       connect,
       disconnect,
+
+      on,
+      off,
+      emit,
     };
-  }, [connect, disconnect, off, on, socket]);
+  }, [connect, disconnect, emit, off, on, socket]);
 
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);

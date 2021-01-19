@@ -61,11 +61,11 @@ const Home: React.FC = () => {
         return;
       }
 
-      socketConnection.socket.emit('load-chat-request', {
+      socketConnection.emit('load-chat-request', {
         conversationId: conversation._id,
       });
     },
-    [chats, socketConnection.socket]
+    [chats, socketConnection]
   );
 
   const handleMessageInputSubmit = useCallback(
@@ -77,18 +77,17 @@ const Home: React.FC = () => {
         return;
       }
 
-      socketConnection.socket.emit('create-chat-message', {
+      socketConnection.emit('create-chat-message', {
         text,
         userId: authContext.user.id,
         conversationId: selectedConversation._id,
       });
     },
-    [authContext.user?.id, selectedConversation, socketConnection.socket]
+    [authContext.user?.id, selectedConversation, socketConnection]
   );
 
   const handleMessageSentToYou = useCallback(
     (message: any) => {
-      console.log('message to me', message);
       addMessage(message);
     },
     [addMessage]
@@ -113,16 +112,16 @@ const Home: React.FC = () => {
       return () => {};
     }
 
-    socketConnection.socket.on('receive-chat-message-response', handleMessageSentToYou);
+    socketConnection.on('receive-chat-message-response', handleMessageSentToYou);
 
-    socketConnection.socket.on('load-chat', handleLoadChat);
-    socketConnection.socket.on('create-chat-message-response', handleLoadChatMessage);
+    socketConnection.on('load-chat', handleLoadChat);
+    socketConnection.on('create-chat-message-response', handleLoadChatMessage);
 
     return () => {
-      socketConnection.socket.off('receive-chat-message-response', handleMessageSentToYou);
+      socketConnection.off('receive-chat-message-response', handleMessageSentToYou);
 
-      socketConnection.socket.off('load-chat', handleLoadChat);
-      socketConnection.socket.off('create-chat-message-response', handleLoadChatMessage);
+      socketConnection.off('load-chat', handleLoadChat);
+      socketConnection.off('create-chat-message-response', handleLoadChatMessage);
     };
   }, [handleLoadChat, handleLoadChatMessage, handleMessageSentToYou, socketConnection]);
 
