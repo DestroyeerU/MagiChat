@@ -6,7 +6,6 @@ import { Chat as ChatInterface } from '@mytypes/message';
 import { useRouter } from 'next/dist/client/router';
 import { useAuth } from 'src/contexts/auth';
 import { useChat } from 'src/contexts/chat';
-import { useConversation } from 'src/contexts/conversation';
 import { useSocket } from 'src/contexts/socket';
 
 import { ModalHandles } from '@components/Modal';
@@ -37,7 +36,6 @@ const Home: React.FC = () => {
   const socketConnection = useSocket();
 
   const authContext = useAuth();
-  const { handleLoadConversations, handleAddConversation } = useConversation();
   const { chats, handleLoadChat, handleLoadChatMessage, addMessage } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
@@ -88,13 +86,6 @@ const Home: React.FC = () => {
     [authContext.user?.id, selectedConversation, socketConnection.socket]
   );
 
-  const handleConversationCreatedWithYou = useCallback(
-    (conversation: Conversation) => {
-      handleAddConversation(conversation);
-    },
-    [handleAddConversation]
-  );
-
   const handleMessageSentToYou = useCallback(
     (message: any) => {
       console.log('message to me', message);
@@ -113,7 +104,6 @@ const Home: React.FC = () => {
     // [to-do] how last message should work when you are on that conversation?
 
     // [to-do] move listeners to context
-    // [to-do] create logout listener to clean contexts data
     // [to-do] error-channels
 
     socketConnection.connect();
@@ -123,29 +113,18 @@ const Home: React.FC = () => {
       return () => {};
     }
 
-    socketConnection.socket.on('receive-conversation-response', handleConversationCreatedWithYou);
     socketConnection.socket.on('receive-chat-message-response', handleMessageSentToYou);
 
-    socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
     socketConnection.socket.on('create-chat-message-response', handleLoadChatMessage);
 
     return () => {
-      socketConnection.socket.off('receive-conversation-response', handleConversationCreatedWithYou);
       socketConnection.socket.off('receive-chat-message-response', handleMessageSentToYou);
 
-      socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
       socketConnection.socket.off('create-chat-message-response', handleLoadChatMessage);
     };
-  }, [
-    handleConversationCreatedWithYou,
-    handleLoadChat,
-    handleLoadChatMessage,
-    handleLoadConversations,
-    handleMessageSentToYou,
-    socketConnection,
-  ]);
+  }, [handleLoadChat, handleLoadChatMessage, handleMessageSentToYou, socketConnection]);
 
   return (
     <>

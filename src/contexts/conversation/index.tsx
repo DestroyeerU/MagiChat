@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { Conversation } from '@mytypes/conversation';
 
 import { useAuth } from '../auth';
+import { useSocket } from '../socket';
 
 interface ConversationContextData {
   conversations: Conversation[];
@@ -14,6 +15,8 @@ const ConversationContext = createContext<ConversationContextData>({} as Convers
 
 export const ConversationProvider: React.FC = ({ children }) => {
   const authContext = useAuth();
+  const socketConnection = useSocket();
+
   const [conversations, setConversations] = useState([] as Conversation[]);
 
   const handleLoadConversations = useCallback((data: Conversation[]) => {
@@ -50,10 +53,16 @@ export const ConversationProvider: React.FC = ({ children }) => {
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);
 
+    socketConnection.on('load-conversations', handleLoadConversations);
+    socketConnection.on('receive-conversation-response', handleAddConversation);
+
     return () => {
       authContext.removeSignOutListener(handleSignOut);
+
+      socketConnection.off('load-conversations', handleLoadConversations);
+      socketConnection.off('receive-conversation-response', handleAddConversation);
     };
-  }, [authContext, handleSignOut]);
+  }, [authContext, handleAddConversation, handleLoadConversations, handleSignOut, socketConnection]);
 
   return <ConversationContext.Provider value={contextValue}>{children}</ConversationContext.Provider>;
 };

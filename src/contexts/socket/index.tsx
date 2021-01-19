@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import socketClient from 'socket.io-client';
@@ -10,6 +11,9 @@ interface SocketContextData {
   connectionStarted: boolean;
   connect: () => boolean;
   disconnect: () => void;
+
+  on: (event: string, fn: Function) => SocketIOClient.Emitter;
+  off: (event: string, fn?: Function) => SocketIOClient.Emitter;
 }
 
 const endPoint = 'http://localhost:3333';
@@ -42,6 +46,7 @@ export const SocketProvider: React.FC = ({ children }) => {
 
     setSocket(clientSocket);
     connectionStarted.current = true;
+    console.log('connected');
 
     return true;
   }, []);
@@ -55,6 +60,28 @@ export const SocketProvider: React.FC = ({ children }) => {
     connectionStarted.current = false;
   }, [socket]);
 
+  const on = useCallback(
+    (event: string, fn: Function) => {
+      if (!connectionStarted.current || !socket) {
+        return undefined;
+      }
+
+      return socket.on(event, fn);
+    },
+    [socket]
+  );
+
+  const off = useCallback(
+    (event: string, fn?: Function) => {
+      if (!socket) {
+        return undefined;
+      }
+
+      return socket.off(event, fn);
+    },
+    [socket]
+  );
+
   const handleSignOut = useCallback(() => {
     disconnect();
   }, [disconnect]);
@@ -63,10 +90,12 @@ export const SocketProvider: React.FC = ({ children }) => {
     return {
       socket,
       connectionStarted: connectionStarted.current,
+      on,
+      off,
       connect,
       disconnect,
     };
-  }, [connect, disconnect, socket]);
+  }, [connect, disconnect, off, on, socket]);
 
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);
