@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { Chat, Message } from '@mytypes/message';
 
 import { useAuth } from '../auth';
+import { useSocket } from '../socket';
 
 interface ChatMessageData extends Message {
   conversationId: string;
@@ -20,6 +21,8 @@ const ChatContext = createContext<ChatContextData>({} as ChatContextData);
 
 export const ChatProvider: React.FC = ({ children }) => {
   const authContext = useAuth();
+  const socketConnection = useSocket();
+
   const [chats, setChats] = useState([] as Chat[]);
 
   // cant use chats directly cause the function will not update on soket.on
@@ -127,10 +130,18 @@ export const ChatProvider: React.FC = ({ children }) => {
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);
 
+    socketConnection.on('load-chat', handleLoadChat);
+    socketConnection.on('create-chat-message-response', handleLoadChatMessage);
+    socketConnection.on('receive-chat-message-response', addMessage);
+
     return () => {
       authContext.removeSignOutListener(handleSignOut);
+
+      socketConnection.off('load-chat', handleLoadChat);
+      socketConnection.off('create-chat-message-response', handleLoadChatMessage);
+      socketConnection.off('receive-chat-message-response', addMessage);
     };
-  }, [authContext, handleSignOut]);
+  }, [addMessage, authContext, handleLoadChat, handleLoadChatMessage, handleSignOut, socketConnection]);
 
   return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };

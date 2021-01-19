@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const socketConnection = useSocket();
 
   const authContext = useAuth();
-  const { chats, handleLoadChat, handleLoadChatMessage, addMessage } = useChat();
+  const { chats } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
@@ -86,13 +86,6 @@ const Home: React.FC = () => {
     [authContext.user?.id, selectedConversation, socketConnection]
   );
 
-  const handleMessageSentToYou = useCallback(
-    (message: any) => {
-      addMessage(message);
-    },
-    [addMessage]
-  );
-
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
 
@@ -107,23 +100,11 @@ const Home: React.FC = () => {
 
     socketConnection.connect();
 
-    if (!socketConnection.connectionStarted) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return () => {};
+    if (socketConnection.connectionStarted) {
+      // eslint-disable-next-line no-console
+      console.log('Socket started');
     }
-
-    socketConnection.on('receive-chat-message-response', handleMessageSentToYou);
-
-    socketConnection.on('load-chat', handleLoadChat);
-    socketConnection.on('create-chat-message-response', handleLoadChatMessage);
-
-    return () => {
-      socketConnection.off('receive-chat-message-response', handleMessageSentToYou);
-
-      socketConnection.off('load-chat', handleLoadChat);
-      socketConnection.off('create-chat-message-response', handleLoadChatMessage);
-    };
-  }, [handleLoadChat, handleLoadChatMessage, handleMessageSentToYou, socketConnection]);
+  }, [socketConnection]);
 
   return (
     <>
