@@ -12,13 +12,13 @@ import theme from '../styles/theme';
 
 const Contexts: React.FC = ({ children }) => {
   return (
-    <SocketProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <SocketProvider>
         <ConversationProvider>
           <ChatProvider>{children}</ChatProvider>
         </ConversationProvider>
-      </AuthProvider>
-    </SocketProvider>
+      </SocketProvider>
+    </AuthProvider>
   );
 };
 

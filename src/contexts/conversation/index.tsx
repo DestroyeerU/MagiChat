@@ -1,21 +1,19 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Conversation } from '@mytypes/conversation';
 
-// interface CreateConversationParams {
-//   toUserEmail: string;
-// }
+import { useAuth } from '../auth';
 
 interface ConversationContextData {
   conversations: Conversation[];
   handleLoadConversations: (data: Conversation[]) => void;
   handleAddConversation: (data: Conversation) => void;
-  // createConversation: (data: CreateConversationParams) => Promise<string | undefined>;
 }
 
 const ConversationContext = createContext<ConversationContextData>({} as ConversationContextData);
 
 export const ConversationProvider: React.FC = ({ children }) => {
+  const authContext = useAuth();
   const [conversations, setConversations] = useState([] as Conversation[]);
 
   const handleLoadConversations = useCallback((data: Conversation[]) => {
@@ -36,24 +34,9 @@ export const ConversationProvider: React.FC = ({ children }) => {
     setConversations(updateConversations);
   }, []);
 
-  // const createConversation = useCallback(
-  //   async (data: CreateConversationParams) => {
-  //     const { toUserEmail } = data;
-
-  //     const { data: requestData, error: requestError } = await postRequest<Conversation>('/conversations', {
-  //       toUserEmail,
-  //     });
-
-  //     if (requestError) {
-  //       return requestError.message;
-  //     }
-
-  //     setConversations([...conversations, requestData]);
-
-  //     return undefined;
-  //   },
-  //   [conversations]
-  // );
+  const handleSignOut = useCallback(() => {
+    setConversations([] as Conversation[]);
+  }, []);
 
   const contextValue = useMemo<ConversationContextData>(() => {
     return {
@@ -63,6 +46,14 @@ export const ConversationProvider: React.FC = ({ children }) => {
       handleLoadConversations,
     };
   }, [conversations, handleAddConversation, handleLoadConversations]);
+
+  useEffect(() => {
+    authContext.addSignOutListener(handleSignOut);
+
+    return () => {
+      authContext.removeSignOutListener(handleSignOut);
+    };
+  }, [authContext, handleSignOut]);
 
   return <ConversationContext.Provider value={contextValue}>{children}</ConversationContext.Provider>;
 };

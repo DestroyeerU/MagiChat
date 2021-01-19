@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { DefaultRequestError } from '@mytypes/request';
 import { User } from '@mytypes/user';
@@ -8,7 +8,6 @@ import { saveApiDefaultAuthorization } from '@services/api';
 
 import { postRequest } from '@utils/request';
 
-import { useSocket } from '../socket';
 import { authStorageHelper } from './utils';
 
 interface SignInData {
@@ -27,6 +26,8 @@ interface SignInReturn {
   error?: DefaultRequestError;
 }
 
+type AuthListener = () => void;
+
 interface AuthContextData {
   user: User;
   signed: boolean;
@@ -34,13 +35,34 @@ interface AuthContextData {
 
   signIn(data: SignInData): Promise<SignInReturn>;
   signOut(): void;
+  addSignOutListener: (listener: AuthListener) => void;
+  removeSignOutListener: (listener: AuthListener) => void;
+}
+
+function useListener<T = any>() {
+  const listeners = useRef([] as T[]);
+
+  const addListener = useCallback((listener: T) => {
+    listeners.current.push(listener);
+  }, []);
+
+  const removeListener = useCallback((listener: T) => {
+    const listenersUpdated = listeners.current.filter((currentListener) => currentListener !== listener);
+    listeners.current = listenersUpdated;
+  }, []);
+
+  return {
+    listeners: listeners.current,
+    addListener,
+    removeListener,
+  };
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const router = useRouter();
-  const socketConnection = useSocket();
+  const signOutListener = useListener<AuthListener>();
 
   const [user, setUser] = useState({} as User);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
@@ -70,12 +92,15 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
-    socketConnection.disconnect();
+    signOutListener.listeners.forEach((listener) => {
+      listener();
+    });
+
     localStorage.clear();
 
     setUser({} as User);
     setSigned(false);
-  }, [socketConnection]);
+  }, [signOutListener.listeners]);
 
   useEffect(() => {
     const { user: userStoraged, token } = authStorageHelper.loadUserAndToken();
@@ -99,8 +124,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       signIn,
       signOut,
+      addSignOutListener: signOutListener.addListener,
+      removeSignOutListener: signOutListener.removeListener,
     };
-  }, [loadingSignIn, signIn, signOut, signed, user]);
+  }, [loadingSignIn, signIn, signOut, signOutListener.addListener, signOutListener.removeListener, signed, user]);
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };

@@ -1,7 +1,8 @@
-import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import socketClient from 'socket.io-client';
 
+import { useAuth } from '../auth';
 import { authStorageHelper } from '../auth/utils';
 
 interface SocketContextData {
@@ -16,8 +17,10 @@ const endPoint = 'http://localhost:3333';
 const SocketContext = createContext<SocketContextData>({} as SocketContextData);
 
 export const SocketProvider: React.FC = ({ children }) => {
-  const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const authContext = useAuth();
   const connectionStarted = useRef(false);
+
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
 
   const connect = useCallback(() => {
     if (!process.browser) {
@@ -44,9 +47,17 @@ export const SocketProvider: React.FC = ({ children }) => {
   }, []);
 
   const disconnect = useCallback(() => {
+    if (!connectionStarted.current) {
+      return;
+    }
+
     socket.disconnect();
     connectionStarted.current = false;
   }, [socket]);
+
+  const handleSignOut = useCallback(() => {
+    disconnect();
+  }, [disconnect]);
 
   const contextValue = useMemo<SocketContextData>(() => {
     return {
@@ -56,6 +67,14 @@ export const SocketProvider: React.FC = ({ children }) => {
       disconnect,
     };
   }, [connect, disconnect, socket]);
+
+  useEffect(() => {
+    authContext.addSignOutListener(handleSignOut);
+
+    return () => {
+      authContext.removeSignOutListener(handleSignOut);
+    };
+  }, [authContext, handleSignOut]);
 
   return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
 };
