@@ -34,7 +34,7 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
   const modalRef = useSafeRef(ref);
 
   const socketConnection = useSocket();
-  const conversationContext = useConversation();
+  const { createConversationRequest } = useConversation();
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -51,10 +51,10 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
       return;
     }
 
-    socketConnection.emit('create-conversation-request', {
+    createConversationRequest({
       toUserEmail: email,
     });
-  }, [email, socketConnection]);
+  }, [createConversationRequest, email]);
 
   const handleCancelClick = useCallback(() => {
     setError('');
@@ -77,26 +77,18 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
 
   useEffect(() => {
     if (!socketConnection.connectionStarted) {
-      return () => {
-        //
-      };
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return () => {};
     }
 
     socketConnection.on('create-conversation-response', handleConversationResponse);
-    socketConnection.on('create-conversation-response', conversationContext.handleAddConversation);
     socketConnection.on('create-conversation-error', handleConversationError);
 
     return () => {
       socketConnection.off('create-conversation-response', handleConversationResponse);
-      socketConnection.off('create-conversation-response', conversationContext.handleAddConversation);
       socketConnection.off('create-conversation-error', handleConversationError);
     };
-  }, [
-    conversationContext.handleAddConversation,
-    handleConversationError,
-    handleConversationResponse,
-    socketConnection,
-  ]);
+  }, [handleConversationError, handleConversationResponse, socketConnection]);
 
   return (
     <Modal ref={modalRef}>

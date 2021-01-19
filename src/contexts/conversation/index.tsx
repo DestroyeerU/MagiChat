@@ -5,10 +5,17 @@ import { Conversation } from '@mytypes/conversation';
 import { useAuth } from '../auth';
 import { useSocket } from '../socket';
 
+interface CreateConversationRequestParams {
+  toUserEmail: string;
+}
+
 interface ConversationContextData {
   conversations: Conversation[];
+
+  createConversationRequest: (params: CreateConversationRequestParams) => void;
+  addConversation: (data: Conversation) => void;
+
   handleLoadConversations: (data: Conversation[]) => void;
-  handleAddConversation: (data: Conversation) => void;
 }
 
 const ConversationContext = createContext<ConversationContextData>({} as ConversationContextData);
@@ -23,7 +30,18 @@ export const ConversationProvider: React.FC = ({ children }) => {
     setConversations(data);
   }, []);
 
-  const handleAddConversation = useCallback((data: Conversation) => {
+  const createConversationRequest = useCallback(
+    (params: CreateConversationRequestParams) => {
+      const { toUserEmail } = params;
+
+      socketConnection.emit('create-conversation-request', {
+        toUserEmail,
+      });
+    },
+    [socketConnection]
+  );
+
+  const addConversation = useCallback((data: Conversation) => {
     function updateConversations(oldConversations: Conversation[]) {
       const conversationExists = oldConversations.find((conversation) => conversation._id === data._id);
 
@@ -44,25 +62,27 @@ export const ConversationProvider: React.FC = ({ children }) => {
   const contextValue = useMemo<ConversationContextData>(() => {
     return {
       conversations,
-      // createConversation,
-      handleAddConversation,
+      createConversationRequest,
+      addConversation,
       handleLoadConversations,
     };
-  }, [conversations, handleAddConversation, handleLoadConversations]);
+  }, [conversations, createConversationRequest, addConversation, handleLoadConversations]);
 
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);
 
     socketConnection.on('load-conversations', handleLoadConversations);
-    socketConnection.on('receive-conversation-response', handleAddConversation);
+    socketConnection.on('create-conversation-response', addConversation);
+    socketConnection.on('receive-conversation-response', addConversation);
 
     return () => {
       authContext.removeSignOutListener(handleSignOut);
 
       socketConnection.off('load-conversations', handleLoadConversations);
-      socketConnection.off('receive-conversation-response', handleAddConversation);
+      socketConnection.on('create-conversation-response', addConversation);
+      socketConnection.off('receive-conversation-response', addConversation);
     };
-  }, [authContext, handleAddConversation, handleLoadConversations, handleSignOut, socketConnection]);
+  }, [authContext, addConversation, handleLoadConversations, handleSignOut, socketConnection]);
 
   return <ConversationContext.Provider value={contextValue}>{children}</ConversationContext.Provider>;
 };

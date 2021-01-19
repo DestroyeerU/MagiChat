@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const socketConnection = useSocket();
 
   const authContext = useAuth();
-  const { chats } = useChat();
+  const { chats, createChatMessage, loadChatRequest } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
@@ -55,17 +55,9 @@ const Home: React.FC = () => {
   const handleConversationClick = useCallback(
     (conversation: Conversation) => {
       setSelectedConversation(conversation);
-      const chatExists = chats.find((chat) => chat.conversation._id === conversation._id);
-
-      if (chatExists) {
-        return;
-      }
-
-      socketConnection.emit('load-chat-request', {
-        conversationId: conversation._id,
-      });
+      loadChatRequest({ conversationId: conversation._id });
     },
-    [chats, socketConnection]
+    [loadChatRequest]
   );
 
   const handleMessageInputSubmit = useCallback(
@@ -77,13 +69,13 @@ const Home: React.FC = () => {
         return;
       }
 
-      socketConnection.emit('create-chat-message', {
+      createChatMessage({
         text,
         userId: authContext.user.id,
         conversationId: selectedConversation._id,
       });
     },
-    [authContext.user?.id, selectedConversation, socketConnection]
+    [authContext.user.id, createChatMessage, selectedConversation]
   );
 
   useEffect(() => {
@@ -94,16 +86,9 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     // [to-do] how last message should work when you are on that conversation?
-
-    // [to-do] move listeners to context
     // [to-do] error-channels
 
     socketConnection.connect();
-
-    if (socketConnection.connectionStarted) {
-      // eslint-disable-next-line no-console
-      console.log('Socket started');
-    }
   }, [socketConnection]);
 
   return (

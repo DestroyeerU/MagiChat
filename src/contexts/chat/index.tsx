@@ -5,6 +5,16 @@ import { Chat, Message } from '@mytypes/message';
 import { useAuth } from '../auth';
 import { useSocket } from '../socket';
 
+interface LoadChatRequestParams {
+  conversationId: string;
+}
+
+interface CreateChatParams {
+  text: string;
+  userId: number;
+  conversationId: string;
+}
+
 interface ChatMessageData extends Message {
   conversationId: string;
 }
@@ -12,9 +22,10 @@ interface ChatMessageData extends Message {
 interface ChatContextData {
   chats: Chat[];
 
-  handleLoadChat: (data: Chat) => void;
+  loadChatRequest: (params: LoadChatRequestParams) => void;
+
+  createChatMessage: (params: CreateChatParams) => void;
   addMessage: (data: ChatMessageData) => void;
-  handleLoadChatMessage: (message: ChatMessageData) => void;
 }
 
 const ChatContext = createContext<ChatContextData>({} as ChatContextData);
@@ -25,8 +36,25 @@ export const ChatProvider: React.FC = ({ children }) => {
 
   const [chats, setChats] = useState([] as Chat[]);
 
+  const loadChatRequest = useCallback(
+    (params: LoadChatRequestParams) => {
+      const { conversationId } = params;
+
+      const chatExists = chats.find((chat) => chat.conversation._id === conversationId);
+
+      if (chatExists) {
+        return;
+      }
+
+      socketConnection.emit('load-chat-request', {
+        conversationId,
+      });
+    },
+    [chats, socketConnection]
+  );
+
   // cant use chats directly cause the function will not update on soket.on
-  const handleLoadChat = useCallback((data: Chat) => {
+  const loadChatResponse = useCallback((data: Chat) => {
     const { conversation, messages } = data;
 
     function getUpdatedChats(oldChats: Chat[]) {
@@ -46,6 +74,19 @@ export const ChatProvider: React.FC = ({ children }) => {
 
     setChats(getUpdatedChats);
   }, []);
+
+  const createChatMessage = useCallback(
+    (params: CreateChatParams) => {
+      const { text, userId, conversationId } = params;
+
+      socketConnection.emit('create-chat-message', {
+        text,
+        userId,
+        conversationId,
+      });
+    },
+    [socketConnection]
+  );
 
   const handleLoadChatMessage = useCallback((message: ChatMessageData) => {
     function getUpdatedChats(oldChats: Chat[]) {
@@ -120,28 +161,28 @@ export const ChatProvider: React.FC = ({ children }) => {
   const contextValue = useMemo<ChatContextData>(() => {
     return {
       chats,
+      loadChatRequest,
 
+      createChatMessage,
       addMessage,
-      handleLoadChat,
-      handleLoadChatMessage,
     };
-  }, [addMessage, chats, handleLoadChat, handleLoadChatMessage]);
+  }, [addMessage, chats, createChatMessage, loadChatRequest]);
 
   useEffect(() => {
     authContext.addSignOutListener(handleSignOut);
 
-    socketConnection.on('load-chat', handleLoadChat);
+    socketConnection.on('load-chat-response', loadChatResponse);
     socketConnection.on('create-chat-message-response', handleLoadChatMessage);
     socketConnection.on('receive-chat-message-response', addMessage);
 
     return () => {
       authContext.removeSignOutListener(handleSignOut);
 
-      socketConnection.off('load-chat', handleLoadChat);
+      socketConnection.off('load-chat-response', loadChatResponse);
       socketConnection.off('create-chat-message-response', handleLoadChatMessage);
       socketConnection.off('receive-chat-message-response', addMessage);
     };
-  }, [addMessage, authContext, handleLoadChat, handleLoadChatMessage, handleSignOut, socketConnection]);
+  }, [addMessage, authContext, handleLoadChatMessage, handleSignOut, loadChatResponse, socketConnection]);
 
   return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };

@@ -1,10 +1,12 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { DefaultRequestError } from '@mytypes/request';
 import { User } from '@mytypes/user';
 import { useRouter } from 'next/dist/client/router';
 
 import { saveApiDefaultAuthorization } from '@services/api';
+
+import { useListener } from '@hooks/listener';
 
 import { postRequest } from '@utils/request';
 
@@ -37,25 +39,6 @@ interface AuthContextData {
   signOut(): void;
   addSignOutListener: (listener: AuthListener) => void;
   removeSignOutListener: (listener: AuthListener) => void;
-}
-
-function useListener<T = any>() {
-  const listeners = useRef([] as T[]);
-
-  const addListener = useCallback((listener: T) => {
-    listeners.current.push(listener);
-  }, []);
-
-  const removeListener = useCallback((listener: T) => {
-    const listenersUpdated = listeners.current.filter((currentListener) => currentListener !== listener);
-    listeners.current = listenersUpdated;
-  }, []);
-
-  return {
-    listeners: listeners.current,
-    addListener,
-    removeListener,
-  };
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);

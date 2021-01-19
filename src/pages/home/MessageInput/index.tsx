@@ -17,7 +17,7 @@ interface OwnProps {
 type InputAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'value' | 'width'>;
 type Props = OwnProps & InputAttributes;
 
-const keyDownDeltaTime = 300;
+const keyDownDeltaTime = 500;
 
 const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>();
