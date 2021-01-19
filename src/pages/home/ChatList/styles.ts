@@ -67,7 +67,12 @@ export const Username = styled.span`
 `;
 
 export const LastMessage = styled.p`
+  width: 250px;
   margin-top: 5px;
 
   font-size: 1.4rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
