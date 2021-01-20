@@ -26,7 +26,7 @@ const Message: React.FC<MessageProps> = ({ message, username }) => {
 
     const text = convertInnerHtmlToText(messageRef.current.innerHTML);
 
-    event.clipboardData.setData('text', text);
+    event.clipboardData.setData('text/plain', text);
   }, []);
 
   return (

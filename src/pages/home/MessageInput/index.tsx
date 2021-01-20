@@ -74,7 +74,15 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     const text = convertInnerHtmlToText(inputRef.current.innerHTML);
     inputRef.current.innerHTML = '';
 
-    event.clipboardData.setData('text', text);
+    event.clipboardData.setData('text/plain', text);
+  }, []);
+
+  const handlePaste = useCallback((event: React.ClipboardEvent) => {
+    event.preventDefault();
+
+    const text = event.clipboardData.getData('text/plain');
+
+    inputRef.current.innerHTML = text;
   }, []);
 
   return (
@@ -85,6 +93,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
         onKeyDown={handleKeyDown}
         onCopy={handleCopy}
         onCut={handleCut}
+        onPaste={handlePaste}
         contentEditable
         suppressContentEditableWarning
         {...rest}
