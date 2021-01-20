@@ -4,9 +4,11 @@
 ## To-do
 
 ### Home
-- [ ] correct bug on scroll on left side (many chats)
-- [ ] MessageInput to-do
-- [ ] when you does not have unread message on the chat, the lastMessage must disapper (read property on message)
+- [x] correct bug on scroll on left side (with many chats)
+
+
+### Socket
+- [ ] when you does not have unread message on the chat, the lastMessage must disapper (add read property on message)
 - [ ] when you receive a new message, this chat must be on top
 - [ ] appear the number of unread messages on conversation list (on left side)
 - [ ] error-channels
@@ -15,3 +17,6 @@
 - [ ] key press
 - [ ] copy, past, cut
 - [ ] do not stay in front og MessageList when size is increasead
+- [ ] Keys
+  - [ ] Esc, close modal
+  - [ ] Enter, submit

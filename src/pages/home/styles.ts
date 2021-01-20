@@ -5,6 +5,8 @@ export const Container = styled.div`
 
   width: 100%;
   height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
 
   background-color: ${(props) => props.theme.colors.home.chat.background};
 `;
@@ -53,7 +55,9 @@ export const LeftSideContent = styled.div`
   flex-direction: column;
   align-items: center;
 
-  height: 100%;
+  /* LeftSideHeader: height -> 63 */
+  height: calc(100% - 63px);
+
   border-right: 1px solid ${(props) => props.theme.colors.stroke};
 `;
 
