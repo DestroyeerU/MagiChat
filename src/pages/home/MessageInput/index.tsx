@@ -68,6 +68,15 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     event.clipboardData.setData('text', text);
   }, []);
 
+  const handleCut = useCallback((event: React.ClipboardEvent) => {
+    event.preventDefault();
+
+    const text = convertInnerHtmlToText(inputRef.current.innerHTML);
+    inputRef.current.innerHTML = '';
+
+    event.clipboardData.setData('text', text);
+  }, []);
+
   return (
     <Container>
       <StyledMessageInput
@@ -75,6 +84,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
         data-placeholder={placeholder}
         onKeyDown={handleKeyDown}
         onCopy={handleCopy}
+        onCut={handleCut}
         contentEditable
         suppressContentEditableWarning
         {...rest}

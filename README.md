@@ -9,12 +9,12 @@
 ### MessageInput
 - [x] key press
 - [x] copy
-- [ ] cut
+- [x] cut
+- [ ] paste
 - [ ] do not stay in front og MessageList when size is increasead
 
 ### MessageList
 - [x] copy
-- [ ] cut
 
 
 ### Socket
