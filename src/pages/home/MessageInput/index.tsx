@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import { Container, StyledMessageInput } from './styles';
 import { convertInnerHtmlToText } from './utils';
@@ -78,12 +78,6 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     },
     [actions]
   );
-
-  useEffect(() => {
-    // [to-do] key press
-    // [to-do] copy, past, cut
-    // [to-do] do not stay in front og MessageList when size is increasead
-  }, []);
 
   return (
     <Container>

@@ -85,15 +85,6 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
-    // [to-do] correct bug on scroll on left side (many chats)
-    // [to-do] MessageInput to-do
-
-    // [to-do] when you does not have unread message on the chat, the lastMessage must disapper (read property on message)
-    // [to-do] when you receive a new message, this chat must be on top
-    // [to-do] appear the number of unread messages on conversation list (on left side)
-
-    // [to-do] error-channels
-
     socketConnection.connect();
   }, [socketConnection]);
 
