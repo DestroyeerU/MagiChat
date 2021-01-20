@@ -7,14 +7,9 @@
 - [x] correct bug on scroll on left side (with many chats)
 
 ### MessageInput
-- [ ] key press
+- [x] key press
 - [ ] copy, past, cut
 - [ ] do not stay in front og MessageList when size is increasead
-
-### Modal
-- [x] Keys
-  - [x] Esc, close modal
-  - [x] Enter, submit
 
 ### Socket
 - [ ] when you does not have unread message on the chat, the lastMessage must disapper (add read property on message)
