@@ -3,6 +3,7 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef,
 import { Container } from './styles';
 
 export interface ModalHandles {
+  isOpen: boolean;
   handleOpen: () => void;
   handleClose: () => void;
 }
@@ -58,6 +59,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ child
   }, [handleAnimationEnd, lastAnimationName]);
 
   useImperativeHandle(ref, () => ({
+    isOpen: visible,
     handleOpen,
     handleClose,
   }));

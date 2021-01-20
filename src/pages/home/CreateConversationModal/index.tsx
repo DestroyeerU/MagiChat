@@ -1,5 +1,4 @@
-/* eslint-disable no-alert */
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { Conversation } from '@mytypes/conversation';
 import { DefaultRequestError } from '@mytypes/request';
@@ -8,8 +7,6 @@ import { useSocket } from 'src/contexts/socket';
 import * as Yup from 'yup';
 
 import Modal, { ModalHandles } from '@components/Modal';
-
-import { useSafeRef } from '@hooks/native';
 
 import { validateSchema } from '@utils/form';
 
@@ -26,18 +23,44 @@ import {
   HeaderTitle,
 } from './styles';
 
+interface CreateConversationModalHandles {
+  handleOpen: () => void;
+  handleClose: () => void;
+}
+
 const schema = Yup.object().shape({
   email: Yup.string().email('Enter a valid email').required('You must enter a email'),
 });
 
-const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_props, ref) => {
-  const modalRef = useSafeRef(ref);
-
+type Modal = React.ForwardRefRenderFunction<CreateConversationModalHandles>;
+const CreateConversationModal: Modal = (_props, ref) => {
   const socketConnection = useSocket();
   const { createConversationRequest } = useConversation();
 
+  const modalRef = useRef<ModalHandles>();
+  const emailRef = useRef<HTMLInputElement>();
+
+  const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+
+  const handleOpen = useCallback(() => {
+    if (modalRef.current.isOpen) return;
+
+    modalRef.current.handleOpen();
+
+    setOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    if (!modalRef.current.isOpen) return;
+
+    setError('');
+    setEmail('');
+
+    modalRef.current.handleClose();
+    setOpen(false);
+  }, []);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -54,13 +77,9 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
     createConversationRequest({
       toUserEmail: email,
     });
-  }, [createConversationRequest, email]);
 
-  const handleCancelClick = useCallback(() => {
-    setError('');
-    setEmail('');
-    modalRef.current.handleClose();
-  }, [modalRef]);
+    handleClose();
+  }, [createConversationRequest, email, handleClose]);
 
   const handleConversationResponse = useCallback(
     (_conversation: Conversation) => {
@@ -74,6 +93,33 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
   const handleConversationError = useCallback((socketError: DefaultRequestError) => {
     setError(socketError.message);
   }, []);
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { key } = event;
+
+      const actions = {
+        Escape: handleClose,
+        Enter: handleConfirmClick,
+      };
+
+      if (key in actions) {
+        actions[key]();
+      }
+    },
+    [handleClose, handleConfirmClick]
+  );
+
+  useEffect(() => {
+    if (open) {
+      emailRef.current.focus();
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown, open]);
 
   useEffect(() => {
     if (!socketConnection.connectionStarted) {
@@ -90,6 +136,11 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
     };
   }, [handleConversationError, handleConversationResponse, socketConnection]);
 
+  useImperativeHandle(ref, () => ({
+    handleOpen,
+    handleClose,
+  }));
+
   return (
     <Modal ref={modalRef}>
       <Container>
@@ -99,12 +150,12 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
 
         <Body>
           <BodyMessage>Enter with the user email that you want to start chatting</BodyMessage>
-          <BodyInput placeholder="Enter email" onChange={handleInputChange} />
+          <BodyInput ref={emailRef} placeholder="Enter email" onChange={handleInputChange} />
           <BodyInputError visibilityVisible={Boolean(error)}>{error || 'Error here'}</BodyInputError>
         </Body>
 
         <Footer>
-          <FooterCancel onClick={handleCancelClick}>Cancel</FooterCancel>
+          <FooterCancel onClick={handleClose}>Cancel</FooterCancel>
           <FooterConfirm onClick={handleConfirmClick}>Start Chatting</FooterConfirm>
         </Footer>
       </Container>
