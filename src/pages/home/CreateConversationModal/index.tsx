@@ -95,7 +95,7 @@ const CreateConversationModal: Modal = (_props, ref) => {
   }, []);
 
   const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
+    async (event: KeyboardEvent) => {
       const { key } = event;
 
       const actions = {
@@ -104,7 +104,7 @@ const CreateConversationModal: Modal = (_props, ref) => {
       };
 
       if (key in actions) {
-        actions[key]();
+        await actions[key]();
       }
     },
     [handleClose, handleConfirmClick]
