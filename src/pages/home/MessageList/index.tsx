@@ -1,6 +1,7 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { Chat, Message as MessageInterface } from '@mytypes/message';
+import { useSocket } from 'src/contexts/socket';
 
 import { convertInnerHtmlToText } from '@utils/html';
 
@@ -44,6 +45,9 @@ const Message: React.FC<MessageProps> = ({ message, username }) => {
 };
 
 const MessageList: React.FC<Props> = ({ chat }) => {
+  const messageListRef = useRef<HTMLUListElement>(null);
+  const socketConnection = useSocket();
+
   const getSenderUserMessage = useCallback(
     (message: MessageInterface) => {
       if (message.senderUserId === chat.conversation.user.id) {
@@ -59,8 +63,19 @@ const MessageList: React.FC<Props> = ({ chat }) => {
     [chat?.conversation]
   );
 
+  useEffect(() => {
+    function handleChatMessageCreated() {
+      messageListRef.current.scrollTo(0, messageListRef.current.scrollHeight);
+    }
+
+    socketConnection.on('create-chat-message-response', handleChatMessageCreated);
+
+    return () => {
+      socketConnection.off('create-chat-message-response', handleChatMessageCreated);
+    };
+  }, [socketConnection]);
   return (
-    <MessagesContainer visible={chat !== undefined}>
+    <MessagesContainer ref={messageListRef} visible={chat !== undefined}>
       {chat?.messages.map((message) => (
         <Message key={message._id} message={message} username={getSenderUserMessage(message).name} />
       ))}

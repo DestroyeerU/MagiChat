@@ -26,8 +26,9 @@ export const MessageContainer = styled.li`
 
   margin: 25px 20px 0;
 
+  /* the above one */
   &:last-child {
-    margin-top: 0;
+    padding-top: 20px;
   }
 `;
 

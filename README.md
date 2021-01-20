@@ -3,8 +3,6 @@
 
 ## To-do
 
-### MessageInput
-- [ ] do not stay in front og MessageList when size is increasead
 
 ### Socket
 - [ ] when you does not have unread message on the chat, the lastMessage must disapper (add read property on message)
