@@ -8,8 +8,14 @@
 
 ### MessageInput
 - [x] key press
-- [ ] copy, past, cut
+- [x] copy
+- [ ] cut
 - [ ] do not stay in front og MessageList when size is increasead
+
+### MessageList
+- [x] copy
+- [ ] cut
+
 
 ### Socket
 - [ ] when you does not have unread message on the chat, the lastMessage must disapper (add read property on message)

@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 
+import { convertInnerHtmlToText } from '@utils/html';
+
 import { Container, StyledMessageInput } from './styles';
-import { convertInnerHtmlToText } from './utils';
 
 type KeyDownEvent = React.KeyboardEvent<HTMLInputElement>;
 
@@ -59,14 +60,23 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     [actions]
   );
 
+  const handleCopy = useCallback((event: React.ClipboardEvent) => {
+    event.preventDefault();
+
+    const text = convertInnerHtmlToText(inputRef.current.innerHTML);
+
+    event.clipboardData.setData('text', text);
+  }, []);
+
   return (
     <Container>
       <StyledMessageInput
         ref={inputRef}
+        data-placeholder={placeholder}
         onKeyDown={handleKeyDown}
+        onCopy={handleCopy}
         contentEditable
         suppressContentEditableWarning
-        data-placeholder={placeholder}
         {...rest}
       />
     </Container>
