@@ -83,6 +83,10 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     const text = event.clipboardData.getData('text/plain');
 
     inputRef.current.innerHTML = text;
+
+    // move cursor to end
+    document.execCommand('selectAll', false, null);
+    document.getSelection().collapseToEnd();
   }, []);
 
   return (
