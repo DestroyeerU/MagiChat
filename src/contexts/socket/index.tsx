@@ -8,6 +8,7 @@ interface SocketContextData {
   socket: SocketIOClient.Socket;
   connectionStarted: boolean;
   connect: () => boolean;
+  disconnect: () => void;
 }
 
 const endPoint = 'http://localhost:3333';
@@ -42,48 +43,19 @@ export const SocketProvider: React.FC = ({ children }) => {
     return true;
   }, []);
 
-  // const socket = useMemo(() => {
-  //   if (!process.browser) {
-  //     return undefined;
-  //   }
-
-  //   console.log('vai');
-
-  //   const { token } = authStorageHelper.loadUserAndToken();
-  //   // const query = `token=Bearer ${token}a`;
-  //   const query = `token=Bearer ${token}`;
-
-  //   const clientSocket = socketClient(endPoint, {
-  //     transports: ['websocket'],
-  //     query,
-  //   });
-
-  //   return clientSocket;
-  // }, []);
-
-  // const checkConnection = useCallback(async () => {
-  //   if (!socket?.connected) {
-  //     await new Promise((resolve) => setTimeout(resolve, 200));
-
-  //     if (!socket?.connected) {
-  //       return false;
-  //     }
-  //   }
-
-  //   if (!connectionStarted.current) {
-  //     connectionStarted.current = true;
-  //   }
-
-  //   return true;
-  // }, [socket?.connected]);
+  const disconnect = useCallback(() => {
+    socket.disconnect();
+    connectionStarted.current = false;
+  }, [socket]);
 
   const contextValue = useMemo<SocketContextData>(() => {
     return {
       socket,
       connectionStarted: connectionStarted.current,
       connect,
+      disconnect,
     };
-  }, [connect, socket]);
+  }, [connect, disconnect, socket]);
 
   return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
 };

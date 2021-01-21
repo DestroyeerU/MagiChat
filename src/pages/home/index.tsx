@@ -141,7 +141,7 @@ const Home: React.FC = () => {
         <LeftSide>
           <LeftSideHeader>
             <UserIcon />
-            <LeftSideHeaderUsername>Idaslon</LeftSideHeaderUsername>
+            <LeftSideHeaderUsername>{authContext.user.name}</LeftSideHeaderUsername>
 
             <CreateChatIcon onClick={handleCreateChatIconClick} />
             <LogOutIcon onClick={handleLogOutClick} />

@@ -8,6 +8,7 @@ import { saveApiDefaultAuthorization } from '@services/api';
 
 import { postRequest } from '@utils/request';
 
+import { useSocket } from '../socket';
 import { authStorageHelper } from './utils';
 
 interface SignInData {
@@ -39,6 +40,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const router = useRouter();
+  const socketConnection = useSocket();
 
   const [user, setUser] = useState({} as User);
   const [loadingSignIn, setLoadingSignIn] = useState(false);
@@ -68,11 +70,12 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
+    socketConnection.disconnect();
+    localStorage.clear();
+
     setUser({} as User);
     setSigned(false);
-
-    localStorage.clear();
-  }, []);
+  }, [socketConnection]);
 
   useEffect(() => {
     const { user: userStoraged, token } = authStorageHelper.loadUserAndToken();
