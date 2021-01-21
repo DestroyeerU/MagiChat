@@ -34,11 +34,18 @@ export const LeftSideHeader = styled.header`
   svg {
     cursor: pointer;
 
-    &:nth-child(2) {
+    &:nth-child(3) {
       margin-left: auto;
       margin-right: 16px;
     }
   }
+`;
+
+export const LeftSideHeaderUsername = styled.p`
+  margin-left: 13px;
+
+  font-size: 1.6rem;
+  font-weight: 500;
 `;
 
 export const LeftSideContent = styled.div`

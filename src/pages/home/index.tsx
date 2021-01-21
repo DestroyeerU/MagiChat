@@ -25,6 +25,7 @@ import {
   LeftSide,
   LeftSideContent,
   LeftSideHeader,
+  LeftSideHeaderUsername,
   RightSide,
   RightSideHeader,
   RightSideHeaderDivider,
@@ -140,6 +141,8 @@ const Home: React.FC = () => {
         <LeftSide>
           <LeftSideHeader>
             <UserIcon />
+            <LeftSideHeaderUsername>Idaslon</LeftSideHeaderUsername>
+
             <CreateChatIcon onClick={handleCreateChatIconClick} />
             <LogOutIcon onClick={handleLogOutClick} />
           </LeftSideHeader>
