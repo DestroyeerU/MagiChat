@@ -42,18 +42,16 @@ const Login: React.FC = () => {
 
       if (error) {
         alert(error.message);
-        return;
       }
-
-      if (authContext.signed) {
-        router.push('/home');
-        return;
-      }
-
-      alert('Error logging, please refresh the page');
     },
-    [authContext, router]
+    [authContext]
   );
+
+  useEffect(() => {
+    if (authContext.signed) {
+      router.push('/home');
+    }
+  }, [authContext.signed, router]);
 
   useEffect(() => {
     emailInputRef.current.focus();
