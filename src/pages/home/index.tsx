@@ -155,7 +155,7 @@ const Home: React.FC = () => {
         <RightSide visible={selectedConversation !== undefined}>
           <RightSideHeader>
             <RightSideHeaderDivider />
-            <RightSideHeaderUsername>{selectedConversation?.user?.name}</RightSideHeaderUsername>
+            <RightSideHeaderUsername>{selectedConversation?.toUser?.name}</RightSideHeaderUsername>
           </RightSideHeader>
 
           <MessageList chat={selectedChat} />
