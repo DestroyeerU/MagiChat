@@ -38,7 +38,7 @@ const Home: React.FC = () => {
   const socketConnection = useSocket();
 
   const authContext = useAuth();
-  const { handleLoadConversations } = useConversation();
+  const { handleLoadConversations, handleAddConversation } = useConversation();
   const { chats, handleLoadChat, handleLoadChatMessage } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
@@ -89,9 +89,12 @@ const Home: React.FC = () => {
     [authContext.user?.id, selectedConversation, socketConnection.socket]
   );
 
-  const handleConversationConvertionWithYou = useCallback((conversation: Conversation) => {
-    console.log('conversation11', conversation);
-  }, []);
+  const handleConversationCreatedWithYou = useCallback(
+    (conversation: Conversation) => {
+      handleAddConversation(conversation);
+    },
+    [handleAddConversation]
+  );
 
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
@@ -107,26 +110,25 @@ const Home: React.FC = () => {
     socketConnection.connect();
 
     if (!socketConnection.connectionStarted) {
-      return () => {
-        //
-      };
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return () => {};
     }
 
-    socketConnection.socket.on('create-conversation-response', handleConversationConvertionWithYou);
+    socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
 
     socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
     socketConnection.socket.on('load-chat-message', handleLoadChatMessage);
 
     return () => {
-      socketConnection.socket.off('create-conversation-response', handleConversationConvertionWithYou);
+      socketConnection.socket.off('create-conversation-response', handleConversationCreatedWithYou);
 
       socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
       socketConnection.socket.off('load-chat-message', handleLoadChatMessage);
     };
   }, [
-    handleConversationConvertionWithYou,
+    handleConversationCreatedWithYou,
     handleLoadChat,
     handleLoadChatMessage,
     handleLoadConversations,

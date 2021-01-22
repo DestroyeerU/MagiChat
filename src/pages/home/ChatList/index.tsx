@@ -31,8 +31,6 @@ const ChatList: React.FC<Props> = ({ handleConversationClick }) => {
         return conversation.user.name;
       }
 
-      // eslint-disable-next-line no-console
-      console.error('Error getting conversation username');
       return '';
     },
     [authContext.signed, authContext.user.id]

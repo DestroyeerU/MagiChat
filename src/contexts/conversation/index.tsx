@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import { Conversation } from '@mytypes/conversation';
@@ -23,7 +24,17 @@ export const ConversationProvider: React.FC = ({ children }) => {
   }, []);
 
   const handleAddConversation = useCallback((data: Conversation) => {
-    setConversations((oldConversation) => [...oldConversation, data]);
+    function updateConversations(oldConversations: Conversation[]) {
+      const conversationExists = oldConversations.find((conversation) => conversation._id === data._id);
+
+      if (conversationExists) {
+        return oldConversations;
+      }
+
+      return [...oldConversations, data];
+    }
+
+    setConversations(updateConversations);
   }, []);
 
   // const createConversation = useCallback(
