@@ -96,6 +96,13 @@ const Home: React.FC = () => {
     [handleAddConversation]
   );
 
+  const handleMessageSentToYou = useCallback(
+    (conversation: Conversation) => {
+      handleAddConversation(conversation);
+    },
+    [handleAddConversation]
+  );
+
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
 
@@ -103,8 +110,11 @@ const Home: React.FC = () => {
   }, [chats, selectedConversation]);
 
   useEffect(() => {
-    // [to-do] when someone send a message to you, must appear on conversations
     // [to-do] when someone send a message to you, must appear in the same time
+    // [to-do] how last message should work when you are on that conversation?
+
+    // [to-do] move listeners to context
+    // [to-do] create logout listener to clean contexts data
     // [to-do] error-channels
 
     socketConnection.connect();
@@ -115,23 +125,26 @@ const Home: React.FC = () => {
     }
 
     socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
+    // socketConnection.socket.on('create-chat-message-response', handleMessageSentToYou);
 
     socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
-    socketConnection.socket.on('load-chat-message', handleLoadChatMessage);
+    socketConnection.socket.on('create-chat-message-response', handleLoadChatMessage);
 
     return () => {
       socketConnection.socket.off('create-conversation-response', handleConversationCreatedWithYou);
+      // socketConnection.socket.off('create-chat-message-response', handleMessageSentToYou);
 
       socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
-      socketConnection.socket.off('load-chat-message', handleLoadChatMessage);
+      socketConnection.socket.off('create-chat-message-response', handleLoadChatMessage);
     };
   }, [
     handleConversationCreatedWithYou,
     handleLoadChat,
     handleLoadChatMessage,
     handleLoadConversations,
+    handleMessageSentToYou,
     socketConnection,
   ]);
 
