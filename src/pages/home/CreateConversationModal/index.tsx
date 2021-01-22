@@ -83,13 +83,13 @@ const CreateConversationModal: React.ForwardRefRenderFunction<ModalHandles> = (_
     }
 
     socketConnection.socket.on('create-conversation-response', handleConversationResponse);
-    socketConnection.socket.on('create-conversation-error', handleConversationError);
     socketConnection.socket.on('create-conversation-response', conversationContext.handleAddConversation);
+    socketConnection.socket.on('create-conversation-error', handleConversationError);
 
     return () => {
       socketConnection.socket.off('create-conversation-response', handleConversationResponse);
-      socketConnection.socket.off('create-conversation-error', handleConversationError);
       socketConnection.socket.off('create-conversation-response', conversationContext.handleAddConversation);
+      socketConnection.socket.off('create-conversation-error', handleConversationError);
     };
   }, [
     conversationContext.handleAddConversation,

@@ -96,12 +96,9 @@ const Home: React.FC = () => {
     [handleAddConversation]
   );
 
-  const handleMessageSentToYou = useCallback(
-    (conversation: Conversation) => {
-      handleAddConversation(conversation);
-    },
-    [handleAddConversation]
-  );
+  const handleMessageSentToYou = useCallback((message: any) => {
+    console.log('message to me', message);
+  }, []);
 
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);
@@ -124,16 +121,16 @@ const Home: React.FC = () => {
       return () => {};
     }
 
-    socketConnection.socket.on('create-conversation-response', handleConversationCreatedWithYou);
-    // socketConnection.socket.on('create-chat-message-response', handleMessageSentToYou);
+    socketConnection.socket.on('receive-conversation-response', handleConversationCreatedWithYou);
+    socketConnection.socket.on('receive-chat-message-response', handleMessageSentToYou);
 
     socketConnection.socket.on('load-conversations', handleLoadConversations);
     socketConnection.socket.on('load-chat', handleLoadChat);
     socketConnection.socket.on('create-chat-message-response', handleLoadChatMessage);
 
     return () => {
-      socketConnection.socket.off('create-conversation-response', handleConversationCreatedWithYou);
-      // socketConnection.socket.off('create-chat-message-response', handleMessageSentToYou);
+      socketConnection.socket.off('receive-conversation-response', handleConversationCreatedWithYou);
+      socketConnection.socket.off('receive-chat-message-response', handleMessageSentToYou);
 
       socketConnection.socket.off('load-conversations', handleLoadConversations);
       socketConnection.socket.off('load-chat', handleLoadChat);
