@@ -39,7 +39,7 @@ const Home: React.FC = () => {
 
   const authContext = useAuth();
   const { handleLoadConversations, handleAddConversation } = useConversation();
-  const { chats, handleLoadChat, handleLoadChatMessage } = useChat();
+  const { chats, handleLoadChat, handleLoadChatMessage, addMessage } = useChat();
 
   const modalRef = useRef<ModalHandles>(null);
 
@@ -96,9 +96,13 @@ const Home: React.FC = () => {
     [handleAddConversation]
   );
 
-  const handleMessageSentToYou = useCallback((message: any) => {
-    console.log('message to me', message);
-  }, []);
+  const handleMessageSentToYou = useCallback(
+    (message: any) => {
+      console.log('message to me', message);
+      addMessage(message);
+    },
+    [addMessage]
+  );
 
   useEffect(() => {
     const chat = chats.find((currentChat) => currentChat.conversation._id === selectedConversation?._id);

@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 
 import { Chat, Message } from '@mytypes/message';
 
-interface LoadChatMessageData extends Message {
+interface ChatMessageData extends Message {
   conversationId: string;
 }
 
@@ -11,7 +11,8 @@ interface ChatContextData {
   chats: Chat[];
 
   handleLoadChat: (data: Chat) => void;
-  handleLoadChatMessage: (message: LoadChatMessageData) => void;
+  addMessage: (data: ChatMessageData) => void;
+  handleLoadChatMessage: (message: ChatMessageData) => void;
 }
 
 const ChatContext = createContext<ChatContextData>({} as ChatContextData);
@@ -41,7 +42,7 @@ export const ChatProvider: React.FC = ({ children }) => {
     setChats(getUpdatedChats);
   }, []);
 
-  const handleLoadChatMessage = useCallback((message: LoadChatMessageData) => {
+  const handleLoadChatMessage = useCallback((message: ChatMessageData) => {
     function getUpdatedChats(oldChats: Chat[]) {
       const chatConversation = oldChats.find((chat) => chat.conversation._id === message.conversationId);
       if (!chatConversation) {
@@ -64,14 +65,58 @@ export const ChatProvider: React.FC = ({ children }) => {
     setChats(getUpdatedChats);
   }, []);
 
+  const addMessage = useCallback((data: ChatMessageData) => {
+    function updateChats(oldChats: Chat[]) {
+      const { conversationId, _id, text, date, senderUserId } = data;
+
+      const chat = oldChats.find((currentChat) => currentChat.conversation._id === conversationId);
+
+      if (!chat) {
+        // [to-do] need to create the chat? Or is a bug
+        // eslint-disable-next-line no-console
+        console.error('Chat not exists on addMessage');
+
+        return oldChats;
+      }
+
+      const message = {
+        _id,
+        text,
+        date,
+        senderUserId,
+      };
+
+      const chatUpdated = {
+        conversation: chat.conversation,
+        messages: [message, ...chat.messages],
+      };
+
+      const chatsUpdated = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const currentChat of oldChats) {
+        if (currentChat.conversation._id === chatUpdated.conversation._id) {
+          chatsUpdated.push(chatUpdated);
+        }
+
+        chatsUpdated.push(currentChat);
+      }
+
+      return chatsUpdated;
+    }
+
+    setChats(updateChats);
+  }, []);
+
   const contextValue = useMemo<ChatContextData>(() => {
     return {
       chats,
 
+      addMessage,
       handleLoadChat,
       handleLoadChatMessage,
     };
-  }, [chats, handleLoadChat, handleLoadChatMessage]);
+  }, [addMessage, chats, handleLoadChat, handleLoadChatMessage]);
 
   return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };
