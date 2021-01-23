@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { Conversation } from '@mytypes/conversation';
-import { useAuth } from 'src/contexts/auth';
 import { useConversation } from 'src/contexts/conversation';
 
 import UserIcon from '../assets/user.svg';
@@ -9,31 +8,12 @@ import { Divider } from '../styles';
 import { Chat, ChatRow, ChatsContainer, LastMessage, UserInfo, Username } from './styles';
 
 interface Props {
+  getConversationUsername: (conversation: Conversation) => string;
   handleConversationClick: (conversation: Conversation) => void;
 }
 
-const ChatList: React.FC<Props> = ({ handleConversationClick }) => {
-  const authContext = useAuth();
+const ChatList: React.FC<Props> = ({ getConversationUsername, handleConversationClick }) => {
   const { conversations } = useConversation();
-
-  const getConversationUsername = useCallback(
-    (conversation: Conversation) => {
-      if (!authContext.signed) {
-        return '';
-      }
-
-      if (authContext.user.id === conversation.user.id) {
-        return conversation.toUser.name;
-      }
-
-      if (authContext.user.id === conversation.toUser.id) {
-        return conversation.user.name;
-      }
-
-      return '';
-    },
-    [authContext.signed, authContext.user.id]
-  );
 
   return (
     <ChatsContainer>

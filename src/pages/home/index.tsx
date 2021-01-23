@@ -43,6 +43,25 @@ const Home: React.FC = () => {
   const [selectedConversation, setSelectedConversation] = useState<Conversation>();
   const [selectedChat, setSelectedChat] = useState<ChatInterface>();
 
+  const getConversationUsername = useCallback(
+    (conversation?: Conversation) => {
+      if (!authContext.signed) {
+        return '';
+      }
+
+      if (authContext.user.id === conversation?.user?.id) {
+        return conversation.toUser.name;
+      }
+
+      if (authContext.user.id === conversation?.toUser?.id) {
+        return conversation.user.name;
+      }
+
+      return '';
+    },
+    [authContext.signed, authContext.user.id]
+  );
+
   const handleCreateChatIconClick = useCallback(() => {
     modalRef.current.handleOpen();
   }, []);
@@ -106,14 +125,17 @@ const Home: React.FC = () => {
             <SearchInput placeholder="Pesquise por uma conversa" />
             <Divider />
 
-            <ChatList handleConversationClick={handleConversationClick} />
+            <ChatList
+              getConversationUsername={getConversationUsername}
+              handleConversationClick={handleConversationClick}
+            />
           </LeftSideContent>
         </LeftSide>
 
         <RightSide visible={selectedConversation !== undefined}>
           <RightSideHeader>
             <RightSideHeaderDivider />
-            <RightSideHeaderUsername>{selectedConversation?.toUser?.name}</RightSideHeaderUsername>
+            <RightSideHeaderUsername>{getConversationUsername(selectedConversation)}</RightSideHeaderUsername>
           </RightSideHeader>
 
           <MessageList chat={selectedChat} />
