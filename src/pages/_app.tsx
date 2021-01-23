@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { AuthProvider } from '@contexts/auth';
+import { ChatProvider } from '@contexts/chat';
+import { ConversationProvider } from '@contexts/conversation';
+import { SocketProvider } from '@contexts/socket';
 import { AppProps } from 'next/app';
-import { AuthProvider } from 'src/contexts/auth';
-import { ChatProvider } from 'src/contexts/chat';
-import { ConversationProvider } from 'src/contexts/conversation';
-import { SocketProvider } from 'src/contexts/socket';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '../styles/global';

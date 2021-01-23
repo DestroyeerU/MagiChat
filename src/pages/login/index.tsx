@@ -1,10 +1,10 @@
 /* eslint-disable no-alert */
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useAuth } from '@contexts/auth';
 import { FormHandles } from '@unform/core';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
-import { useAuth } from 'src/contexts/auth';
 import * as Yup from 'yup';
 
 import { DefaultButton } from '@components/Buttons';

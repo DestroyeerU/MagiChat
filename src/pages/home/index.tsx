@@ -1,12 +1,12 @@
 /* eslint-disable no-alert */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useAuth } from '@contexts/auth';
+import { useChat } from '@contexts/chat';
+import { useSocket } from '@contexts/socket';
 import { Conversation } from '@mytypes/conversation';
 import { Chat as ChatInterface } from '@mytypes/message';
 import { useRouter } from 'next/dist/client/router';
-import { useAuth } from 'src/contexts/auth';
-import { useChat } from 'src/contexts/chat';
-import { useSocket } from 'src/contexts/socket';
 
 import { ModalHandles } from '@components/Modal';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useConversation } from '@contexts/conversation';
 import { Conversation } from '@mytypes/conversation';
-import { useConversation } from 'src/contexts/conversation';
 
 import UserIcon from '../assets/user.svg';
 import { Divider } from '../styles';

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useSocket } from '@contexts/socket';
 import { Chat, Message as MessageInterface } from '@mytypes/message';
-import { useSocket } from 'src/contexts/socket';
 
 import { convertInnerHtmlToText } from '@utils/html';
 

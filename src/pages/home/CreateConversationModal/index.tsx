@@ -1,9 +1,9 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
+import { useConversation } from '@contexts/conversation';
+import { useSocket } from '@contexts/socket';
 import { Conversation } from '@mytypes/conversation';
 import { DefaultRequestError } from '@mytypes/request';
-import { useConversation } from 'src/contexts/conversation';
-import { useSocket } from 'src/contexts/socket';
 import * as Yup from 'yup';
 
 import Modal, { ModalHandles } from '@components/Modal';
