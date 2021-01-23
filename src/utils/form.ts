@@ -1,7 +1,7 @@
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
-export async function validateSchema(schema: Yup.ObjectSchema, data: any) {
+export async function validateSchema(schema: Yup.AnyObjectSchema, data: any) {
   try {
     await schema?.validate(data, {
       abortEarly: false,

@@ -92,7 +92,6 @@ export const ChatProvider: React.FC = ({ children }) => {
     function getUpdatedChats(oldChats: Chat[]) {
       const chatConversation = oldChats.find((chat) => chat.conversation._id === message.conversationId);
       if (!chatConversation) {
-        console.log('No chat conversation on load message');
         return oldChats;
       }
 
