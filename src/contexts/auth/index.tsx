@@ -75,15 +75,12 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
-    signOutListener.listeners.forEach((listener) => {
-      listener();
-    });
-
+    signOutListener.notifyListeners();
     localStorage.clear();
 
     setUser({} as User);
     setSigned(false);
-  }, [signOutListener.listeners]);
+  }, [signOutListener]);
 
   useEffect(() => {
     const { user: userStoraged, token } = authStorageHelper.loadUserAndToken();

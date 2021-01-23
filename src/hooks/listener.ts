@@ -1,6 +1,8 @@
 import { useCallback, useRef } from 'react';
 
-export function useListener<T = any>() {
+type DefaultListener = (data?: any) => any;
+
+export function useListener<T extends DefaultListener>() {
   const listeners = useRef([] as T[]);
 
   const addListener = useCallback((listener: T) => {
@@ -12,9 +14,17 @@ export function useListener<T = any>() {
     listeners.current = listenersUpdated;
   }, []);
 
+  const notifyListeners = useCallback((data?: any) => {
+    for (let i = 0; i < listeners.current.length; i += 1) {
+      const listenerFn = listeners.current[i];
+      listenerFn(data);
+    }
+  }, []);
+
   return {
     listeners: listeners.current,
     addListener,
     removeListener,
+    notifyListeners,
   };
 }
