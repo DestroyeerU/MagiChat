@@ -43,7 +43,7 @@ export const FormTitle = styled.h1`
   font-weight: 500;
 `;
 
-export const ForgotPassword = styled.p`
+export const ForgotPassword = styled.a`
   margin-top: 12px;
 
   color: ${(props) => props.theme.colors.green};
@@ -53,7 +53,8 @@ export const ForgotPassword = styled.p`
 
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     text-decoration: underline;
   }
 `;
@@ -69,12 +70,12 @@ export const CreateAccount = styled.a`
 
   cursor: pointer;
 
-  > span {
-    color: ${(props) => props.theme.colors.green};
-  }
-
   &:hover,
   &:focus {
     text-decoration: underline;
+  }
+
+  > span {
+    color: ${(props) => props.theme.colors.green};
   }
 `;

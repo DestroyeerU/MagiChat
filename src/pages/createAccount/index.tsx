@@ -2,11 +2,12 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { User } from '@mytypes/user';
 import { FormHandles } from '@unform/core';
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
 import * as Yup from 'yup';
+
+import { User } from '@mytypes/user';
 
 import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
@@ -103,7 +104,7 @@ const CreateAccount: React.FC = () => {
         </Description>
 
         <Link href="/login">
-          <BackToLogin>
+          <BackToLogin href="/login">
             <ArrowLeftIcon />
             Voltar para o login
           </BackToLogin>

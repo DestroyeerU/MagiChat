@@ -63,14 +63,12 @@ const Login: React.FC = () => {
       <Input ref={emailInputRef} name="email" placeholder="Digite seu email" />
       <PasswordInput ref={passwordInputRef} name="password" placeholder="Digite sua senha" type="password" />
 
-      <ForgotPassword>Esqueci minha senha</ForgotPassword>
+      <ForgotPassword href="/#">Esqueci minha senha</ForgotPassword>
 
       <DefaultButton type="submit">ENTRAR</DefaultButton>
 
-      {/* <CreateAccount href="/#">Não tem conta?</CreateAccount> */}
-
       <Link href="/createAccount">
-        <CreateAccount>
+        <CreateAccount href="/createAccount">
           Não tem conta?
           <span> Crie uma!</span>
         </CreateAccount>

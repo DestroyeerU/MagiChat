@@ -3,8 +3,8 @@ import styled, { keyframes } from 'styled-components';
 const FadeIn = keyframes`
   from {
     display: none;
+    top: 0%;
     opacity: 0;
-    top: 45%;
   }
 
   to {
@@ -17,8 +17,8 @@ const FadeIn = keyframes`
 const FadeOut = keyframes`
   from {
     display: block;
-    opacity: 1;
     top: 50%;
+    opacity: 1;
   }
 
   to {

@@ -13,8 +13,6 @@ export const DefaultButton = styled.button`
 
   transition: filter 0.1s;
 
-  outline: none;
-
   &:hover,
   &:focus {
     filter: brightness(85%);
