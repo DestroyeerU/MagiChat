@@ -18,13 +18,13 @@ interface ModalProps {
 type ModalComponent = React.ForwardRefRenderFunction<ModalHandles, ModalProps>;
 const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref) => {
   const containerRef = useRef<HTMLDivElement>();
+  const opened = useRef(false);
+
   const [visible, setVisible] = useState(false);
   const [lastAnimationName, setLastAnimationName] = useState('');
 
   const handleOpen = useCallback(() => {
     if (visible) return;
-    if (onOpen) onOpen();
-
     setVisible(true);
 
     if (!containerRef.current.classList.contains('active')) {
@@ -33,11 +33,10 @@ const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref)
 
       setLastAnimationName('active');
     }
-  }, [onOpen, visible]);
+  }, [visible]);
 
   const handleClose = useCallback(() => {
     if (!visible) return;
-    if (onClose) onClose();
 
     if (!containerRef.current.classList.contains('no-active')) {
       containerRef.current.classList.add('no-active');
@@ -45,7 +44,7 @@ const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref)
 
       setLastAnimationName('no-active');
     }
-  }, [onClose, visible]);
+  }, [visible]);
 
   const handleAnimationEnd = useCallback(() => {
     if (lastAnimationName === 'no-active') {
@@ -74,7 +73,7 @@ const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref)
 
   useEffect(() => {
     const containerCurrent = containerRef.current;
-    containerRef.current.addEventListener('animationend', handleAnimationEnd);
+    containerCurrent.addEventListener('animationend', handleAnimationEnd);
 
     return () => {
       containerCurrent.removeEventListener('animationend', handleAnimationEnd);
@@ -82,14 +81,31 @@ const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref)
   }, [handleAnimationEnd, lastAnimationName]);
 
   useEffect(() => {
+    function handleVisibleOn() {
+      if (opened.current) return;
+
+      if (onOpen) onOpen();
+      opened.current = true;
+    }
+
+    function handleVisibleOff() {
+      if (!opened.current) return;
+
+      if (onClose) onClose();
+      opened.current = false;
+    }
+
     if (visible) {
+      handleVisibleOn();
       document.addEventListener('keydown', handleKeyDown);
+    } else {
+      handleVisibleOff();
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleKeyDown, visible]);
+  }, [handleKeyDown, onClose, onOpen, visible]);
 
   useImperativeHandle(ref, () => ({
     isOpen: visible,

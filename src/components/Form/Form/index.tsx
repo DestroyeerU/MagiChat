@@ -5,7 +5,6 @@ import { SubmitHandler, FormHandles, FormProps as UnformProps } from '@unform/co
 import { Form as Unform } from '@unform/web';
 
 import { useSafeRef } from '@hooks/native';
-
 import { setErrorsMessages, validateSchema } from '@utils/form';
 
 export declare type FormPros = FormHandles;

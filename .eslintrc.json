@@ -82,13 +82,9 @@
         "groups": [
           "/^react/",
           "module",
-          "/^@types/",
-          "/^@pages/",
-          "/^@services/",
-          "/^@components/",
-          "/^@hooks/",
-          "/^@utils/",
-          "/^@styles/",
+          ["/^@mytypes/", "/^@styles/"],
+          ["/^@pages/", "/^@components/"],
+          ["/^@services/", "/^@hooks/", "/^@utils/"],
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }

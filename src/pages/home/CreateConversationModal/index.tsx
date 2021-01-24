@@ -1,13 +1,15 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useConversation } from '@contexts/conversation';
 import { useSocket } from '@contexts/socket';
+import * as Yup from 'yup';
+
 import { Conversation } from '@mytypes/conversation';
 import { DefaultRequestError } from '@mytypes/request';
-import * as Yup from 'yup';
 
 import Modal, { ModalHandles } from '@components/Modal';
 
+import { useSafeRef } from '@hooks/native';
 import { validateSchema } from '@utils/form';
 
 import {
@@ -23,38 +25,31 @@ import {
   HeaderTitle,
 } from './styles';
 
-interface CreateConversationModalHandles {
-  handleOpen: () => void;
-  handleClose: () => void;
-}
-
 const schema = Yup.object().shape({
   email: Yup.string().email('Enter a valid email').required('You must enter a email'),
 });
 
-type Modal = React.ForwardRefRenderFunction<CreateConversationModalHandles>;
+type Modal = React.ForwardRefRenderFunction<ModalHandles>;
 const CreateConversationModal: Modal = (_props, ref) => {
   const socketConnection = useSocket();
   const { createConversationRequest } = useConversation();
 
-  const modalRef = useRef<ModalHandles>();
+  const modalRef = useSafeRef<ModalHandles>(ref);
   const emailRef = useRef<HTMLInputElement>();
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
   const handleOpen = useCallback(() => {
-    if (modalRef.current.isOpen) return;
-
-    modalRef.current.handleOpen();
+    emailRef.current.focus();
   }, []);
 
   const handleClose = useCallback(() => {
-    if (!modalRef.current.isOpen) return;
-
-    setError('');
     setEmail('');
-  }, []);
+    setError('');
+
+    modalRef.current.handleClose();
+  }, [modalRef]);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -77,11 +72,9 @@ const CreateConversationModal: Modal = (_props, ref) => {
 
   const handleConversationResponse = useCallback(
     (_conversation: Conversation) => {
-      setError('');
-      setEmail('');
-      modalRef.current.handleClose();
+      handleClose();
     },
-    [modalRef]
+    [handleClose]
   );
 
   const handleConversationError = useCallback((socketError: DefaultRequestError) => {
@@ -103,13 +96,8 @@ const CreateConversationModal: Modal = (_props, ref) => {
     };
   }, [handleConversationError, handleConversationResponse, socketConnection]);
 
-  useImperativeHandle(ref, () => ({
-    handleOpen,
-    handleClose,
-  }));
-
   return (
-    <Modal ref={modalRef} onClose={handleClose} onEnterClick={handleConfirmClick}>
+    <Modal ref={modalRef} onOpen={handleOpen} onClose={handleClose} onEnterClick={handleConfirmClick}>
       <Container>
         <Header>
           <HeaderTitle>Create Conversation</HeaderTitle>
@@ -117,7 +105,7 @@ const CreateConversationModal: Modal = (_props, ref) => {
 
         <Body>
           <BodyMessage>Enter with the user email that you want to start chatting</BodyMessage>
-          <BodyInput ref={emailRef} placeholder="Enter email" onChange={handleInputChange} />
+          <BodyInput ref={emailRef} value={email} placeholder="Enter email" onChange={handleInputChange} />
           <BodyInputError visibilityVisible={Boolean(error)}>{error || 'Error here'}</BodyInputError>
         </Body>
 
