@@ -2,8 +2,7 @@
 
 
 ## To-do
-- [ ] Login, CreateAccount: Add 'eye' to password's inputs
-- [ ] Typescript problem on Home-LeftSide
+- [ ] Typescript problem on Home-LeftSide and PasswordInput (Seems to be compatibility between dependecies error)
 
 
 ### Socket
