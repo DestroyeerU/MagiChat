@@ -13,7 +13,7 @@ import { ModalHandles } from '@components/Modal';
 import CreateChatIcon from './assets/chat.svg';
 import LogOutIcon from './assets/log-out.svg';
 import UserIcon from './assets/user.svg';
-import ChatList from './ChatList';
+import ConversationList from './ConversationList';
 import CreateConversationModal from './CreateConversationModal';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
@@ -125,7 +125,8 @@ const Home: React.FC = () => {
             <SearchInput placeholder="Pesquise por uma conversa" />
             <Divider />
 
-            <ChatList
+            <ConversationList
+              selectedConversation={selectedConversation}
               getConversationUsername={getConversationUsername}
               handleConversationClick={handleConversationClick}
             />

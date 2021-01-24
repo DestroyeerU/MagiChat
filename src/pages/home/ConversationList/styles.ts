@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { ScrollCSS } from '@styles/global';
 
-export const ChatsContainer = styled.ul`
+export const ConversationsContainer = styled.ul`
   display: flex;
   flex-direction: column;
 
@@ -16,7 +16,7 @@ export const ChatsContainer = styled.ul`
   ${ScrollCSS};
 `;
 
-export const Chat = styled.li`
+export const Conversation = styled.li`
   display: flex;
   flex-direction: column;
 
@@ -39,7 +39,7 @@ export const Chat = styled.li`
   }
 `;
 
-export const ChatRow = styled.div`
+export const ConversationRow = styled.div`
   display: flex;
   align-items: center;
 

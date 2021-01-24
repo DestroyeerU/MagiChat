@@ -2,6 +2,9 @@
 
 
 ## To-do
+- [ ] Add selected to ConversationList
+- [ ] Login, CreateAccount: Add 'eye' to password's inputs
+- [ ] Typescript problem on Home-LeftSide
 
 
 ### Socket
