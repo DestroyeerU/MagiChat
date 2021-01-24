@@ -39,7 +39,11 @@ export const Conversation = styled.li`
   }
 `;
 
-export const ConversationRow = styled.div`
+interface ConversationRowProps {
+  selected: boolean;
+}
+
+export const ConversationRow = styled.div<ConversationRowProps>`
   display: flex;
   align-items: center;
 
@@ -47,6 +51,8 @@ export const ConversationRow = styled.div`
   border-radius: 4px;
 
   cursor: pointer;
+
+  background-color: ${(props) => props.selected && props.theme.colors.home.backgroundLighten};
 
   &:hover {
     background-color: ${(props) => props.theme.colors.home.backgroundLighten};

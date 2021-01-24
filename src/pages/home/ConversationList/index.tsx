@@ -8,7 +8,7 @@ import { Divider } from '../styles';
 import { Conversation, ConversationRow, ConversationsContainer, LastMessage, UserInfo, Username } from './styles';
 
 interface Props {
-  selectedConversation: ConversationInterface;
+  selectedConversation?: ConversationInterface;
   getConversationUsername: (conversation: ConversationInterface) => string;
   handleConversationClick: (conversation: ConversationInterface) => void;
 }
@@ -24,7 +24,10 @@ const ConversationList: React.FC<Props> = ({
     <ConversationsContainer>
       {conversations.map((conversation) => (
         <Conversation key={conversation._id}>
-          <ConversationRow onClick={() => handleConversationClick(conversation)}>
+          <ConversationRow
+            selected={selectedConversation?._id === conversation._id}
+            onClick={() => handleConversationClick(conversation)}
+          >
             <UserIcon />
             <UserInfo>
               <Username>{getConversationUsername(conversation)}</Username>
