@@ -10,15 +10,21 @@ export interface ModalHandles {
 
 interface ModalProps {
   children?: React.ReactNode;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onEnterClick?: () => void;
 }
 
-const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ children }, ref) => {
+type ModalComponent = React.ForwardRefRenderFunction<ModalHandles, ModalProps>;
+const Modal: ModalComponent = ({ children, onOpen, onClose, onEnterClick }, ref) => {
   const containerRef = useRef<HTMLDivElement>();
   const [visible, setVisible] = useState(false);
   const [lastAnimationName, setLastAnimationName] = useState('');
 
   const handleOpen = useCallback(() => {
     if (visible) return;
+    if (onOpen) onOpen();
+
     setVisible(true);
 
     if (!containerRef.current.classList.contains('active')) {
@@ -27,10 +33,11 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ child
 
       setLastAnimationName('active');
     }
-  }, [visible]);
+  }, [onOpen, visible]);
 
   const handleClose = useCallback(() => {
     if (!visible) return;
+    if (onClose) onClose();
 
     if (!containerRef.current.classList.contains('no-active')) {
       containerRef.current.classList.add('no-active');
@@ -38,7 +45,7 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ child
 
       setLastAnimationName('no-active');
     }
-  }, [visible]);
+  }, [onClose, visible]);
 
   const handleAnimationEnd = useCallback(() => {
     if (lastAnimationName === 'no-active') {
@@ -49,6 +56,22 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ child
     }
   }, [lastAnimationName]);
 
+  const handleKeyDown = useCallback(
+    async (event: KeyboardEvent) => {
+      const { key } = event;
+
+      const actions = {
+        Escape: () => handleClose && handleClose(),
+        Enter: () => onEnterClick && onEnterClick(),
+      };
+
+      if (key in actions) {
+        await actions[key]();
+      }
+    },
+    [handleClose, onEnterClick]
+  );
+
   useEffect(() => {
     const containerCurrent = containerRef.current;
     containerRef.current.addEventListener('animationend', handleAnimationEnd);
@@ -57,6 +80,16 @@ const Modal: React.ForwardRefRenderFunction<ModalHandles, ModalProps> = ({ child
       containerCurrent.removeEventListener('animationend', handleAnimationEnd);
     };
   }, [handleAnimationEnd, lastAnimationName]);
+
+  useEffect(() => {
+    if (visible) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown, visible]);
 
   useImperativeHandle(ref, () => ({
     isOpen: visible,

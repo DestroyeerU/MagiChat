@@ -40,7 +40,6 @@ const CreateConversationModal: Modal = (_props, ref) => {
   const modalRef = useRef<ModalHandles>();
   const emailRef = useRef<HTMLInputElement>();
 
-  const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -48,8 +47,6 @@ const CreateConversationModal: Modal = (_props, ref) => {
     if (modalRef.current.isOpen) return;
 
     modalRef.current.handleOpen();
-
-    setOpen(true);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -57,9 +54,6 @@ const CreateConversationModal: Modal = (_props, ref) => {
 
     setError('');
     setEmail('');
-
-    modalRef.current.handleClose();
-    setOpen(false);
   }, []);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,33 +88,6 @@ const CreateConversationModal: Modal = (_props, ref) => {
     setError(socketError.message);
   }, []);
 
-  const handleKeyDown = useCallback(
-    async (event: KeyboardEvent) => {
-      const { key } = event;
-
-      const actions = {
-        Escape: handleClose,
-        Enter: handleConfirmClick,
-      };
-
-      if (key in actions) {
-        await actions[key]();
-      }
-    },
-    [handleClose, handleConfirmClick]
-  );
-
-  useEffect(() => {
-    if (open) {
-      emailRef.current.focus();
-      document.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown, open]);
-
   useEffect(() => {
     if (!socketConnection.connectionStarted) {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -142,7 +109,7 @@ const CreateConversationModal: Modal = (_props, ref) => {
   }));
 
   return (
-    <Modal ref={modalRef}>
+    <Modal ref={modalRef} onClose={handleClose} onEnterClick={handleConfirmClick}>
       <Container>
         <Header>
           <HeaderTitle>Create Conversation</HeaderTitle>
