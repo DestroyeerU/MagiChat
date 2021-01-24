@@ -16,7 +16,7 @@ export const StyledForm = styled(Form)`
   border: 1px solid ${(props) => props.theme.colors.stroke};
   border-radius: 4px;
 
-  input {
+  div {
     &:last-of-type {
       margin-top: 20px;
     }

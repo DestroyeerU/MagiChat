@@ -20,12 +20,14 @@ export const StyledForm = styled(Form)`
   width: 100%;
   max-width: 360px;
 
-  input {
+  > input:last-of-type {
+    /* Second Input */
     margin-top: 20px;
+  }
 
-    &:first-of-type {
-      margin-top: 0;
-    }
+  div {
+    /* PasswordInput */
+    margin-top: 20px;
   }
 
   button {

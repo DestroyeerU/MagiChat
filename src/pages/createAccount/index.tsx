@@ -12,6 +12,7 @@ import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
+import PasswordInput from '@components/PasswordInput';
 
 import { postRequest } from '@utils/request';
 
@@ -82,12 +83,11 @@ const CreateAccount: React.FC = () => {
 
         <Input ref={nameInputRef} name="name" placeholder="Digite seu nome" autoFocus />
         <Input ref={emailInputRef} name="email" placeholder="Digite seu email" />
-        <Input ref={passwordInputRef} name="password" placeholder="Digite sua senha" type="password" />
-        <Input
+        <PasswordInput ref={passwordInputRef} name="password" placeholder="Digite sua senha" />
+        <PasswordInput
           ref={passwordConfirmationInputRef}
           name="passwordConfirmation"
           placeholder="Confirmação de senha"
-          type="password"
         />
 
         <DefaultButton type="submit">CADASTRAR</DefaultButton>

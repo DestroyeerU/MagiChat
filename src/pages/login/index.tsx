@@ -11,6 +11,7 @@ import { DefaultButton } from '@components/Buttons';
 import { InputHandles } from '@components/Form/DefaultInput';
 import Form from '@components/Form/Form';
 import Input from '@components/Input';
+import PasswordInput from '@components/PasswordInput';
 
 import { StyledForm, FormTitle, ForgotPassword, CreateAccount } from './styles';
 
@@ -60,7 +61,7 @@ const Login: React.FC = () => {
       <FormTitle>Faça seu login</FormTitle>
 
       <Input ref={emailInputRef} name="email" placeholder="Digite seu email" />
-      <Input ref={passwordInputRef} name="password" placeholder="Digite sua senha" type="password" />
+      <PasswordInput ref={passwordInputRef} name="password" placeholder="Digite sua senha" type="password" />
 
       <ForgotPassword>Esqueci minha senha</ForgotPassword>
 
