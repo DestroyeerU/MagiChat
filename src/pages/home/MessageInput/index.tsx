@@ -13,6 +13,11 @@ interface OwnProps {
 type InputAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'value' | 'width'>;
 type Props = OwnProps & InputAttributes;
 
+function moveCursorToEnd() {
+  document.execCommand('selectAll', false, null);
+  document.getSelection().collapseToEnd();
+}
+
 const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>();
 
@@ -79,14 +84,21 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
 
   const handlePaste = useCallback((event: React.ClipboardEvent) => {
     event.preventDefault();
-
     const text = event.clipboardData.getData('text/plain');
 
-    inputRef.current.innerHTML = text;
+    function isAllTextSelected() {
+      return document.getSelection().toString() === text;
+    }
 
-    // move cursor to end
-    document.execCommand('selectAll', false, null);
-    document.getSelection().collapseToEnd();
+    if (!isAllTextSelected()) {
+      inputRef.current.innerHTML += text;
+    }
+
+    moveCursorToEnd();
+  }, []);
+
+  const handleFocus = useCallback(() => {
+    moveCursorToEnd();
   }, []);
 
   return (
@@ -98,6 +110,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
         onCopy={handleCopy}
         onCut={handleCut}
         onPaste={handlePaste}
+        onFocus={handleFocus}
         contentEditable
         suppressContentEditableWarning
         {...rest}
