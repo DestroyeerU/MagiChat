@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 
 import { convertInnerHtmlToText } from '@utils/html';
 
-import { Container, StyledMessageInput } from './styles';
+import { Container, SpanIntructions, SpanIntructionsKeys, StyledMessageSpan } from './styles';
 
 type KeyDownEvent = React.KeyboardEvent<HTMLInputElement>;
 
@@ -19,7 +19,7 @@ function moveCursorToEnd() {
 }
 
 const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) => {
-  const inputRef = useRef<HTMLInputElement>();
+  const inputSpanRef = useRef<HTMLSpanElement>();
 
   const actions = useMemo(() => {
     function Enter(_event: KeyDownEvent) {
@@ -30,10 +30,10 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
       event.preventDefault();
 
       if (handleSubmit) {
-        const text = convertInnerHtmlToText(inputRef.current.innerHTML);
+        const text = convertInnerHtmlToText(inputSpanRef.current.innerHTML);
 
         handleSubmit(text);
-        inputRef.current.textContent = '';
+        inputSpanRef.current.textContent = '';
       }
     }
 
@@ -68,7 +68,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
   const handleCopy = useCallback((event: React.ClipboardEvent) => {
     event.preventDefault();
 
-    const text = convertInnerHtmlToText(inputRef.current.innerHTML);
+    const text = convertInnerHtmlToText(inputSpanRef.current.innerHTML);
 
     event.clipboardData.setData('text', text);
   }, []);
@@ -76,8 +76,8 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
   const handleCut = useCallback((event: React.ClipboardEvent) => {
     event.preventDefault();
 
-    const text = convertInnerHtmlToText(inputRef.current.innerHTML);
-    inputRef.current.innerHTML = '';
+    const text = convertInnerHtmlToText(inputSpanRef.current.innerHTML);
+    inputSpanRef.current.innerHTML = '';
 
     event.clipboardData.setData('text/plain', text);
   }, []);
@@ -91,7 +91,7 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
     }
 
     if (!isAllTextSelected()) {
-      inputRef.current.innerHTML += text;
+      inputSpanRef.current.innerHTML += text;
     }
 
     moveCursorToEnd();
@@ -103,8 +103,8 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
 
   return (
     <Container>
-      <StyledMessageInput
-        ref={inputRef}
+      <StyledMessageSpan
+        ref={inputSpanRef}
         data-placeholder={placeholder}
         onKeyDown={handleKeyDown}
         onCopy={handleCopy}
@@ -115,6 +115,12 @@ const MessageInput: React.FC<Props> = ({ handleSubmit, placeholder, ...rest }) =
         suppressContentEditableWarning
         {...rest}
       />
+
+      <SpanIntructions>
+        Press
+        <SpanIntructionsKeys> Shift + Enter </SpanIntructionsKeys>
+        to send
+      </SpanIntructions>
     </Container>
   );
 };

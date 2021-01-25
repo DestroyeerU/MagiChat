@@ -18,13 +18,14 @@ const BreakLineCSS = css`
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   margin: 0 20px;
 
   width: auto;
   max-height: 300px;
 `;
 
-export const StyledMessageInput = styled.span`
+export const StyledMessageSpan = styled.span`
   width: 100%;
 
   padding: 14px 20px;
@@ -44,10 +45,8 @@ export const StyledMessageInput = styled.span`
   &:empty::before {
     content: attr(data-placeholder);
     color: ${(props) => props.theme.colors.textSecondary};
-  }
 
-  &::placeholder {
-    /* color: ${(props) => props.theme.colors.textSecondary}; */
+    cursor: text;
   }
 
   &:focus {
@@ -55,4 +54,15 @@ export const StyledMessageInput = styled.span`
   }
 
   ${BreakLineCSS};
+`;
+
+export const SpanIntructions = styled.p`
+  margin-top: 5px;
+  margin-left: 5px;
+
+  font-size: 1.2rem;
+`;
+
+export const SpanIntructionsKeys = styled.span`
+  color: ${(props) => props.theme.colors.green};
 `;
